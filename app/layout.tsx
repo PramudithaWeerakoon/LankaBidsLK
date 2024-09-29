@@ -1,4 +1,3 @@
-// app/layout.tsx
 "use client"; // Add this directive at the top
 
 import React, { useEffect, useState } from "react";
@@ -6,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import localFont from "next/font/local";
 import "./globals.css";
 import Header from "@/components/Header/header"; // Adjust the import if necessary
+import Footer from "@/components/Footer/Footer"; // Import the Footer component
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,6 +35,10 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <body className={geistSans.className}>
         {!isLoginPage && <Header roleID={roleID} isLoggedIn={isLoggedIn} />}
         <main>{children}</main>
+
+        {/* Include the Footer component */}
+        {!isLoginPage && <Footer />}
+        
       </body>
     </html>
   );
