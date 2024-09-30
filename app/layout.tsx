@@ -37,7 +37,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         <main>{children}</main>
 
         {/* Include the Footer component */}
-        {!isLoginPage && <Footer />}
+        
         
       </body>
     </html>
