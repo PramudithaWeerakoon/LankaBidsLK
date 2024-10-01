@@ -1,9 +1,9 @@
 import Image from 'next/image';
 import vehicleImage from '@/components/Home/bg.jpg'; // Assuming your image is here
-import partnerLogo1 from '@/components/Home/p1.png'; // Assuming your image is here
-import partnerLogo2 from '@/components/Home/p2.png'; // Assuming your image is here
-import partnerLogo3 from '@/components/Home/p3.png'; // Assuming your image is here
-import partnerLogo4 from '@/components/Home/p4.png'; // Assuming your image is here
+import partnerLogo1 from '@/components/Home/samsung.png'; // Assuming your image is here
+import partnerLogo2 from '@/components/Home/apple.png'; // Assuming your image is here
+import partnerLogo3 from '@/components/Home/mi.png'; // Assuming your image is here
+import partnerLogo4 from '@/components/Home/asus.png'; // Assuming your image is here
 
 const HomePage = () => {
     return (
@@ -20,22 +20,22 @@ const HomePage = () => {
           />
     
           {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black opacity-60 z-10"></div>
+          <div className="absolute inset-0 bg-black opacity-10 z-10"></div>
     
           {/* Text and Search bar */}
           <div className="relative z-20 text-center text-white">
             <h1 className="text-4xl font-bold mb-4">
-              Find the Best Cars to Buy and Sell Near You
+              Find the Best Products to Buy and Sell Near You
             </h1>
             <p className="text-lg mb-8">
-              Search and compare cars from trusted sellers near you.
+              Search Products from trusted sellers near you.
             </p>
     
             {/* Search bar */}
             <div className="flex justify-center items-center">
               <input
                 type="text"
-                placeholder="Search vehicle by name..."
+                placeholder="Search product by name..."
                 className="w-[550px] p-3 text-gray-900 rounded-l-lg focus:outline-none"
               />
               <button className="px-6 py-3 bg-gradient-to-r from-blue-800 to-blue-600 hover:from-blue-900 hover:to-blue-700 rounded-r-lg text-white transition duration-200">
