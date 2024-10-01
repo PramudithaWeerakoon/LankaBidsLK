@@ -36,10 +36,13 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         {!isLoginPage && <Header roleID={roleID} isLoggedIn={isLoggedIn} />}
         <main>{children}</main>
 
-        {/* Include the Footer component */}
         
+         {/* Include the Footer component */}
+      {!isLoginPage && <Footer />}
         
       </body>
+     
+
     </html>
   );
 };
