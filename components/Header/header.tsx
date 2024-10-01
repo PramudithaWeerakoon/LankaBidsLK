@@ -1,7 +1,7 @@
 // components/Header.tsx
-import React from 'react';
+import React, { FC } from 'react';
 import Link from 'next/link';
-import { FC } from 'react';
+
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
 

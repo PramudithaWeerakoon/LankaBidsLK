@@ -47,7 +47,6 @@ const Login = () => {
   };
 
   return (
-    <>
       <div className="flex h-screen">
         {/* Left side for the login form */}
         <div className="w-1/2 flex items-center justify-center bg-white">
@@ -85,9 +84,6 @@ const Login = () => {
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
               <div className="text-right">
-                <label className="font-medium text-blue-900 cursor-pointer hover:underline transition-all duration-200">
-                  Forgot Password
-                </label>
               </div>
               <div>
                 <Button type="submit" className="w-full">
@@ -101,7 +97,6 @@ const Login = () => {
         {/* Right side for the image */}
         <div className="w-1/2 h-full bg-black"></div>
       </div>
-    </>
   );
 };
 
