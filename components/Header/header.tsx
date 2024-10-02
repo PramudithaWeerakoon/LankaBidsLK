@@ -1,33 +1,22 @@
 // components/Header.tsx
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import Link from 'next/link';
+
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-interface HeaderProps {}
 
-const Header: FC<HeaderProps> = () => {
-  const [roleID, setRoleID] = useState<number | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+interface HeaderProps {
+  roleID: number | null;
+  isLoggedIn: boolean;
+}
 
-  useEffect(() => {
-    // Get roleID and isLoggedIn from localStorage
-    const storedRoleID = localStorage.getItem('RoleID');
-    const storedIsLoggedIn = localStorage.getItem('isLoggedIn');
-
-    if (storedRoleID) {
-      setRoleID(parseInt(storedRoleID)); // Parse string to number
-    }
-
-    if (storedIsLoggedIn === 'true') {
-      setIsLoggedIn(true);
-    }
-  }, []);
-
+const Header: FC<HeaderProps> = ({ roleID, isLoggedIn }) => {
   const renderMiddleButtons = () => {
     switch (roleID) {
       case 1:
         return (
           <>
+            <Link href="/">Home</Link>
             <Link href="/admin/dashboard">Dashboard</Link>
             <Link href="/admin/manage-users">Manage Users</Link>
             <Link href="/admin/manage-projects">Manage Products</Link>
@@ -38,7 +27,7 @@ const Header: FC<HeaderProps> = () => {
       case 2:
         return (
           <>
-            <Link href="/Home">Home</Link>
+            <Link href="/">Home</Link>
             <Link href="/seller/dashboard">Dashboard</Link>
             <Link href="/seller/my-projects">My Products</Link>
             <Link href="/seller/create-project">Create New Product</Link>
@@ -48,14 +37,16 @@ const Header: FC<HeaderProps> = () => {
       case 3:
         return (
           <>
-            <Link href="/Home">Home</Link>
-            <Link href="/customer/browse-projects">Products</Link>
+            <Link href="/">Home</Link>
+            <Link href="/customer/dashboard">Dashboard</Link>
+            <Link href="/customer/browse-projects">Vehicles</Link>
             <Link href="/customer/my-bids">My Bids</Link>
           </>
         );
       case 4:
         return (
           <>
+            <Link href="/">Home</Link>
             <Link href="/auditor/dashboard">Dashboard</Link>
             <Link href="/auditor/audit-logs">View Audit Logs</Link>
             <Link href="/auditor/system-activity">System Activity</Link>
@@ -75,28 +66,28 @@ const Header: FC<HeaderProps> = () => {
         </div>
 
         {/* Middle: Dynamic Buttons */}
-        <nav className="space-x-5 font-semibold">
+        <nav className="space-x-5 font-semibold ">
           {renderMiddleButtons()}
         </nav>
 
         {/* Right: Login/Register or Profile/Logout */}
-        <div className="">
+        <div>
           {isLoggedIn ? (
-            <div className="space-x-7">
-              <Link href="/profile" className="text-xl font-semibold">
+            <div className='space-x-7'>
+                <Link href="/profile" className='text-2xl font-semibold'>
                 <i className="fas fa-user-circle"></i>
-              </Link>
-              <Link href="/logout" className="text-xl font-semibold">
+                </Link>
+                <Link href="/logout" className='text-2xl font-semibold'>
                 <i className="fas fa-sign-out-alt"></i>
-              </Link>
+                </Link>
             </div>
           ) : (
-            <div className="space-x-7">
-              <Link href="/Login" className="text-xl font-semibold">
-                <i className="fas fa-sign-in-alt"></i>
+            <div className='space-x-7'>
+              <Link href="/login" className='text-2xl font-semibold'>
+              <i className="fas fa-sign-in-alt"></i> Login
               </Link>
-              <Link href="/register" className="text-xl font-semibold">
-                <i className="fas fa-user-plus"></i>
+              <Link href="/register" className='text-2xl font-semibold'>
+              <i className="fas fa-user-plus"></i> Register
               </Link>
             </div>
           )}

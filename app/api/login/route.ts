@@ -1,45 +1,36 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { connectToDatabase } from '../../../lib/db';
-import { getUserByEmail } from '../../../lib/user'; // Assuming this is the correct path
+import { createConnection } from '../../../lib/db'; // Correct import for the database connection
+import { NextResponse } from 'next/server';
+import { RowDataPacket } from 'mysql2/promise'; // Import RowDataPacket for proper typing
 
-async function loginUser(req: NextApiRequest, res: NextApiResponse) {
-    const { email, password } = req.body;
+export const POST = async (request: Request): Promise<Response> => {
+  const { email, password } = await request.json(); // Get email and password from request body
 
-    if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required' });
+  try {
+    const connection = await createConnection();
+    
+    // Cast rows as RowDataPacket[] to avoid the type error
+    const [rows] = await connection.execute<RowDataPacket[]>(
+      'SELECT * FROM users WHERE Email = ? AND PasswordHash = ?',
+      [email, password]
+    );
+
+    if (rows.length > 0) {
+      const user = rows[0]; // assuming rows[0] is the logged-in user
+      const roleID = user.RoleID; // Get RoleID from the database
+
+      console.log('User logged in:', roleID, user);
+
+      // Return the user's RoleID and other necessary data for the dynamic header
+      return NextResponse.json(
+        { message: 'Login successful', roleID, user },
+        { status: 200 }
+      );
+    } else {
+      // User not found, return error response
+      return NextResponse.json({ message: 'Invalid credentials' }, { status: 401 });
     }
-
-    try {
-        const user = await getUserByEmail(email, password);
-
-        if (!user) {
-            return res.status(401).json({ message: 'Invalid credentials' });
-        }
-
-        const roleId = user.role_id;
-
-        try {
-            const db = await connectToDatabase(roleId);
-
-            res.status(200).json({ message: `Logged in as ${getRoleName(roleId)}`, role: getRoleName(roleId) });
-        } catch (error) {
-            console.error('Error connecting to the database', error);
-            res.status(500).json({ message: 'Database connection error' });
-        }
-    } catch (error) {
-        console.error('Error fetching user', error);
-        res.status(500).json({ message: 'Internal server error' });
-    }
-}
-
-function getRoleName(roleId: number) {
-    switch (roleId) {
-        case 1: return 'Admin';
-        case 4: return 'Auditor';
-        case 3: return 'Customer';
-        case 2: return 'Seller';
-        default: return 'Unknown';
-    }
-}
-
-export default loginUser;
+  } catch (error) {
+    console.error('Database query error:', error);
+    return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+  }
+};
