@@ -4,11 +4,11 @@ import React, { useEffect, useState } from "react";
 import { usePathname } from 'next/navigation';
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from "@/components/Header/header"; // Adjust the import if necessary
-import Footer from "@/components/Footer/Footer"; // Import the Footer component
+import Header from "@/components/header/header"; // Adjust the import if necessary
+import Footer from "@/components/footer/Footer"; // Import the Footer component
 
 const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
+  src: "../components/fonts/GeistVF.woff",
   weight: "100 900",
 });
 
