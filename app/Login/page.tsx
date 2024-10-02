@@ -12,39 +12,56 @@ const Login = () => {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  
+const handleLogin = async (e: React.FormEvent) => {
+  e.preventDefault();
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
-    try {
-      const response = await fetch('/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+  try {
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),  // Assuming email and password are state variables
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (response.ok) {
-        // Store RoleID in localStorage
-        localStorage.setItem('RoleID', data.roleID); // Ensure that data.roleID is set correctly
-        localStorage.setItem('isLoggedIn', 'true');
-    
-        console.log('Logged in successfully:', data);
+    if (response.ok) {
+      // Store role_id and login status in localStorage
+      localStorage.setItem('RoleID', data.role_id.toString()); // Save role_id from API response
+      localStorage.setItem('isLoggedIn', 'true');
+  
+      console.log('Logged in successfully:', data);
 
-
-        // Redirect to the Home page
-        router.push('/Home');
-      } else {
-        // Set error message if credentials are wrong
-        setError(data.message || 'Invalid credentials. Please try again.');
+      // Redirect to the Home page based on the user's role
+      switch (data.role_id) {
+        case 1: 
+          router.push('/Dashboard'); // Redirect to Admin Home page
+          break;
+        case 2: 
+          router.push('/Home'); // Redirect to Auditor Home page
+          break;
+        case 3: 
+          router.push('/Home'); // Redirect to Customer Home page
+          break;
+        case 4: 
+          router.push('/Dashboard'); // Redirect to Seller Home page
+          break;
+        default: 
+          router.push('/unknown'); // Handle unknown role
       }
-    } catch (error) {
-      console.error('An error occurred:', error);
-      setError('An error occurred. Please try again.');
+    } else {
+      // Set error message if login fails
+      setError(data.message || 'Invalid credentials. Please try again.');
     }
-  };
+  } catch (error) {
+    console.error('An error occurred:', error);
+    setError('An error occurred. Please try again.');
+  }
+};
 
   return (
       <div className="flex h-screen">

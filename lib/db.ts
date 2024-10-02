@@ -1,27 +1,43 @@
-// lib/db.ts
-import mysql, { Connection } from 'mysql2/promise';
+import mysql from 'mysql2/promise';
+import dotenv from 'dotenv';
+import path from 'path';
 
-// Connection variable
-let connection: Connection | null = null;
+// Load the appropriate environment file based on the role ID
+function loadEnv(roleId: number) {
+    let envPath = '';
 
-// Function to create and return the connection
-export const createConnection = async (): Promise<Connection> => {
-  if (!connection) {
-    connection = await mysql.createConnection({
-      host: process.env.MYSQL_HOST,        // Your MySQL host
-      user: process.env.MYSQL_USER,        // Your MySQL username
-      password: process.env.MYSQL_PASSWORD,// Your MySQL password
-      database: process.env.MYSQL_DATABASE // Your MySQL database
+    switch (roleId) {
+        case 1:
+            envPath = path.resolve(process.cwd(), '.env.admin');
+            break;
+        case 4:
+            envPath = path.resolve(process.cwd(), '.env.auditor');
+            break;
+        case 3:
+            envPath = path.resolve(process.cwd(), '.env.customer');
+            break;
+        case 2:
+            envPath = path.resolve(process.cwd(), '.env.seller');
+            break;
+        default:
+            throw new Error('Invalid role');
+    }
+
+    // Load the specified environment variables
+    dotenv.config({ path: envPath });
+}
+
+// Connect to the MySQL database using the loaded environment variables
+export async function connectToDatabase(roleId: number) {
+    loadEnv(roleId); // Load the environment for the given role
+
+    // Create a connection to the database
+    const connection = await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME,
     });
 
-    // Handle connection errors and reconnections
-    connection.on('error', async (err) => {
-      if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-        connection = await createConnection();
-      } else {
-        throw err;
-      }
-    });
-  }
-  return connection;
-};
+    return connection; // Return the connection object
+}
