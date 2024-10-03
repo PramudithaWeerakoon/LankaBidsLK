@@ -1,38 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LankaBidsLK - README</title>
+</head>
+<body>
+  <h1 align="center">LankaBidsLK</h1>
+  <p align="center">An innovative concept bidding platform designed for Sri Lanka, offering a secure and reliable marketplace.</p>
 
-## Getting Started
+  <h2>🚀 Features</h2>
+  <ul>
+    <li><strong>Bidding System:</strong> Users can bid on various products securely.</li>
+    <li><strong>Real-Time Updates:</strong> Live updates on bidding status.</li>
+    <li><strong>User Profiles:</strong> Securely manage personal details and bidding history.</li>
+    <li><strong>Secure Transactions:</strong> Integrated security protocols to prevent fraud and ensure safe transactions.</li>
+  </ul>
 
-First, run the development server:
+  <h2>🔐 Security Features</h2>
+  <ul>
+    <li><strong>SQL Injection Protection:</strong> Using parameterized queries to safeguard against SQL injection attacks.</li>
+    <li><strong>Data Sanitization:</strong> User inputs are cleaned to avoid XSS and buffer overflows.</li>
+    <li><strong>Encryption:</strong> Sensitive data such as passwords are encrypted, ensuring privacy.</li>
+  </ul>
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+  <h2>🛠️ Technologies</h2>
+  <ul>
+    <li><strong>Next.js</strong> for the front end.</li>
+    <li><strong>Node.js</strong> and <strong>MySQL</strong> for backend and database management.</li>
+    <li><strong>Tailwind CSS</strong> for responsive design.</li>
+  </ul>
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+  <h2>📦 How to Run</h2>
+  <ol>
+    <li>Clone the repository:
+      <pre><code>git clone https://github.com/RyanSilva2004/LankaBidsLK.git</code></pre>
+    </li>
+    <li>Install dependencies:
+      <pre><code>npm install</code></pre>
+    </li>
+    <li>Start the server:
+      <pre><code>npm run dev</code></pre>
+    </li>
+    <li>Access the application at:
+      <pre><code>http://localhost:3000</code></pre>
+    </li>
+  </ol>
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+  <h2>📈 Roadmap</h2>
+  <ul>
+    <li>Advanced Search Filters: Sort and filter bids by categories.</li>
+    <li>Multi-Language Support: Sinhala, Tamil, and English interfaces.</li>
+    <li>Mobile App: Future release of an Android/iOS version.</li>
+  </ul>
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+  <h2>👨‍💻 Contributing</h2>
+  <p>Feel free to open issues or create pull requests to contribute!</p>
 
-## Learn More
+  <h2>🔗 Links</h2>
+  <p><a href="https://github.com/RyanSilva2004/LankaBidsLK">Project Repository</a></p>
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-hi guyss
+  <h2>🛡️ License</h2>
+  <p>This project is licensed under the MIT License.</p>
+</body>
+</html>
