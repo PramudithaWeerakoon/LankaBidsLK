@@ -83,10 +83,10 @@ const Header: FC<HeaderProps> = ({ roleID, isLoggedIn }) => {
             </div>
           ) : (
             <div className='space-x-7'>
-              <Link href="/login" className='text-2xl font-semibold'>
+              <Link href="/auth/login" className='text-2xl font-semibold'>
               <i className="fas fa-sign-in-alt"></i> Login
               </Link>
-              <Link href="/register" className='text-2xl font-semibold'>
+              <Link href="/Register" className='text-2xl font-semibold'>
               <i className="fas fa-user-plus"></i> Register
               </Link>
             </div>

@@ -27,22 +27,17 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     setIsLoggedIn(storedIsLoggedIn);
   }, []);
 
-  // Check if the current route is '/Login'
-  const isLoginPage = pathname === '/Login';
+  const isAuthPage = pathname === '/Login' || pathname.startsWith('/auth');
 
   return (
     <html lang="en">
-      <body className={geistSans.className}>
-        {!isLoginPage && <Header roleID={roleID} isLoggedIn={isLoggedIn} />}
-        <main>{children}</main>
-
-        
-         {/* Include the Footer component */}
-      {!isLoginPage && <Footer />}
-        
+      <body className={geistSans.className} style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        {!isAuthPage && <Header roleID={roleID} isLoggedIn={isLoggedIn} />}
+        <main style={{ flex: 1 }}>
+          {children}
+        </main>
+        {!isAuthPage && <Footer />}
       </body>
-     
-
     </html>
   );
 };
