@@ -3,9 +3,9 @@ import * as z from "zod";
 const sanitizeString = (str: string) => str.replace(/['";]/g, '');
 
 export const SignInSchema = z.object({
-  email: z.string().min(1,{message:"email is required"}).email().max(100).transform(sanitizeString),
-  password: z.string().min(1,{message:"password is required"}).transform(sanitizeString),
-})
+  email: z.string().min(1, { message: "Email is required" }).email().max(100).transform(sanitizeString),
+  password: z.string().min(1, { message: "Password is required" }).transform(sanitizeString),
+});
 
 
 /*import * as z from "zod";
