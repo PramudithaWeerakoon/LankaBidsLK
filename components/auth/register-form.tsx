@@ -22,7 +22,6 @@ import {
     SelectContent,
     SelectGroup,
     SelectItem,
-    SelectLabel,
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
@@ -105,25 +104,24 @@ export const RegisterForm = () => {
             )}
             />
 
-             {/*Role Field*/}
-             <FormField control={form.control} name="role" render={({ field }) => (
-                <FormItem>
-                    <FormLabel>Role</FormLabel>
-                    <FormControl>
-                    <Select>
-                        <SelectTrigger className="w-[180px]">
-                            <SelectValue placeholder="Select a role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectGroup>
-                            <SelectItem value="bidder">Customer</SelectItem>
-                            <SelectItem value="seller">Seller</SelectItem>
-                            </SelectGroup>
-                        </SelectContent>
-                    </Select>
-                    </FormControl>
-                    <FormMessage />
-                </FormItem>
+            <FormField control={form.control} name="role" render={({ field }) => (
+              <FormItem>
+                <FormLabel>Role</FormLabel>
+                <FormControl>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select a role" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="bidder">Customer</SelectItem>
+                        <SelectItem value="seller">Seller</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
             )} />
 
           </div>
