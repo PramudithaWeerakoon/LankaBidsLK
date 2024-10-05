@@ -22,10 +22,6 @@ export const createConnection = async (roleId: number): Promise<Connection> => {
       user = process.env.CUSTOMER_USER!;
       password = process.env.CUSTOMER_PASSWORD!;
       break;
-    case 4:
-      user = process.env.AUDITOR_USER!;
-      password = process.env.AUDITOR_PASSWORD!;
-      break;
     default:
       throw new Error('Invalid role ID');
   }

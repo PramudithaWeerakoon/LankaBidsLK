@@ -1,11 +1,11 @@
-"use client"; // Add this directive at the top
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { usePathname } from 'next/navigation';
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from "@/components/header/header"; // Adjust the import if necessary
-import Footer from "@/components/footer/Footer"; // Import the Footer component
+import Header from "@/components/Header/header";
+import Footer from "@/components/Footer/Footer";
 
 const geistSans = localFont({
   src: "../components/fonts/GeistVF.woff",
@@ -18,6 +18,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   useEffect(() => {
+    // Use localStorage to retrieve login state
     const storedRoleID = localStorage.getItem("RoleID");
     const storedIsLoggedIn = localStorage.getItem("isLoggedIn") === "true";
 

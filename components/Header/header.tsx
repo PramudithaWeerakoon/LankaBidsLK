@@ -1,16 +1,13 @@
-// components/Header.tsx
 import React, { FC } from 'react';
 import Link from 'next/link';
-
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-
 interface HeaderProps {
-  roleID: number | null;
   isLoggedIn: boolean;
+  roleID: number | null; // Add roleID to HeaderProps
 }
 
-const Header: FC<HeaderProps> = ({ roleID, isLoggedIn }) => {
+const Header: FC<HeaderProps> = ({ isLoggedIn, roleID }) => {
   const renderMiddleButtons = () => {
     switch (roleID) {
       case 1:
@@ -38,18 +35,8 @@ const Header: FC<HeaderProps> = ({ roleID, isLoggedIn }) => {
         return (
           <>
             <Link href="/">Home</Link>
-            <Link href="/customer/dashboard">Dashboard</Link>
-            <Link href="/customer/browse-projects">Vehicles</Link>
+            <Link href="/customer/browse-projects">Products</Link>
             <Link href="/customer/my-bids">My Bids</Link>
-          </>
-        );
-      case 4:
-        return (
-          <>
-            <Link href="/">Home</Link>
-            <Link href="/auditor/dashboard">Dashboard</Link>
-            <Link href="/auditor/audit-logs">View Audit Logs</Link>
-            <Link href="/auditor/system-activity">System Activity</Link>
           </>
         );
       default:
@@ -74,20 +61,20 @@ const Header: FC<HeaderProps> = ({ roleID, isLoggedIn }) => {
         <div>
           {isLoggedIn ? (
             <div className='space-x-7'>
-                <Link href="/profile" className='text-2xl font-semibold'>
+                <Link href="/profile" className='text-xl font-semibold'>
                 <i className="fas fa-user-circle"></i>
                 </Link>
-                <Link href="/logout" className='text-2xl font-semibold'>
+                <Link href="/logout" className='text-xl font-semibold'>
                 <i className="fas fa-sign-out-alt"></i>
                 </Link>
             </div>
           ) : (
             <div className='space-x-7'>
-              <Link href="/auth/login" className='text-2xl font-semibold'>
-              <i className="fas fa-sign-in-alt"></i> Login
+              <Link href="/auth/login" className='text-xl font-semibold'>
+              <i className="fas fa-sign-in-alt"></i>
               </Link>
-              <Link href="/Register" className='text-2xl font-semibold'>
-              <i className="fas fa-user-plus"></i> Register
+              <Link href="/auth/register" className='text-xl font-semibold'>
+              <i className="fas fa-user-plus"></i>
               </Link>
             </div>
           )}
