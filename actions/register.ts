@@ -1,12 +1,11 @@
 "use server";
 
 import * as z from "zod";
-import { RegisterSchema } from "@/schemas"; // Your validation schema
-import { createConnection } from "@/lib/db"; // Your function to create a DB connection
+import { RegisterSchema } from "@/schemas";
+import { createConnection } from "@/lib/db";
 import bcrypt from "bcrypt";
-import { FieldPacket, ResultSetHeader } from "mysql2/promise"; // Importing the FieldPacket type
-import { setCookie } from 'cookies-next'; // Importing setCookie
-
+import { FieldPacket, ResultSetHeader } from "mysql2/promise";
+import { setCookie } from 'cookies-next';
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
     const validateFields = RegisterSchema.safeParse(values);
@@ -20,25 +19,44 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     try {
         // Map roles to roleId
         const roleId = role === "seller" ? 2 : 3; // Assuming 'seller' maps to roleId 2 and 'bidder' maps to roleId 3
-        const connection = await createConnection(roleId); // Create a database connection based on the role
+        const connection = await createConnection(roleId); // Create a database connection
+
+        // Check if the user already exists based on email
+        const [existingEmail]: [any[], FieldPacket[]] = await connection.execute(
+            `SELECT email FROM users WHERE email = ?`,
+            [email]
+        );
+
+        if (existingEmail.length > 0) {
+            return { error: "User with this email already exists" }; // Email already registered
+        }
+
+        // Check if the user already exists based on username
+        const [existingUsername]: [any[], FieldPacket[]] = await connection.execute(
+            `SELECT username FROM users WHERE username = ?`,
+            [username]
+        );
+
+        if (existingUsername.length > 0) {
+            return { error: "Username already exists" }; // Username already registered
+        }
 
         // Hash the password before saving
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
 
-        // Insert the user into the database using roleId instead of role
+        // Insert the user into the database using roleId
         const [result]: [ResultSetHeader, FieldPacket[]] = await connection.execute(
             `INSERT INTO users (username, email, passwordHash, roleID) VALUES (?, ?, ?, ?)`,
-            [username, email, passwordHash, roleId] // Save the roleId here
+            [username, email, passwordHash, roleId]
         );
 
         // Check if the insert was successful
         if (result.affectedRows > 0) {
-            // Set roleId in cookies
-            setCookie('roleId', roleId, { maxAge: 60 * 60 * 24 * 7 }); // Cookie expires in 7 days
+            // Set roleId and login status in cookies
+            setCookie('roleId', roleId, { maxAge: 60 * 60 * 24 * 7 });
             setCookie('isLoggedIn', 'true', { maxAge: 60 * 60 * 24 * 7 });
 
-            // Return success message and set isLoggedIn to true
             return { success: "Registration successful", isLoggedIn: true, roleId };
         } else {
             return { error: "Registration failed" };

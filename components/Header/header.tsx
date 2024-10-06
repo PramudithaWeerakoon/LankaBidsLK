@@ -35,7 +35,7 @@ const Header: FC<HeaderProps> = ({ isLoggedIn, roleID }) => {
         return (
           <>
             <Link href="/">Home</Link>
-            <Link href="/customer/browse-projects">Products</Link>
+            <Link href="/Products">Products</Link>
             <Link href="/customer/my-bids">My Bids</Link>
           </>
         );

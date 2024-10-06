@@ -46,7 +46,7 @@ export const RegisterForm = () => {
       password: "",
       role:""
     }
-  })
+  });
 
   const router = useRouter(); // Initialize router
 

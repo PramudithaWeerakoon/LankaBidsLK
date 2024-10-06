@@ -14,7 +14,7 @@ export const getProducts = async (roleId: number): Promise<Product[]> => {
   const connection = await createConnection(roleId);
 
   const [rows] = await connection.query<RowDataPacket[]>(
-    'SELECT BidItemID, ItemName, CurrentPrice, ImageURL FROM BidItem WHERE Status = "active"'
+    'SELECT BidItemID, ItemName, CurrentPrice, ImageURL FROM BidItems WHERE Status = "active"'
   );
 
   // Close the connection after use
