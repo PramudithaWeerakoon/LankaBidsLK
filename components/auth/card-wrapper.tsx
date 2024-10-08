@@ -14,7 +14,6 @@ interface CardWrapperProps {
   headerLabel: string;
   backButtonLabel: string;
   backButtonHref: string;
-  showSocial?: boolean;
 };
 
 export const CardWrapper = ({

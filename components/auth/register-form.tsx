@@ -2,10 +2,8 @@
 import * as z from "zod";
 import { CardWrapper } from '@/components/auth/card-wrapper';
 import {useForm} from 'react-hook-form';
-import { startTransition, useState, useTransition } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Link from "next/link";
 import { RegisterSchema } from "@/schemas";
 import { Input } from "@/components/ui/input";
 import { useRouter } from "next/navigation";
@@ -35,7 +33,7 @@ import { register } from "@/actions/register";
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
-  const [success, setSuccsess] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
 
   const [isPending , startTransition] = useTransition();
   const form = useForm<z.infer<typeof RegisterSchema>>({
@@ -52,17 +50,18 @@ export const RegisterForm = () => {
 
   const onSubmit =  (values: z.infer<typeof RegisterSchema>) => {
     setError("");
-    setSuccsess("");
+    setSuccess("");
 
     startTransition(async () => {
       const data = await register(values); // Call the register action
       setError(data.error);
-      setSuccsess(data.success);
+      setSuccess(data.success);
 
       if (data.success) {
         // Redirect to homepage on successful registratio
         localStorage.setItem('RoleID', data.roleId.toString());
           localStorage.setItem('isLoggedIn', 'true');
+          localStorage.setItem('userID', data.userID.toString());
           router.push('/');
 
       }

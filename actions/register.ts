@@ -54,10 +54,11 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         // Check if the insert was successful
         if (result.affectedRows > 0) {
             // Set roleId and login status in cookies
+            const userID = result.insertId;
             setCookie('roleId', roleId, { maxAge: 60 * 60 * 24 * 7 });
             setCookie('isLoggedIn', 'true', { maxAge: 60 * 60 * 24 * 7 });
 
-            return { success: "Registration successful", isLoggedIn: true, roleId };
+            return { success: "Registration successful", isLoggedIn: true, roleId, userID };
         } else {
             return { error: "Registration failed" };
         }

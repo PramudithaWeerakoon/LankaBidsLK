@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogTrigger,
 } from "@/components/ui/dialog";
-//import { LoginForm } from "@/components/auth/login-form";
 
 interface LoginButtonProps {
   children: React.ReactNode;
@@ -39,8 +38,8 @@ export const LoginButton = ({
   }
 
   return (
-    <span onClick={onClick} className="cursor-pointer">
+    <button onClick={onClick} className="cursor-pointer">
       {children}
-    </span>
+    </button>
   );
 };

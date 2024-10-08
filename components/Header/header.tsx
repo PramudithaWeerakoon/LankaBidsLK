@@ -25,18 +25,17 @@ const Header: FC<HeaderProps> = ({ isLoggedIn, roleID }) => {
         return (
           <>
             <Link href="/">Home</Link>
-            <Link href="/seller/dashboard">Dashboard</Link>
-            <Link href="/seller/my-projects">My Products</Link>
-            <Link href="/seller/create-project">Create New Product</Link>
-            <Link href="/seller/my-bids">My Bids</Link>
+            <Link href="/seller/dashboard">Dashboard</Link> {/*ryan*/}
+            <Link href="/seller/products">Products</Link> {/*vihanga*/}
+            <Link href="/seller/sales">Sales</Link> {/*vihanga + ayesh*/}
           </>
         );
       case 3:
         return (
           <>
-            <Link href="/">Home</Link>
-            <Link href="/Products">Products</Link>
-            <Link href="/customer/my-bids">My Bids</Link>
+            <Link href="/">Home</Link>{/*ayesh*/}
+            <Link href="/products">Products</Link>{/*ayesh*/}
+            <Link href="/mybids">My Bids</Link> {/*pramudita*/}
           </>
         );
       default:

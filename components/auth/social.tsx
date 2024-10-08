@@ -14,7 +14,7 @@ export const Social = () => {
 
   const onClick = (provider: "google" | "github") => {
     signIn(provider, {
-      callbackUrl: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+      callbackUrl: callbackUrl ?? DEFAULT_LOGIN_REDIRECT,
     });
   }
 
