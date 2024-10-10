@@ -46,11 +46,16 @@ export const LoginForm = () => {
           setSuccess("Login successful"); // Display success message
           
           // Handle redirection based on user role
-          if (data.role === 1) {
-            router.push("/auth/login"); // Redirect to admin dashboard(i just input this url to check it must be changed)
-          } else if (data.role === 2) {
+          if (data.role === 1) 
+          {
+            router.push("/auth/login"); // Redirect to admin dashboard
+          } 
+          else if (data.role === 2) 
+          {
             router.push("/auth/register"); // Redirect to seller dashboard
-          } else {
+          } 
+          else 
+          {
             router.push("/"); // Redirect to customer home
           }
         }
