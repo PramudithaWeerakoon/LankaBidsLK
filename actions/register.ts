@@ -5,7 +5,7 @@ import { RegisterSchema } from "@/schemas";
 import { createConnection } from "@/lib/db";
 import bcrypt from "bcrypt";
 import { FieldPacket, ResultSetHeader } from "mysql2/promise";
-import { setCookie } from 'cookies-next';
+//import { setCookie } from 'cookies-next';
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
     const validateFields = RegisterSchema.safeParse(values);
@@ -55,15 +55,15 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         if (result.affectedRows > 0) {
             // Set roleId and login status in cookies
             const userID = result.insertId;
-            setCookie('roleId', roleId, { maxAge: 60 * 60 * 24 * 7 });
-            setCookie('isLoggedIn', 'true', { maxAge: 60 * 60 * 24 * 7 });
+            // setCookie('roleId', roleId, { maxAge: 60 * 60 * 24 * 7 });
+            // setCookie('isLoggedIn', 'true', { maxAge: 60 * 60 * 24 * 7 });
 
-            return { success: "Registration successful", isLoggedIn: true, roleId, userID };
+            return { success: "Registration successful", isLoggedIn: true, roleId, userID }; // Handle The Cookie Correctly
         } else {
             return { error: "Registration failed" };
         }
-    } catch (error) {
+        } catch (error) {
         console.error("Registration error:", error);
         return { error: "An error occurred during registration" };
-    }
-};
+        }
+    };
