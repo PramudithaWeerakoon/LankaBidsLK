@@ -1,12 +1,6 @@
-// lib/db.ts
-
+'use server'
 import mysql, { Connection } from 'mysql2/promise';
-import dotenv from 'dotenv';
 
-// Ensure dotenv is only loaded in a Node.js environment
-if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'production') {
-  dotenv.config();
-}
 
 // Function to create and return the connection based on user role
 export const createConnection = async (roleId: number): Promise<Connection> => {
@@ -34,7 +28,7 @@ export const createConnection = async (roleId: number): Promise<Connection> => {
     host: process.env.DB_HOST,
     user: user,
     password: password,
-    database: process.env.DB_NAME,
+    database: process.env.DB_NAME
   });
 
   // Handle connection errors and reconnections
