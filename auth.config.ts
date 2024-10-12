@@ -1,18 +1,25 @@
-import { CredentialsSignin } from "next-auth/providers/credentials"
+import Credentials from "next-auth/providers/credentials";
 import type { NextAuthConfig } from "next-auth"
 import { SignInSchema } from "@/schemas"
-import { auth } from "./auth"
+import bcrypt from "bcryptjs";
+import { getUserByEmail } from "@/data/user";
  
 export default { providers: [
     Credentials ({
-        async authorize(credentials) {
+        async authorize(credentials) 
+        {
             const validateFields = await SignInSchema.safeParse(credentials)
-            if (!validateFields.success) 
+
+            if (validateFields.success) 
             {
                 const {email, password} = validateFields.data;
-
-                // Check if the user exists in the database based on email
+                const user = await getUserByEmail(email);
+                if (!user || !user.PasswordHash) return null;
+                const isPasswordValid = await bcrypt.compare(password, user.PasswordHash);
+                if(isPasswordValid) return user;
             }
+
+            return null;
         }
     })
 

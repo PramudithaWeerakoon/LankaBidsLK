@@ -1,9 +1,11 @@
-"use server"; // Enables server actions
-
+"use server"; 
+import { signIn } from "@/auth";
+import { AuthError, CredentialsSignin } from "next-auth";
 import * as z from "zod";
 import { SignInSchema } from "@/schemas";
-import { createConnection } from "@/lib/db"; // Import the database connection function
-import bcrypt from 'bcryptjs'; // For comparing passwords
+import { createConnection } from "@/lib/db"; 
+import bcrypt from 'bcryptjs';
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 
 // Server action function to handle login
 export const login = async (values: z.infer<typeof SignInSchema>) => {
@@ -14,7 +16,7 @@ export const login = async (values: z.infer<typeof SignInSchema>) => {
     return { error: "Invalid Email or Password" };
   }
 
-  const { email, password } = values;
+  const { email, password } = validationResult.data
 
   try {
     // Create a connection to the database
@@ -56,4 +58,8 @@ export const login = async (values: z.infer<typeof SignInSchema>) => {
     console.error("Error during login:", error);
     return { error: "An error occurred during login." };
   }
-};
+
+  };
+
+
+ 

@@ -1,8 +1,4 @@
 import mysql, { Connection } from 'mysql2/promise';
-import dotenv from 'dotenv';
-
-// Load environment variables from .env file
-dotenv.config();
 
 // Function to create and return the connection based on user role
 export const createConnection = async (roleId: number): Promise<Connection> => {
@@ -30,16 +26,7 @@ export const createConnection = async (roleId: number): Promise<Connection> => {
     host: process.env.DB_HOST,
     user: user,
     password: password,
-    database: process.env.DB_NAME
-  });
-
-  // Handle connection errors and reconnections
-  connection.on('error', async (err) => {
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      await createConnection(roleId);
-    } else {
-      throw err;
-    }
+    database: process.env.DB_NAME,
   });
 
   return connection;
