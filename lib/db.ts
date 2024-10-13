@@ -1,44 +1,26 @@
-'use server'
-import mysql, { Connection } from 'mysql2/promise';
+import { PrismaClient } from '@prisma/client';
 
+const getPrismaClientForRole = (roleId: number): PrismaClient => {
+  let databaseUrl = '';
 
-// Function to create and return the connection based on user role
-export const createConnection = async (roleId: number): Promise<Connection> => {
-  let user: string;
-  let password: string;
-
+  // Select the appropriate DATABASE_URL based on roleId
   switch (roleId) {
-    case 1:
-      user = process.env.ADMIN_USER!;
-      password = process.env.ADMIN_PASSWORD!;
+    case 1: // Admin Role
+      databaseUrl = process.env.DATABASE_URL_ADMIN!;
       break;
-    case 2:
-      user = process.env.SELLER_USER!;
-      password = process.env.SELLER_PASSWORD!;
+    case 2: // Seller Role
+      databaseUrl = process.env.DATABASE_URL_SELLER!;
       break;
-    case 3:
-      user = process.env.CUSTOMER_USER!;
-      password = process.env.CUSTOMER_PASSWORD!;
+    case 3: // Customer Role
+      databaseUrl = process.env.DATABASE_URL_CUSTOMER!;
       break;
-    default:
-      throw new Error('Invalid role ID');
   }
 
-  const connection = await mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: user,
-    password: password,
-    database: process.env.DB_NAME
-  });
+  // Temporarily set DATABASE_URL for this Prisma client instance
+  process.env.DATABASE_URL = databaseUrl;
 
-  // Handle connection errors and reconnections
-  connection.on('error', async (err) => {
-    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-      await createConnection(roleId);
-    } else {
-      throw err;
-    }
-  });
-
-  return connection;
+  // Return a new PrismaClient instance
+  return new PrismaClient();
 };
+
+export default getPrismaClientForRole;

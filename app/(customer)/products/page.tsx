@@ -4,13 +4,15 @@ import { getProductsForCustomer } from '@/actions/products'; // This remains a s
 import Card from '@/components/customer/card/card';
 
 const Products = async () => { // Make this an async function to await server action
-    const bidItems = await getProductsForCustomer(); // Fetch bid items from the server action
+    const bidItems = await getProductsForCustomer(2); // Fetch bid items from the server action
+    console.log('Fetched bid items:', bidItems); // Log fetched items
 
     const activeBidItems = bidItems.filter(item => {
         const currentTime = new Date().getTime();
         const bidEndTime = new Date(item.BidEndTime).getTime();
         return bidEndTime > currentTime; // Filter for active bids
     });
+    console.log('Active bid items:', activeBidItems); // Log filtered items
 
     return (
         <div className="flex justify-center py-5">

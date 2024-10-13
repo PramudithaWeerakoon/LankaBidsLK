@@ -1,28 +1,56 @@
-import { createConnection } from '@/lib/db';
+import getPrismaClientForRole from '@/lib/db'; // Import role-based Prisma client function
 
-export async function getProductsForCustomer() {
-    const connection = await createConnection(3); // Customer role ID
-    const [rows] = await connection.execute(
-        'SELECT BidItemID, ItemName, category, Image, CurrentPrice, BidEndTime FROM biditems' // Include BidEndTime in the query
-    );
-    await connection.end();
+export async function getProductsForCustomer(userId: number) {
+    const roleId = 3; // Customer Role ID
+    const prisma = getPrismaClientForRole(roleId); // Get PrismaClient for the customer role
 
-    // Ensure rows is an array
-    const products = (rows as any[]).map((row: any) => ({
-        BidItemID: row.BidItemID,
-        ItemName: row.ItemName,
-        category: row.category,
-        Image: row.Image ? Buffer.from(row.Image).toString('base64') : null,
-        CurrentPrice: row.CurrentPrice,
-        BidEndTime: row.BidEndTime
-    }));
+    try {
+        // Using template literals for a raw SQL query
+        const result = await prisma.$queryRaw<
+            Array<{
+                BidItemID: number;
+                ItemName: string;
+                category: string;
+                Image: Buffer | null;
+                CurrentPrice: number;
+                BidEndTime: string;
+            }>
+        >`
+            SELECT 
+                BidItemID, 
+                ItemName, 
+                category, 
+                Image, 
+                CurrentPrice, 
+                BidEndTime 
+            FROM 
+                biditems 
+            WHERE 
+                UserID = ${userId}`; // Safely interpolating userId
 
-    return products as Array<{
-        BidItemID: number; 
-        ItemName: string; 
-        category: string; 
-        Image: string | null; 
-        CurrentPrice: number; 
-        BidEndTime: string;
-    }>;
+        // Check if any products were found
+        if (!result || result.length === 0) {
+            console.warn(`No products found for user with ID ${userId}.`);
+            return []; // Return an empty array if no products are found
+        }
+
+        // Process the fetched products
+        const processedProducts = result.map((product) => ({
+            BidItemID: product.BidItemID,
+            ItemName: product.ItemName,
+            category: product.category,
+            Image: product.Image ? Buffer.from(product.Image).toString('base64') : null,
+            CurrentPrice: product.CurrentPrice,
+            BidEndTime: product.BidEndTime,
+        }));
+
+        return processedProducts;
+    } catch (error: any) {
+        // Enhanced error logging
+        console.error('Error fetching products:', error.message || error);
+        console.error('Detailed error:', error); // Log the entire error object for more details
+        throw new Error('Failed to fetch products. Please try again later.');
+    } finally {
+        await prisma.$disconnect(); // Ensure the client is disconnected
+    }
 }

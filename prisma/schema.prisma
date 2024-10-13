@@ -1,0 +1,114 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model auditlogs {
+  LogID     Int       @id @default(autoincrement())
+  UserID    Int?
+  Action    String?   @db.VarChar(255)
+  TableName String?   @db.VarChar(100)
+  OldValue  String?   @db.Text
+  NewValue  String?   @db.Text
+  Timestamp DateTime? @default(now()) @db.Timestamp(0)
+
+  @@index([UserID], map: "UserID")
+}
+
+model biditems {
+  BidItemID       Int              @id @default(autoincrement())
+  UserID          Int?
+  ItemName        String           @db.VarChar(255)
+  ItemDescription String?          @db.Text
+  category        String?          @db.VarChar(255)
+  StartingPrice   Decimal          @db.Decimal(10, 2)
+  CurrentPrice    Decimal?         @db.Decimal(10, 2)
+  MinIncrement    Decimal          @default(1.00) @db.Decimal(10, 2)
+  BidEndTime      DateTime?        @db.Timestamp(0)
+  Status          biditems_Status? @default(Open)
+  Image           Bytes?           @db.Blob
+
+  @@index([UserID], map: "fk_biditems_userid")
+}
+
+model bids {
+  BidID     Int          @id @default(autoincrement())
+  BidItemID Int?
+  UserID    Int?
+  BidAmount Decimal      @db.Decimal(10, 2)
+  BidTime   DateTime?    @default(now()) @db.Timestamp(0)
+  Status    bids_Status? @default(Pending)
+
+  @@index([BidItemID], map: "BidItemID")
+  @@index([UserID], map: "UserID")
+}
+
+model loginattempts {
+  LoginAttemptID Int                   @id @default(autoincrement())
+  UserID         Int?
+  IPAddress      String?               @db.VarChar(45)
+  AttemptedAt    DateTime?             @default(now()) @db.Timestamp(0)
+  Status         loginattempts_Status? @default(Failed)
+
+  @@index([UserID], map: "UserID")
+}
+
+model payments {
+  PaymentID     Int                     @id @default(autoincrement())
+  UserID        Int?
+  BidItemID     Int?
+  Amount        Decimal                 @db.Decimal(10, 2)
+  PaymentDate   DateTime?               @default(now()) @db.Timestamp(0)
+  PaymentStatus payments_PaymentStatus? @default(Pending)
+  PaymentMethod String                  @db.VarChar(50)
+
+  @@index([BidItemID], map: "BidItemID")
+  @@index([UserID], map: "UserID")
+}
+
+model roles {
+  RoleID      Int     @id @default(autoincrement())
+  RoleName    String  @unique(map: "RoleName") @db.VarChar(50)
+  Description String? @db.Text
+}
+
+model users {
+  UserID       Int       @id @default(autoincrement())
+  Username     String    @unique @db.VarChar(100)
+  PasswordHash Bytes     @db.VarBinary(255)
+  Salt         Bytes     @db.VarBinary(255)
+  Email        String    @unique @db.VarChar(150)
+  FullName     String?   @db.VarChar(255)
+  RoleID       Int?
+  CreatedAt    DateTime? @default(now()) @db.Timestamp(0)
+  UpdatedAt    DateTime? @default(now()) @db.Timestamp(0)
+}
+
+enum loginattempts_Status {
+  Success
+  Failed
+}
+
+enum bids_Status {
+  Accepted
+  Rejected
+  Pending
+}
+
+enum payments_PaymentStatus {
+  Pending
+  Completed
+  Failed
+  Refunded
+}
+
+enum biditems_Status {
+  Open
+  Closed
+  Completed
+  Cancelled
+}
