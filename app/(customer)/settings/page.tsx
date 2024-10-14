@@ -1,12 +1,14 @@
-import auth from "@/auth";
-import { Session } from "inspector/promises";
+import {auth} from "@/auth";
+
 
 const SettingsPage = async () => {
-    // You can perform async operations here, such as fetching data
-    // const data = await fetchData();
+
+    const session = await auth();
 
     return (
-        <h1>Settings</h1>
+        <div>
+            {JSON.stringify(session)}
+        </div>
                 
     )
 };
