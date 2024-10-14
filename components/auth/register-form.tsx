@@ -57,14 +57,26 @@ export const RegisterForm = () => {
       setError(data.error);
       setSuccess(data.success);
 
-      if (data.success) {
-        // Redirect to homepage on successful registratio
-        localStorage.setItem('RoleID', data.roleId.toString());
-          localStorage.setItem('isLoggedIn', 'true');
-          localStorage.setItem('userID', data.userID.toString());
-          router.push('/');
-
-      }
+      if (data.success) 
+        {
+        // Ensure roleId is defined and is a valid number
+        if (data.roleId !== undefined && data.roleId !== null) {
+            localStorage.setItem('RoleID', data.roleId.toString());
+        } else {
+            console.error('RoleID is not defined or not a valid number');
+        }
+    
+        localStorage.setItem('isLoggedIn', 'true');
+    
+        // Ensure userID is defined and is a valid number
+        if (data.userID !== undefined && data.userID !== null) {
+            localStorage.setItem('userID', data.userID.toString());
+        } else {
+            console.error('userID is not defined or not a valid number');
+        }
+    
+        router.push('/');
+    }
     });
   };
 
