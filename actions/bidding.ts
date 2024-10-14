@@ -1,10 +1,13 @@
-"use server"; // Marks this file as server-only, enabling server actions
-import { createConnection } from '@/lib/db';
 
-export async function getProductDetails(BidItemID: number) {
-    const connection = await createConnection(3); // Customer role ID
+"use server";
+import getPrismaClientForRole from '@/lib/db';
+
+
+// Fetch user bids based on UserID
+export async function getUserBids(userID: number) {
+    const prisma = getPrismaClientForRole(3); // Customer role ID
     try {
-        const [rows] = await connection.execute(
+        const [rows] = await getPrismaClientForRole.execute(
             'SELECT BidItemID, ItemName, ItemDescription, category, Image, CurrentPrice, MinIncrement, BidEndTime FROM biditems where BidItemID = ?',
             [BidItemID]
         );
@@ -37,7 +40,7 @@ export async function getProductDetails(BidItemID: number) {
 }
 
 export async function placeBid(BidItemID: number, UserID: number, BidAmount: number) {
-    const connection = await createConnection(3); // Customer role ID
+    const connection = await getPrismaClientForRole(3); // Customer role ID
     try {
         await connection.beginTransaction();
 
