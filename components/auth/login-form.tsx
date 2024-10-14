@@ -18,11 +18,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
+import { FormInformation } from "@/components/form-info";
 import { login } from "@/actions/login";
 
 export const LoginForm = () => {
   const [error, setError] = useState<string | undefined>(""); // Error state
-  const [success, setSuccess] = useState<string | undefined>(""); // Success state
+  const [success, setSuccess] = useState<string | undefined>(""); 
+  const [info, setInfo] = useState<string | undefined>("");// Success state
   const [isPending, startTransition] = useTransition(); // Transition for async actions
   const router = useRouter(); // Initialize useRouter for navigation
 
@@ -37,27 +39,22 @@ export const LoginForm = () => {
   const onSubmit = (values: z.infer<typeof SignInSchema>) => {
     setError("");
     setSuccess("");
+    setInfo("");
 
     startTransition(() => {
-      login(values).then((data) => {
-        if (data.error) {
+      login(values).then((data) => 
+        {
+        if (data.error) 
+        {
           setError(data.error); // Handle error if login fails
-        } else {
-          setSuccess("Login successful"); // Display success message
-          
-          // Handle redirection based on user role
-          if (data.role === 1) 
-          {
-            router.push("/auth/login"); // Redirect to admin dashboard
-          } 
-          else if (data.role === 2) 
-          {
-            router.push("/auth/register"); // Redirect to seller dashboard
-          } 
-          else 
-          {
-            router.push("/"); // Redirect to customer home
-          }
+        } 
+        else if  (data.success)
+        {
+          setSuccess(data.success); // Display success message           
+        }
+        else 
+        {
+          setInfo(data.info); // Display info message
         }
       });
     });
@@ -113,6 +110,8 @@ export const LoginForm = () => {
           </div>
           <FormError message={error} /> {/* Display error */}
           <FormSuccess message={success} /> {/* Display success */}
+          <FormInformation message={info} /> {/* Display info */}
+          {/* Submit Button */}
           <Button type="submit" className="w-full" disabled={isPending}>
             Sign In
           </Button>

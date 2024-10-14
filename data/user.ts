@@ -1,6 +1,6 @@
 import getPrismaClientForRole from "@/lib/db";
 
-const prisma = getPrismaClientForRole(1)
+const prisma = getPrismaClientForRole(3)
 
 interface User {
   UserID: number;
@@ -16,8 +16,8 @@ interface User {
 
 export const getUserByEmail = async (email: string): Promise<User | null> => {
     try {
-        const user = await prisma.$queryRaw<User[]>`SELECT * FROM users WHERE Email = ${email}`;
-        console.log("User : ", user);
+        const user = await prisma.$queryRaw<User[]>`SELECT * FROM users WHERE Email = ${String(email)}`;
+        //console.log("User : ", user);
 
         if (!user || user.length === 0) {
             return null;

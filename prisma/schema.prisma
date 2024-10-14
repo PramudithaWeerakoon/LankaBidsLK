@@ -82,6 +82,7 @@ model users {
   PasswordHash Bytes     @db.VarBinary(255)
   Salt         Bytes     @db.VarBinary(255)
   Email        String    @unique @db.VarChar(150)
+  IsVerified   Boolean   @default(false)
   FullName     String?   @db.VarChar(255)
   RoleID       Int?
   CreatedAt    DateTime? @default(now()) @db.Timestamp(0)
@@ -111,4 +112,14 @@ enum biditems_Status {
   Closed
   Completed
   Cancelled
+}
+
+model VerificationToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  Email     String   @db.VarChar(150)
+  Expires   DateTime
+  createdAt DateTime @default(now())
+
+  @@unique([Email,token])
 }

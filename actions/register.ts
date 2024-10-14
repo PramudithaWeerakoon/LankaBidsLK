@@ -4,6 +4,7 @@ import * as z from "zod";
 import { RegisterSchema } from "@/schemas";
 import getPrismaClientForRole from "@/lib/db";
 import bcrypt from "bcrypt";
+import { generateVerificationToken } from "@/lib/tokens";
 
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
@@ -16,7 +17,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     const { username, email, password, role } = validateFields.data;
     const PasswordHash = await bcrypt.hash(password, 10);
 
-    const prisma = getPrismaClientForRole(1);
+    const prisma = getPrismaClientForRole(3);
 
     const existingUser = await prisma.$queryRaw`
         SELECT * FROM users WHERE Email = ${email} OR Username = ${username}
@@ -32,7 +33,8 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         VALUES (${username}, ${email}, ${PasswordHash}, ${role})
     `;
 
-    return { success: "User registered successfully" };
+    const verificationToken = await generateVerificationToken(email);
 
-   
+    return { success: "Comfirmation Email Sent" };
+
 };

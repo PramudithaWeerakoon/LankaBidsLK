@@ -75,7 +75,6 @@ export const RegisterForm = () => {
             console.error('userID is not defined or not a valid number');
         }
     
-        router.push('/');
     }
     });
   };
