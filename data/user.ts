@@ -1,45 +1,68 @@
-import { createConnection } from "@/lib/db";
+import getPrismaClientForRole from "@/lib/db";
 
-export const getUserByEmail = async (email: string) => {
-    const connection = await createConnection(1); // Assuming role 1 for admin or general access
+const prisma = getPrismaClientForRole(1)
 
+interface User {
+  UserID: number;
+  Username: string;
+  PasswordHash: Buffer;
+  Salt: Buffer;
+  Email: string;
+  FullName: string | null;
+  RoleID: number;
+  CreatedAt: Date;
+  UpdatedAt: Date;
+}
+
+export const getUserByEmail = async (email: string): Promise<User | null> => {
     try {
-        const [rows]: any = await connection.execute(
-            "SELECT * FROM users WHERE Email = ?",
-            [email]
-        );
+        const user = await prisma.$queryRaw<User[]>`SELECT * FROM users WHERE Email = ${email}`;
+        console.log("User : ", user);
 
-        if (rows.length === 0) {
+        if (!user || user.length === 0) {
             return null;
         }
 
-        const user = rows[0];
-        return user;
+        return user[0];
     } catch (error) {
-        throw new Error("Database error");
+        console.error("Database error:", error);
+        return null;
     } finally {
-        connection.end();
+        await prisma.$disconnect();
     }
 };
 
+/*export const getUserByEmail = async (email: string) => {
+    try 
+    {
+        const user = await prisma.users.findUnique({where: {Email: email,},
+        });
+        console.log("User : ",user);
+        return user;
+    } 
+    catch 
+    {
+      return null;
+    }
+  };*/
+
 export const getUserById = async (id: string) => {
-    const connection = await createConnection(1); // Assuming role 1 for admin or general access
-
     try {
-        const [rows]: any = await connection.execute(
-            "SELECT * FROM users WHERE Userid = ?",
-            [id]
-        );
+        const user = await prisma.$queryRaw`SELECT * FROM users WHERE UserID = ${id}`;
+        console.log("User : ",user);
 
-        if (rows.length === 0) {
+        if (!user || user.length === 0) {
             return null;
         }
 
-        const user = rows[0];
-        return user;
-    } catch (error) {
+        return user[0];
+    } 
+    catch (error) 
+    {
         throw new Error("Database error");
-    } finally {
-        connection.end();
+    } 
+    finally 
+    {
+        await prisma.$disconnect();
     }
 };

@@ -13,6 +13,8 @@ export default auth((req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
+  console.log("isLogedIn",isLogedIn);
+
   if(isAPiAuthRoute){
     return null;
   }
@@ -30,11 +32,7 @@ export default auth((req) => {
   {
     return Response.redirect(new URL('/auth/login',nextUrl));
   }
-
-  return null;
-  /*
-  console.log('Route :', req.nextUrl.pathname)
-  console.log('isLogedIn', isLogedIn)*/
+  
 })
  
 

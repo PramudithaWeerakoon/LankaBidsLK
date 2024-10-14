@@ -26,7 +26,7 @@ export async function getProductsForCustomer(userId: number) {
             FROM 
                 biditems 
             WHERE 
-                UserID = ${userId}`; // Safely interpolating userId
+                UserID = ${userId}`; // Safely interpolating userId*/
 
         // Check if any products were found
         if (!result || result.length === 0) {

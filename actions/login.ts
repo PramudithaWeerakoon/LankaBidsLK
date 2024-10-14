@@ -2,61 +2,37 @@
 
 import * as z from "zod";
 import { SignInSchema } from "@/schemas";
-import { createConnection } from "@/lib/db"; 
-import bcrypt from 'bcryptjs'; 
+import { signIn } from "@/auth";
+import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
+import { AuthError } from "next-auth";
 
 export const login = async (values: z.infer<typeof SignInSchema>) => {
 
-  const validationResult = SignInSchema.safeParse(values);
+  const validatedFields = SignInSchema.safeParse(values);
 
-  if (!validationResult.success) {
+  if (!validatedFields.success) {
     return { error: "Invalid Email or Password" };
   }
 
-  const { email, password } = values;
+  const { email, password } = validatedFields.data;
 
-  try {
-
-    const connection = await createConnection(3); 
-    
-
-    const [rows] = await connection.execute(
-      'SELECT UserID, RoleID, PasswordHash FROM users WHERE email = ?',
-      [email]
-    );
-
-    if (Array.isArray(rows) && rows.length > 0) {
-      const user = rows[0] as { UserID: number; RoleID: number; PasswordHash: Buffer };
-
-
-      const hashedPassword = user.PasswordHash.toString('utf-8');
-
-
-      const passwordMatch = await bcrypt.compare(password, hashedPassword);
-
-      if (passwordMatch) {
-
-        const roleId = user.RoleID;
-
-        await connection.end();
-
-        return { success: true, role: roleId }; 
-      } 
-      else 
-      {
-        await connection.end();
-        return { error: "Invalid Email or Password" };
-      }
-    } 
-    else
-     {
-      await connection.end();
-      return { error: "Invalid Email or Password" };
-    }
+  try 
+  {
+    await signIn("credentials", {email, password, redirectTo: DEFAULT_LOGIN_REDIRECT});
+   
   } 
   catch (error) 
   {
-    console.error("Error during login:", error);
-    return { error: "An error occurred during login." };
+    if (error instanceof AuthError) 
+      {
+      switch (error.type) 
+      {
+        case "CredentialsSignin":
+          return { error: "Invalid credentials!" }
+        default:
+          return { error: "Something went wrong!" }
+      }
+    }
+    throw error;
   }
 };

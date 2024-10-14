@@ -6,11 +6,9 @@ const SettingsPage = async () => {
     // const data = await fetchData();
 
     return (
-        <div>
-            <h1>Settings Page</h1>
-            <p>Current user: {auth}</p>
-        </div>
-    );
+        <h1>Settings</h1>
+                
+    )
 };
 
 export default SettingsPage;
