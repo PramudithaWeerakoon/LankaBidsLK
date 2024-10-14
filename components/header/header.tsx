@@ -1,13 +1,11 @@
-// components/header.tsx
-
 import React from 'react';
+import { navbar } from '@/data/navbar';
 
-// Assuming you have a way to get the roleId from the session
-const roleId = 3; // Change this to 2 for testing Seller role
+const Header = async () => {
+    const role = await navbar();
 
-const Header = () => {
     return (
-        <header className="bg-gray-800 text-white p-4">
+        <header className="bg-gradient-to-r from-blue-600 to-blue-900 text-white p-4">
             <div className="container mx-auto flex justify-between items-center">
                 {/* Logo */}
                 <h1 className="text-xl font-bold">Lankabidslk</h1>
@@ -15,8 +13,9 @@ const Header = () => {
                 {/* Navigation */}
                 <nav>
                     <ul className="flex space-x-4">
+                        {/* Links based on role */}
                         {(() => {
-                            switch (roleId) {
+                            switch (role) {
                                 case 3: // Customer
                                     return (
                                         <>
@@ -46,16 +45,34 @@ const Header = () => {
                                         </>
                                     );
                                 default:
-                                    return null; // Handle other cases or return null if no role matches
+                                    return (
+                                        <>
+                                            <li>
+                                                <a href="/" className="hover:underline">Home</a>
+                                            </li>
+                                            <li>
+                                                <a href="/products" className="hover:underline">Products</a>
+                                            </li>
+                                        </>
+                                    );
                             }
                         })()}
                     </ul>
                 </nav>
 
-                {/* Login/Register Links */}
+                {/* Settings and Logout Links when role is defined */}
                 <div className="flex space-x-4">
-                    <a href="/login" className="hover:underline">Login</a>
-                    <a href="/register" className="hover:underline">Register</a>
+                    {role !== 'guest' && role !== null ? (
+                        <>
+                            <a href="/settings" className="hover:underline">Settings</a>
+                            <a href="/logout" className="hover:underline">Logout</a>
+                        </>
+                    ) : (
+                        <>
+                            <a href="/auth/login" className="hover:underline">Login</a>
+                            <a href="/auth/register" className="hover:underline">Register</a>
+                        </>
+                    )}
                 </div>
             </div>
         </header>

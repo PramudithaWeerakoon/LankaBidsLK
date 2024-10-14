@@ -1,6 +1,6 @@
 import getPrismaClientForRole from '@/lib/db'; // Import role-based Prisma client function
 
-export async function getProductsForCustomer(userId: number) {
+export async function getProductsForCustomer() {
     const roleId = 3; // Customer Role ID
     const prisma = getPrismaClientForRole(roleId); // Get PrismaClient for the customer role
 
@@ -24,13 +24,11 @@ export async function getProductsForCustomer(userId: number) {
                 CurrentPrice, 
                 BidEndTime 
             FROM 
-                biditems 
-            WHERE 
-                UserID = ${userId}`; // Safely interpolating userId*/
+                biditems`; // Removed the UserID filter
 
         // Check if any products were found
         if (!result || result.length === 0) {
-            console.warn(`No products found for user with ID ${userId}.`);
+            console.warn(`No products found.`);
             return []; // Return an empty array if no products are found
         }
 
@@ -54,3 +52,5 @@ export async function getProductsForCustomer(userId: number) {
         await prisma.$disconnect(); // Ensure the client is disconnected
     }
 }
+
+

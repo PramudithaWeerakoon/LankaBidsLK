@@ -4,7 +4,7 @@ import { getProductsForCustomer } from '@/actions/products'; // This remains a s
 import Card from '@/components/customer/card/card';
 
 const Products = async () => { // Make this an async function to await server action
-    const bidItems = await getProductsForCustomer(4); // Fetch bid items from the server action
+    const bidItems = await getProductsForCustomer(); // Fetch bid items from the server action
     console.log('Fetched bid items:', bidItems); // Log fetched items
 
     const activeBidItems = bidItems.filter(item => {
@@ -15,10 +15,25 @@ const Products = async () => { // Make this an async function to await server ac
     console.log('Active bid items:', activeBidItems); // Log filtered items
 
     return (
-        <div className="flex justify-center py-5">
-            <div className="grid grid-cols-4 gap-8">
-            {activeBidItems.map((item) => (
-                <Card
+        <div className="flex flex-col items-center py-5">
+    {/* Search bar and button */}
+    <div className="flex items-center mb-5">
+        <input
+            type="text"
+            placeholder="Search for items"
+            className="border p-2 rounded-md mr-2"
+        />
+        <button
+            className="bg-blue-500 text-white px-4 py-2 rounded-md"
+        >
+            Search
+        </button>
+    </div>
+
+    {/* Display the items */}
+    <div className="grid grid-cols-4 gap-8">
+        {activeBidItems.map((item) => (
+            <Card
                 key={item.BidItemID}
                 bidItemID={item.BidItemID}
                 image={`data:image/jpeg;base64,${item.Image}`} // Ensure the image is displayed correctly
@@ -26,10 +41,11 @@ const Products = async () => { // Make this an async function to await server ac
                 category={item.category}
                 currentPrice={item.CurrentPrice}
                 bidEndTime={item.BidEndTime}
-                />
-            ))}
-            </div>
-        </div>
+            />
+        ))}
+    </div>
+</div>
+
     );
 };
 
