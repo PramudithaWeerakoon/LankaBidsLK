@@ -83,11 +83,30 @@ model users {
   Salt         Bytes     @db.VarBinary(255)
   Email        String    @unique @db.VarChar(150)
   IsVerified   Boolean   @default(false)
+  IsTwoFactorEnabled    Boolean   @default(false)
+  twoFactorConfirmation TwoFactorConfirmation?
   FullName     String?   @db.VarChar(255)
   RoleID       Int?
   CreatedAt    DateTime? @default(now()) @db.Timestamp(0)
   UpdatedAt    DateTime? @default(now()) @db.Timestamp(0)
 }
+
+model TwoFactorToken{
+  id        String   @id  @db.VarChar(150) @default(uuid())
+  token     String   @unique
+  Email     String   @db.VarChar(150)
+  Expires   DateTime
+  createdAt DateTime @default(now())
+
+  @@unique([Email,token])
+}
+
+model TwoFactorConfirmation{
+  id        String   @id @db.VarChar(150) @default(uuid())
+  userId    Int      @unique
+  user     users    @relation(fields: [userId], references: [UserID],onDelete: Cascade)
+}
+
 
 enum loginattempts_Status {
   Success

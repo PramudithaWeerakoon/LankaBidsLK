@@ -16,5 +16,12 @@ export const sendVerificationEmail = async (name:string, email: string, token: a
         html: html,
         subject: 'Verify your email address - LankaBidsLK'
     });
+}
 
+export const sendTwoFactorEmail = async (name:string, email: string, token: string) => {
+    await resend.emails.send({from:'onboarding@resend.dev',
+        to: email,
+        html: `<h1>Hi ${name}</h1><p>Your two factor token is ${token}</p>`,
+        subject: 'Two Factor Authentication Code - LankaBidsLK'
+    });
 }
