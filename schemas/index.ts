@@ -1,6 +1,6 @@
 import * as z from "zod";
 
-const sanitizeString = (str: string) => str.replace(/['";]/g, '');
+const sanitizeString = (str: string | undefined) => str ? str.replace(/['";]/g, '') : '';
 
 enum UserRole {
   ADMIN = 'admin',
@@ -26,21 +26,28 @@ export const RegisterSchema = z.object({
   isActive: z.optional(z.boolean()).default(true),
 });
 
+// Search products schema for filtering product results
 export const SearchProductsSchema = z.object({
-
-  ItemName: z.optional(z.string().transform(sanitizeString)),
-  category: z.optional(z.string().transform(sanitizeString)),
+  ItemName: z.string()
+    .optional()
+    .transform((val) => sanitizeString(val))
+    .refine((value) => value?.length <= 100, {
+      message: "Search term must be at most 100 characters long",
+    }),
+  category: z.string()
+    .optional()
+    .transform((val) => sanitizeString(val))
+    .refine((value) => value?.length <= 100, {
+      message: "Category must be at most 100 characters long",
+    }),
+}).refine((data) => {
+  if (!data.ItemName && !data.category) {
+    return false;
+  }
+  return true;
+}, {
+  message: "At least one search criterion (ItemName or category) must be provided.",
 });
-
-export const bidSchema = z.object({
-  BidItemID: z.number().positive().int().nonnegative().min(1, "Bid Item ID must be a positive integer."),
-  BidAmount: z.number().min(0, "Bid amount must be positive."),
-  MinIncrement: z.number().min(0, "Minimum increment must be positive.")
-});
-export const deleteBidSchema = z.object({
-  bidID: z.number().int().positive("Bid ID must be a positive integer"),
-});
-
 /*import * as z from "zod";
 
 // Helper function to sanitize strings

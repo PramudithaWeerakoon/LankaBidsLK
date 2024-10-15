@@ -1,16 +1,30 @@
-// actions/hotdeals.ts
+// actions/searchActions.ts
 
 import { Prisma } from '@prisma/client';
 import getPrismaClientForRole from '@/lib/db';
+import { SearchProductsSchema } from '@/schemas'; // Import SearchProductsSchema from validation schema
 
-// Function to fetch hot deals for the customer
-export async function getHotDealsForCustomer() {
-    const roleId = 3; // Customer Role ID
+// Function to search products by name or category
+export async function searchProducts(searchTerm: string) {
+    const roleId = 3;
     const prisma = getPrismaClientForRole(roleId);
 
+    // Validate the search term
     try {
-        console.log('Fetching hot deals...');
-        
+        const validationInput = {
+            ItemName: searchTerm,
+            category: undefined,
+        };
+
+        SearchProductsSchema.parse(validationInput);
+    } catch (error) {
+        console.error("Validation error:", error);
+        throw new Error("Invalid search term. Please provide a valid name or category.");
+    }
+
+    try {
+        console.log('Executing search query for term:', searchTerm);
+
         const result = await prisma.$queryRaw<
             Array<{
                 BidItemID: number;
@@ -19,7 +33,6 @@ export async function getHotDealsForCustomer() {
                 Image: Buffer | null;
                 CurrentPrice: number;
                 BidEndTime: string;
-                BidCount: number;
             }>
         >(
             Prisma.sql`SELECT 
@@ -28,24 +41,19 @@ export async function getHotDealsForCustomer() {
                 bi.category, 
                 bi.Image, 
                 bi.CurrentPrice, 
-                bi.BidEndTime,
-                COUNT(b.BidID) AS BidCount
+                bi.BidEndTime
             FROM 
                 biditems bi
-            LEFT JOIN 
-                bids b ON bi.BidItemID = b.BidItemID
-            GROUP BY 
-                bi.BidItemID, bi.ItemName, bi.category, bi.Image, bi.CurrentPrice, bi.BidEndTime
-            HAVING 
-                COUNT(b.BidID) > 3 
-                AND bi.CurrentPrice < 1003
+            WHERE 
+                bi.ItemName LIKE CONCAT('%', ${searchTerm}, '%')
+                OR bi.category LIKE CONCAT('%', ${searchTerm}, '%')
             LIMIT 8`
         );
 
-        console.log('Hot deals result:', result);
+        console.log('Search query result:', result);
 
         if (!result || result.length === 0) {
-            console.warn(`No hot deals found.`);
+            console.warn(`No search results found for term: ${searchTerm}`);
             return [];
         }
 
@@ -56,15 +64,11 @@ export async function getHotDealsForCustomer() {
             Image: product.Image ? Buffer.from(product.Image).toString('base64') : null,
             CurrentPrice: product.CurrentPrice,
             BidEndTime: product.BidEndTime,
-            BidCount: product.BidCount,
         }));
-    } catch (error: any) {
-        console.error('Error fetching hot deals:', error.message || error);
-        throw new Error('Failed to fetch hot deals. Please try again later.');
+    } catch (error) {
+        console.error('Error fetching search results:', error);
+        throw new Error('Failed to fetch search results.');
     } finally {
         await prisma.$disconnect();
     }
 }
-
-// Function to search products by name or category
-
