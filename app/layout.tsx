@@ -6,6 +6,7 @@ import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/auth';
 import './globals.css';
 import Header from '@/components/header/header'; // Adjust the path based on your file structure
+import Footer from '@/components/Footer/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -30,6 +31,8 @@ export default async function RootLayout({
           
           {/* Render the child components */}
           {children}
+
+          <Footer />
         </body>
       </html>
     </SessionProvider>

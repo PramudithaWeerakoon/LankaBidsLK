@@ -52,5 +52,52 @@ export async function getProductsForCustomer() {
         await prisma.$disconnect(); // Ensure the client is disconnected
     }
 }
+export async function getProductsByName(itemName: string) {
+    const roleId = 3; // Customer Role ID
+    const prisma = getPrismaClientForRole(roleId);
 
+    try {
+        const result = await prisma.$queryRaw<
+            Array<{
+                BidItemID: number;
+                ItemName: string;
+                category: string;
+                Image: Buffer | null;
+                CurrentPrice: number;
+                BidEndTime: string;
+            }>
+        >`
+            SELECT 
+                BidItemID, 
+                ItemName, 
+                category, 
+                Image, 
+                CurrentPrice, 
+                BidEndTime 
+            FROM 
+                biditems 
+            WHERE 
+                ItemName LIKE ${'%' + itemName + '%'};`; // Filter by ItemName with a LIKE clause
 
+        if (!result || result.length === 0) {
+            console.warn(`No products found matching the name: ${itemName}`);
+            return [];
+        }
+
+        const processedProducts = result.map((product) => ({
+            BidItemID: product.BidItemID,
+            ItemName: product.ItemName,
+            category: product.category,
+            Image: product.Image ? Buffer.from(product.Image).toString('base64') : null,
+            CurrentPrice: product.CurrentPrice,
+            BidEndTime: product.BidEndTime,
+        }));
+
+        return processedProducts;
+    } catch (error: any) {
+        console.error('Error fetching products:', error.message || error);
+        throw new Error('Failed to fetch products by name. Please try again later.');
+    } finally {
+        await prisma.$disconnect();
+    }
+}

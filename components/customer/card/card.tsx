@@ -22,10 +22,7 @@ const Card: React.FC<CardProps> = ({ bidItemID, image, itemName, category, curre
     };
 
     const timeLeft = calculateTimeLeft();
-
-    if (timeLeft < 0) {
-        return null; // Hide expired products
-    }
+    if (timeLeft < 0) return null; // Hide expired products
 
     const daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
     const hoursLeft = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -34,22 +31,24 @@ const Card: React.FC<CardProps> = ({ bidItemID, image, itemName, category, curre
     const isTimeCritical = hoursLeft < 1 && daysLeft === 0; // Mark as critical if < 1 hour left
 
     return (
-        <div className="p-4 shadow-lg rounded-md w-64">
+        <div
+            className="p-4 shadow-lg rounded-md w-64 cursor-pointer transition-transform transform hover:scale-105"
+            onClick={() => router.push(`/productpage/${bidItemID}`)}
+            onKeyDown={(e) => e.key === 'Enter' && router.push(`/productpage/${bidItemID}`)}
+            role="button"
+            tabIndex={0}
+            aria-label={`View details for ${itemName}`}
+        >
             <div className="flex justify-center">
                 <img
-                    src={image || '/fallback-image.jpg'} // Fallback image if null
+                    src={image || '/fallback-image.jpg'}
                     alt={itemName}
                     className="w-full h-40 object-cover rounded-md"
                 />
             </div>
-            <button
-                className="mt-2 text-lg font-semibold cursor-pointer text-left"
-                onClick={() => router.push(`/productpage/${bidItemID}`)}
-                onKeyDown={(e) => e.key === 'Enter' && router.push(`/productpage/${bidItemID}`)}
-                aria-label={`View details for ${itemName}`}
-            >
+            <div className="mt-2 text-lg font-semibold text-left">
                 {itemName}
-            </button>
+            </div>
             <div className="text-sm text-gray-500">{category}</div>
             <div className="text-xl font-bold mt-2 text-red-500">${currentPrice}</div>
             <div className={`mt-2 text-sm ${isTimeCritical ? 'text-red-600' : 'text-green-600'}`}>

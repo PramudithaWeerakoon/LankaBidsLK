@@ -1,51 +1,64 @@
-// app/(customer)/products/page.tsx
-import React from 'react';
-import { getProductsForCustomer } from '@/actions/products'; // This remains a server action
-import Card from '@/components/customer/card/card';
+// product.tsx
+"use client";
 
-const Products = async () => { // Make this an async function to await server action
-    const bidItems = await getProductsForCustomer(); // Fetch bid items from the server action
-    console.log('Fetched bid items:', bidItems); // Log fetched items
+import React, { useState } from 'react';
+import { getProductsByName } from '@/actions/products';
+import Card from '@/components/customer/card/card'; // Import the Card component
 
-    const activeBidItems = bidItems.filter(item => {
-        const currentTime = new Date().getTime();
-        const bidEndTime = new Date(item.BidEndTime).getTime();
-        return bidEndTime > currentTime; // Filter for active bids
-    });
-    console.log('Active bid items:', activeBidItems); // Log filtered items
+const Products = () => {
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredBidItems, setFilteredBidItems] = useState([]);
+
+    const handleSearch = async () => {
+        try {
+            const bidItems = await getProductsByName(searchTerm); // Fetch items by name
+            console.log('bidItems:', bidItems);
+            alert('Items fetched successfully!');
+            const activeBidItems = bidItems.filter(item => {
+                const currentTime = new Date().getTime();
+                const bidEndTime = new Date(item.BidEndTime).getTime();
+                return bidEndTime > currentTime;
+            });
+            setFilteredBidItems(activeBidItems);
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    };
 
     return (
         <div className="flex flex-col items-center py-5">
-    {/* Search bar and button */}
-    <div className="flex items-center mb-5">
-        <input
-            type="text"
-            placeholder="Search for items"
-            className="border p-2 rounded-md mr-2"
-        />
-        <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-md"
-        >
-            Search
-        </button>
-    </div>
+            {/* Search bar and button */}
+            <div className="flex items-center mb-5">
+                <input
+                    type="text"
+                    placeholder="Search for items"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="border p-2 rounded-md mr-2"
+                />
+                <button
+                    className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+                    onSubmit={handleSearch}
+                >
+                    Search
+                </button>
+            </div>
 
-    {/* Display the items */}
-    <div className="grid grid-cols-4 gap-8">
-        {activeBidItems.map((item) => (
-            <Card
-                key={item.BidItemID}
-                bidItemID={item.BidItemID}
-                image={`data:image/jpeg;base64,${item.Image}`} // Ensure the image is displayed correctly
-                itemName={item.ItemName}
-                category={item.category}
-                currentPrice={item.CurrentPrice}
-                bidEndTime={item.BidEndTime}
-            />
-        ))}
-    </div>
-</div>
-
+            {/* Display filtered bid items using Card component */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {filteredBidItems.map(item => (
+                    <Card
+                        key={item.BidItemID}
+                        bidItemID={item.BidItemID}
+                        image={item.Image ? `data:image/jpeg;base64,${item.Image}` : null}
+                        itemName={item.ItemName}
+                        category={item.category}
+                        currentPrice={item.CurrentPrice}
+                        bidEndTime={item.BidEndTime}
+                    />
+                ))}
+            </div>
+        </div>
     );
 };
 

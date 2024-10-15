@@ -26,6 +26,12 @@ export const RegisterSchema = z.object({
   isActive: z.optional(z.boolean()).default(true),
 });
 
+export const SearchProductsSchema = z.object({
+
+  ItemName: z.optional(z.string().transform(sanitizeString)),
+  category: z.optional(z.string().transform(sanitizeString)),
+});
+
 
 /*import * as z from "zod";
 
