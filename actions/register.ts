@@ -5,6 +5,7 @@ import { RegisterSchema } from "@/schemas";
 import getPrismaClientForRole from "@/lib/db";
 import bcrypt from "bcrypt";
 import { generateVerificationToken } from "@/lib/tokens";
+import {sendVerificationEmail} from "@/lib/mail";   
 
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
@@ -34,6 +35,8 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     `;
 
     const verificationToken = await generateVerificationToken(email);
+
+    await sendVerificationEmail(username, verificationToken.Email, verificationToken.token);
 
     return { success: "Comfirmation Email Sent" };
 
