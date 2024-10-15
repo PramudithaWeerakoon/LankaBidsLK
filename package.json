@@ -50,6 +50,7 @@
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/bcrypt": "^5.0.2",
+    "@types/date-fns": "^2.6.0",
     "@types/express": "^5.0.0",
     "@types/node": "^20",
     "@types/nookies": "^2.0.3",

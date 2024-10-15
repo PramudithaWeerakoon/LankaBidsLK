@@ -32,6 +32,11 @@ export const SearchProductsSchema = z.object({
   category: z.optional(z.string().transform(sanitizeString)),
 });
 
+export const bidSchema = z.object({
+  BidItemID: z.number().positive().int().nonnegative().min(1, "Bid Item ID must be a positive integer."),
+  BidAmount: z.number().min(0, "Bid amount must be positive."),
+  MinIncrement: z.number().min(0, "Minimum increment must be positive.")
+});
 
 /*import * as z from "zod";
 
