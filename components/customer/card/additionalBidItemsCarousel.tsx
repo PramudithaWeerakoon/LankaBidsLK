@@ -1,6 +1,8 @@
 // components/customer/card/AdditionalBidItemsCarousel.tsx
+
 import React, { useEffect, useState } from 'react';
 import { getAdditionalBidItems } from '@/actions/bidding';
+import Link from 'next/link';
 
 interface AdditionalBidItemsCarouselProps {
     currentBidItemId: number;
@@ -23,10 +25,7 @@ const AdditionalBidItemsCarousel: React.FC<AdditionalBidItemsCarouselProps> = ({
             <h3 className="text-lg font-semibold mb-4 text-center">More Items to Bid On</h3>
             <div className="flex overflow-x-auto space-x-4 p-4 bg-gray-100 rounded-lg">
                 {additionalBidItems.map((item) => (
-                    <div 
-                        key={item.BidItemID} 
-                        className="min-w-[150px] p-4 border rounded-md shadow-md bg-white text-center flex-shrink-0"
-                    >
+                    <Link href={`/productpage/${item.BidItemID}`} key={item.BidItemID} className="min-w-[150px] p-4 border rounded-md shadow-md bg-white text-center flex-shrink-0">
                         {item.Image && (
                             <img 
                                 src={`data:image/jpeg;base64,${item.Image}`} 
@@ -38,7 +37,7 @@ const AdditionalBidItemsCarousel: React.FC<AdditionalBidItemsCarouselProps> = ({
                         <div className="text-gray-500 text-xs">
                             Current Price: ${item.CurrentPrice ? item.CurrentPrice.toFixed(2) : 'N/A'}
                         </div>
-                                            </div>
+                    </Link>
                 ))}
             </div>
         </div>

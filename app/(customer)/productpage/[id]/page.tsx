@@ -1,17 +1,15 @@
-// pages/ProductPage.tsx
+// src/pages/products/[id].tsx
 
 "use client";
 import { useEffect, useState } from 'react';
-import { getSingleBidItem, placeBid, getUserBidHistory, countUniqueBidders } from '@/actions/bidding'; // Import here
+import { getSingleBidItem, placeBid, getUserBidHistory, countUniqueBidders } from '@/actions/bidding';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import BidHistory from "@/components/customer/card/bidHistory";
 import AdditionalBidItemsCarousel from "@/components/customer/card/additionalBidItemsCarousel";
 
 interface ProductPageProps {
-    readonly params: {
-        readonly id: string;
-    };
+    readonly params: { readonly id: string };
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
@@ -29,8 +27,6 @@ export default function ProductPage({ params }: ProductPageProps) {
             try {
                 const productDetails = await getSingleBidItem(productID);
                 const userBidHistory = await getUserBidHistory(productID);
-                
-                // Fetch unique bidder count
                 const uniqueCount = await countUniqueBidders(productID);
 
                 if (!productDetails) {
@@ -38,7 +34,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                 } else {
                     setProduct(productDetails);
                     setBidHistory(Array.isArray(userBidHistory) ? userBidHistory : []);
-                    setUniqueBiddersCount(uniqueCount || 0);  // Update here
+                    setUniqueBiddersCount(uniqueCount || 0);
                     updateTimeLeft(productDetails.BidEndTime);
                 }
             } catch (error) {
@@ -62,17 +58,17 @@ export default function ProductPage({ params }: ProductPageProps) {
         const endTime = new Date(endTimeString).getTime();
         const now = new Date().getTime();
         const timeLeft = endTime - now;
-    
+
         if (timeLeft <= 0) {
             setTimeLeft("Bid ended");
             return;
         }
-    
+
         const daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
         const hoursLeft = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const secondsLeft = Math.floor((timeLeft % (1000 * 60)) / 1000);
-    
+
         setTimeLeft(
             daysLeft > 0
                 ? `${daysLeft}d ${hoursLeft}h ${minutesLeft}m ${secondsLeft}s left`
@@ -120,7 +116,6 @@ export default function ProductPage({ params }: ProductPageProps) {
     return (
         <section className="flex flex-col items-center justify-center min-h-screen py-8">
             <div className="flex flex-col md:flex-row p-6 w-full max-w-5xl mx-auto border rounded-lg mt-10 mb-10 space-y-8 md:space-y-0 md:space-x-8">
-                {/* Product Details */}
                 <div className="flex-1 md:w-2/3">
                     <div className="flex flex-col items-center mb-6">
                         <Image
@@ -167,11 +162,9 @@ export default function ProductPage({ params }: ProductPageProps) {
                     </div>
                 </div>
 
-                {/* Bid History Sidebar */}
                 <BidHistory bidHistory={bidHistory} />
             </div>
 
-            {/* Additional Bid Items Carousel */}
             <div className="w-full max-w-5xl mx-auto mt-6">
                 <AdditionalBidItemsCarousel currentBidItemId={productID} />
             </div>

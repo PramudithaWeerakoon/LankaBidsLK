@@ -4,6 +4,7 @@
 import getPrismaClientForRole from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth';
 import { bidSchema } from '@/schemas';
+import { ALL } from 'dns';
 
 // Fetch bid item details by BidItemID
 async function fetchBidItem(BidItemID: number) {
@@ -53,20 +54,14 @@ async function countUserBidsOnItem(BidItemID: number) {
 }
 
 // Count unique users who have placed bids on the specific BidItemID using groupBy
-
 export async function countUniqueBidders(BidItemID: number) {
-    const prisma = getPrismaClientForRole(3); // Customer role ID
+    const prisma = getPrismaClientForRole(3);
     try {
-        const uniqueBidders = await prisma.bids.groupBy({
+        const uniqueUsers = await prisma.bids.groupBy({
             by: ['UserID'],
-            where: { BidItemID },       // Filter by specific BidItemID
+            where: { BidItemID },
         });
-
-        const uniqueBiddersCount = uniqueBidders.length;
-
-        console.log(`Unique bidders for BidItemID ${BidItemID}:`, uniqueBiddersCount);
-
-        return uniqueBiddersCount;      // Return the unique count
+        return uniqueUsers.length; // Count of unique users
     } catch (error) {
         console.error("Error in countUniqueBidders:", error);
         return 0;
@@ -74,6 +69,7 @@ export async function countUniqueBidders(BidItemID: number) {
         await prisma.$disconnect();
     }
 }
+
 // Main function to get bid item details and unique user bid count
 // Main function to get bid item details and unique bidder count
 // Main function to get bid item details and unique bidder count
@@ -211,7 +207,7 @@ export async function getAdditionalBidItems(currentBidItemId: number) {
                 CurrentPrice: true,
                 Image: true,
             },
-            take: 5, // Limit to 5 items for the carousel
+            take: 8, // Limit to 5 items for the carousel
         });
 
         // Convert images to base64 and CurrentPrice to number
