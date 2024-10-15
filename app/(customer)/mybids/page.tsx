@@ -1,91 +1,44 @@
-"use client";
 
-import React, { useEffect, useState } from 'react';
-import { fetchUserBids } from '@/actions/mybids';
+import React from 'react';
+import { getBidDetailsForCustomer } from '@/actions/mybids'; // Import the server action to fetch bids
+import Card from '@/components/customer/mybids_card/mybidcard'; // Adjust this path if needed
 
-interface Bid {
-    BidID: number;
-    ItemName: string;
-    StartingPrice: number;
-    CurrentPrice: number;
-    BidAmount: number;
-}
+const MyBids = async () => {
+    // Fetch user's bids from server action
+    const userBids = await getBidDetailsForCustomer();
+    console.log('Fetched user bids:', userBids); // Log fetched bids for debugging
 
-const MyBids: React.FC = () => {
-    const [bids, setBids] = useState<Bid[]>([]);
-    const [loading, setLoading] = useState(true);
-
-    const fetchBids = async () => {
-        try {
-            const userID = 1; // Replace this with actual user ID source
-            const userBids = await fetchUserBids(userID);
-            setBids(userBids);
-        } catch (error) {
-            console.error('Failed to fetch user bids:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleDelete = async (bidID: number) => {
-        try {
-            await deleteUserBid(bidID);
-            setBids((prevBids) => prevBids.filter((bid) => bid.BidID !== bidID));
-        } catch (error) {
-            console.error('Failed to delete bid:', error);
-        }
-    };
-
-    useEffect(() => {
-        fetchBids();
-    }, []);
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    // Filter for active bids only
+    const activeBids = (userBids || []).filter(bid => {
+        const currentTime = new Date().getTime();
+        const bidEndTime = new Date(bid.BidEndTime).getTime();
+        return bidEndTime > currentTime;
+    });
+    console.log('Active user bids:', activeBids); // Log active bids for debugging
 
     return (
-        <div className="p-4">
-            <h1 className="text-2xl font-semibold mb-4">My Bids</h1>
-            {bids.length === 0 ? (
-                <p>No bids found.</p>
-            ) : (
-                <table className="min-w-full bg-white border border-gray-300 rounded-md">
-                    <thead>
-                        <tr>
-                            <th className="py-2 px-4 border-b">Item Name</th>
-                            <th className="py-2 px-4 border-b">Starting Price</th>
-                            <th className="py-2 px-4 border-b">Current Price</th>
-                            <th className="py-2 px-4 border-b">Your Bid</th>
-                            <th className="py-2 px-4 border-b">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {bids.map((bid) => (
-                            <tr key={bid.BidID}>
-                                <td className="py-2 px-4 border-b">{bid.ItemName}</td>
-                                <td className="py-2 px-4 border-b">${bid.StartingPrice.toFixed(2)}</td>
-                                <td className="py-2 px-4 border-b">${bid.CurrentPrice.toFixed(2)}</td>
-                                <td className="py-2 px-4 border-b">${bid.BidAmount.toFixed(2)}</td>
-                                <td className="py-2 px-4 border-b">
-                                    <button
-                                        className="text-red-500 hover:text-red-700 font-semibold"
-                                        onClick={() => handleDelete(bid.BidID)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            )}
+        <div className="flex justify-center py-5">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-5xl">
+                {activeBids.map((bid) => (
+                    <Card
+                        key={bid.BidID}
+                        bidID={bid.BidID}
+                        bidItemID={bid.BidItemID}
+                        userID={bid.UserID}
+                        image={`data:image/jpeg;base64,${bid.Image}`} // Convert image to base64 format
+                        itemName={bid.ItemName}
+                        itemDescription={bid.ItemDescription}
+                        category={bid.category}
+                        currentPrice={bid.CurrentPrice}
+                        bidEndTime={bid.BidEndTime}
+                        bidAmount={bid.BidAmount}
+                        bidTime={bid.BidTime}
+                        status={bid.Status}
+                    />
+                ))}
+            </div>
         </div>
     );
 };
 
 export default MyBids;
-function deleteUserBid(bidID: number) {
-    throw new Error('Function not implemented.');
-}
-

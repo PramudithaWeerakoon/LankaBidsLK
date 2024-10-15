@@ -1,62 +1,106 @@
+import { mybids } from "@/data/mybids";
 import getPrismaClientForRole from '@/lib/db';
 
-export async function fetchUserBids(userID: number) {
-    const prisma = getPrismaClientForRole(3); // Customer Role ID
+export async function getBidDetailsForCustomer() {
+    const userId = await mybids(); // Get the UserID from the session
+
+    if (!userId) {
+        console.warn('User not authenticated');
+        return null;
+    }
+
+    const roleId = 3; // Customer Role ID
+    const prisma = getPrismaClientForRole(roleId);
+
     try {
-        // Fetch bids for the user
-        const bids = await prisma.bids.findMany({
-            where: { UserID: userID },
-            select: {
-                BidID: true,
-                BidAmount: true,
-                BidItemID: true,
-            },
-        });
+        const result = await prisma.$queryRaw<
+            Array<{
+                BidID: number;
+                BidItemID: number;
+                UserID: number;
+                ItemName: string;
+                ItemDescription: string;
+                Image: Buffer | null;
+                category: string;
+                CurrentPrice: number;
+                BidEndTime: string;
+                BidAmount: number;
+                BidTime: string;
+                Status: string;
+            }>
+        >`
+            SELECT 
+                bids.BidID,
+                bids.BidItemID,
+                bids.UserID,
+                biditems.ItemName,
+                biditems.ItemDescription,
+                biditems.Image,
+                biditems.category,
+                biditems.CurrentPrice,
+                biditems.BidEndTime,
+                bids.BidAmount,
+                bids.BidTime,
+                bids.Status
+            FROM 
+                bids
+            JOIN 
+                biditems ON bids.BidItemID = biditems.BidItemID
+            WHERE 
+                bids.UserID = ${userId};`; // Filter by UserID
 
-        // Extract BidItemIDs and fetch related biditems
-        const bidItemIDs = bids.map(bid => bid.BidItemID);
-        const validBidItemIDs = bidItemIDs.filter((id): id is number => id !== null);
-        const bidItems = await prisma.biditems.findMany({
-            where: { BidItemID: { in: validBidItemIDs } },
-            select: {
-                BidItemID: true,
-                ItemName: true,
-                StartingPrice: true,
-                CurrentPrice: true,
-            },
-        });
+        if (!result || result.length === 0) {
+            console.warn(`No bids found for user ID: ${userId}`);
+            return [];
+        }
 
-        // Map biditems by BidItemID for easier lookup
-        const bidItemsMap: Record<number, { ItemName: string; StartingPrice: number; CurrentPrice: number }> = {};
-        bidItems.forEach(item => {
-            if (item.BidItemID) {
-                bidItemsMap[item.BidItemID] = {
-                    ItemName: item.ItemName,
-                    StartingPrice: item.StartingPrice.toNumber(),
-                    CurrentPrice: item.CurrentPrice ? item.CurrentPrice.toNumber() : 0,
-                };
-            }
-        });
+        const processedBids = result.map((bid) => ({
+            BidID: bid.BidID,
+            BidItemID: bid.BidItemID,
+            UserID: bid.UserID,
+            ItemName: bid.ItemName,
+            ItemDescription: bid.ItemDescription,
+            Image: bid.Image ? Buffer.from(bid.Image).toString('base64') : null,
+            category: bid.category,
+            CurrentPrice: bid.CurrentPrice,
+            BidEndTime: bid.BidEndTime,
+            BidAmount: bid.BidAmount,
+            BidTime: bid.BidTime,
+            Status: bid.Status,
+        }));
+        console.log('Processed bids lk:', processedBids);
 
-        // Combine bids with corresponding bid item details
-        return bids.map(bid => {
-            const itemDetails = bid.BidItemID ? bidItemsMap[bid.BidItemID] : {
-                ItemName: 'Unknown Item',
-                StartingPrice: 0,
-                CurrentPrice: 0,
-            };
+        return processedBids;
+    } catch (error: any) {
+        console.error('Error fetching bid details:', error.message || error);
+        throw new Error('Failed to fetch bid details. Please try again later.');
+    } finally {
+        await prisma.$disconnect();
+    }
+}
 
-            return {
-                BidID: bid.BidID,
-                ItemName: itemDetails.ItemName,
-                StartingPrice: itemDetails.StartingPrice,
-                CurrentPrice: itemDetails.CurrentPrice,
-                BidAmount: bid.BidAmount ? Number(bid.BidAmount) : 0,
-            };
-        });
-    } catch (error) {
-        console.error('Error fetching user bids:', error);
-        throw new Error('Failed to fetch user bids');
+export async function deleteBid(bidID: number) {
+    const userId = await mybids(); // Get the UserID from the session
+    console.log('User ID:', userId); // Debugging line
+
+    if (!userId) {
+        console.warn('User not authenticated');
+        return null;
+    }
+
+    const roleId = 3; // Customer Role ID
+    const prisma = getPrismaClientForRole(roleId);
+
+    try {
+        const result = await prisma.$executeRaw`
+            DELETE FROM bids 
+            WHERE BidID = ${bidID} AND UserID = ${userId};`;
+        console.log('Delete result:', result); // Debugging line
+
+        return { success: true, message: 'Bid deleted successfully.' };
+    } catch (error: any) {
+        console.error('Error deleting bid:', error.message || error);
+        throw new Error('Failed to delete bid. Please try again later.');
     } finally {
         await prisma.$disconnect();
     }
