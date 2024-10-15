@@ -48,6 +48,17 @@ export const SearchProductsSchema = z.object({
 }, {
   message: "At least one search criterion (ItemName or category) must be provided.",
 });
+// Define the schema with enhanced validation for bidding
+// Schema for placing bids
+export const bidSchema = z.object({
+  BidItemID: z.number()
+    .int()
+    .positive("Bid Item ID must be a positive integer."),
+  BidAmount: z.number()
+    .min(0, "Bid amount must be positive."),
+  MinIncrement: z.number()
+    .min(0, "Minimum increment must be positive.")
+});
 /*import * as z from "zod";
 
 // Helper function to sanitize strings
