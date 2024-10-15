@@ -37,6 +37,9 @@ export const bidSchema = z.object({
   BidAmount: z.number().min(0, "Bid amount must be positive."),
   MinIncrement: z.number().min(0, "Minimum increment must be positive.")
 });
+export const deleteBidSchema = z.object({
+  bidID: z.number().int().positive("Bid ID must be a positive integer"),
+});
 
 /*import * as z from "zod";
 

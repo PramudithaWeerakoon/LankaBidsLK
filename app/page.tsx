@@ -10,6 +10,7 @@ import { getHotDealsForCustomer } from '@/actions/hotdeals'; // Import the serve
 
 const HomePage = async () => {
     // Fetch the products
+    
     const bidItems = await getHotDealsForCustomer(); // Fetch products
     const activeBidItems = bidItems.filter(item => {
         const currentTime = new Date().getTime();
@@ -58,7 +59,12 @@ const HomePage = async () => {
 
         {/* Partner Logos Section */}
         <div className="py-12 bg-white">
-        <h2 className="text-4xl font-bold text-neutral-600 text-center mb-8">Featured Products</h2>
+        <h2 className="text-4xl font-bold text-neutral-600 text-center mb-8 flex items-center justify-center animate-pulse ">
+          Hot Deals 
+          <span className="ml-2 text-red-500">
+            🔥
+          </span>
+        </h2>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
           {/* Render each active bid item using the Card component */}
           {activeBidItems.map((item) => (

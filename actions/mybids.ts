@@ -1,49 +1,63 @@
-import * as z from "zod";
-import { SignInSchema } from "@/schemas";
-import { signIn } from "@/auth";
-import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
-import { AuthError } from "next-auth";
-import { generateVerificationToken } from "@/lib/tokens";
-import { getUserByEmail } from "@/data/user";
-import { setCookie } from "nookies"; // Import nookies for cookie management
+import getPrismaClientForRole from '@/lib/db';
 
-export const login = async (values: z.infer<typeof SignInSchema>) => {
-  const validatedFields = SignInSchema.safeParse(values);
+export async function fetchUserBids(userID: number) {
+    const prisma = getPrismaClientForRole(3); // Customer Role ID
+    try {
+        // Fetch bids for the user
+        const bids = await prisma.bids.findMany({
+            where: { UserID: userID },
+            select: {
+                BidID: true,
+                BidAmount: true,
+                BidItemID: true,
+            },
+        });
 
-  if (!validatedFields.success) {
-    return { error: "Invalid Email or Password" };
-  }
+        // Extract BidItemIDs and fetch related biditems
+        const bidItemIDs = bids.map(bid => bid.BidItemID);
+        const validBidItemIDs = bidItemIDs.filter((id): id is number => id !== null);
+        const bidItems = await prisma.biditems.findMany({
+            where: { BidItemID: { in: validBidItemIDs } },
+            select: {
+                BidItemID: true,
+                ItemName: true,
+                StartingPrice: true,
+                CurrentPrice: true,
+            },
+        });
 
-  const { email, password } = validatedFields.data;
-  const existingUser = await getUserByEmail(email);
+        // Map biditems by BidItemID for easier lookup
+        const bidItemsMap: Record<number, { ItemName: string; StartingPrice: number; CurrentPrice: number }> = {};
+        bidItems.forEach(item => {
+            if (item.BidItemID) {
+                bidItemsMap[item.BidItemID] = {
+                    ItemName: item.ItemName,
+                    StartingPrice: item.StartingPrice.toNumber(),
+                    CurrentPrice: item.CurrentPrice ? item.CurrentPrice.toNumber() : 0,
+                };
+            }
+        });
 
-  if (!existingUser || !existingUser.Email || !existingUser.PasswordHash) {
-    return { error: "Account Doesn't Exist" };
-  }
+        // Combine bids with corresponding bid item details
+        return bids.map(bid => {
+            const itemDetails = bid.BidItemID ? bidItemsMap[bid.BidItemID] : {
+                ItemName: 'Unknown Item',
+                StartingPrice: 0,
+                CurrentPrice: 0,
+            };
 
-  if (!existingUser.IsVerified) {
-    const verificationToken = await generateVerificationToken(existingUser.Email);
-    return { info: "Email is not verified, Confirmation Email Sent" };
-  }
-
-  try {
-    await signIn("credentials", { email, password, redirectTo: DEFAULT_LOGIN_REDIRECT });
-
-    // Store user ID in a cookie
-    setCookie(null, 'userID', existingUser.UserID.toString(), {
-      maxAge: 30 * 24 * 60 * 60, // 30 days
-      path: '/',
-    });
-
-  } catch (error) {
-    if (error instanceof AuthError) {
-      switch (error.type) {
-        case "CredentialsSignin":
-          return { error: "Invalid credentials!" };
-        default:
-          return { error: "Something went wrong!" };
-      }
+            return {
+                BidID: bid.BidID,
+                ItemName: itemDetails.ItemName,
+                StartingPrice: itemDetails.StartingPrice,
+                CurrentPrice: itemDetails.CurrentPrice,
+                BidAmount: bid.BidAmount ? Number(bid.BidAmount) : 0,
+            };
+        });
+    } catch (error) {
+        console.error('Error fetching user bids:', error);
+        throw new Error('Failed to fetch user bids');
+    } finally {
+        await prisma.$disconnect();
     }
-    throw error;
-  }
-};
+}

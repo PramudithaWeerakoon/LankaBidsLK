@@ -1,48 +1,42 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { getUserBids } from '@/actions/bidding'; 
-import { parseCookies } from 'nookies';
+import { fetchUserBids } from '@/actions/mybids';
 
 interface Bid {
-    BidItemID: number; // Ensure this is always a number
+    BidID: number;
     ItemName: string;
     StartingPrice: number;
-    YourBid: number;
+    CurrentPrice: number;
+    BidAmount: number;
 }
 
 const MyBids: React.FC = () => {
     const [bids, setBids] = useState<Bid[]>([]);
     const [loading, setLoading] = useState(true);
 
+    const fetchBids = async () => {
+        try {
+            const userID = 1; // Replace this with actual user ID source
+            const userBids = await fetchUserBids(userID);
+            setBids(userBids);
+        } catch (error) {
+            console.error('Failed to fetch user bids:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleDelete = async (bidID: number) => {
+        try {
+            await deleteUserBid(bidID);
+            setBids((prevBids) => prevBids.filter((bid) => bid.BidID !== bidID));
+        } catch (error) {
+            console.error('Failed to delete bid:', error);
+        }
+    };
+
     useEffect(() => {
-        const fetchBids = async () => {
-            try {
-                const cookies = parseCookies();
-                const userID = parseInt(cookies.userID, 10); // Convert string to number
-                if (isNaN(userID)) {
-                    throw new Error('Invalid user ID');
-                }
-                console.log('Fetching bids for userID:', userID); // Debug log
-                const userBids = await getUserBids(userID); // Fetch the user's bids
-                console.log('Fetched bids:', userBids); // Debug log
-
-                // Ensure the fetched bids match the Bid interface
-                const validBids = userBids.map((bid: any) => ({
-                    BidItemID: Number(bid.BidItemID),
-                    ItemName: bid.ItemName,
-                    StartingPrice: Number(bid.StartingPrice),
-                    YourBid: Number(bid.YourBid),
-                }));
-
-                setBids(validBids);
-            } catch (error) {
-                console.error('Failed to fetch user bids:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
         fetchBids();
     }, []);
 
@@ -51,28 +45,47 @@ const MyBids: React.FC = () => {
     }
 
     return (
-        <div>
-            <h1>My Bids</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Bid Name</th>
-                        <th>Starting Price</th>
-                        <th>Your Bid</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {bids.map((bid) => (
-                        <tr key={bid.BidItemID}>
-                            <td>{bid.ItemName}</td>
-                            <td>${bid.StartingPrice}</td>
-                            <td>${bid.YourBid}</td>
+        <div className="p-4">
+            <h1 className="text-2xl font-semibold mb-4">My Bids</h1>
+            {bids.length === 0 ? (
+                <p>No bids found.</p>
+            ) : (
+                <table className="min-w-full bg-white border border-gray-300 rounded-md">
+                    <thead>
+                        <tr>
+                            <th className="py-2 px-4 border-b">Item Name</th>
+                            <th className="py-2 px-4 border-b">Starting Price</th>
+                            <th className="py-2 px-4 border-b">Current Price</th>
+                            <th className="py-2 px-4 border-b">Your Bid</th>
+                            <th className="py-2 px-4 border-b">Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {bids.map((bid) => (
+                            <tr key={bid.BidID}>
+                                <td className="py-2 px-4 border-b">{bid.ItemName}</td>
+                                <td className="py-2 px-4 border-b">${bid.StartingPrice.toFixed(2)}</td>
+                                <td className="py-2 px-4 border-b">${bid.CurrentPrice.toFixed(2)}</td>
+                                <td className="py-2 px-4 border-b">${bid.BidAmount.toFixed(2)}</td>
+                                <td className="py-2 px-4 border-b">
+                                    <button
+                                        className="text-red-500 hover:text-red-700 font-semibold"
+                                        onClick={() => handleDelete(bid.BidID)}
+                                    >
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            )}
         </div>
     );
 };
 
 export default MyBids;
+function deleteUserBid(bidID: number) {
+    throw new Error('Function not implemented.');
+}
+

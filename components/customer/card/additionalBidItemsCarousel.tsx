@@ -1,5 +1,3 @@
-// components/customer/card/AdditionalBidItemsCarousel.tsx
-
 import React, { useEffect, useState } from 'react';
 import { getAdditionalBidItems } from '@/actions/bidding';
 import Link from 'next/link';
@@ -8,8 +6,15 @@ interface AdditionalBidItemsCarouselProps {
     currentBidItemId: number;
 }
 
+interface BidItem {
+    BidItemID: number;
+    ItemName: string;
+    CurrentPrice: number | null; // Allowing CurrentPrice to be null
+    Image: string;
+}
+
 const AdditionalBidItemsCarousel: React.FC<AdditionalBidItemsCarouselProps> = ({ currentBidItemId }) => {
-    const [additionalBidItems, setAdditionalBidItems] = useState<Array<{ BidItemID: number; ItemName: string; CurrentPrice: number; Image: string }>>([]);
+    const [additionalBidItems, setAdditionalBidItems] = useState<BidItem[]>([]);
 
     useEffect(() => {
         const fetchAdditionalItems = async () => {
@@ -35,7 +40,7 @@ const AdditionalBidItemsCarousel: React.FC<AdditionalBidItemsCarouselProps> = ({
                         )}
                         <div className="font-semibold text-sm text-gray-800">{item.ItemName}</div>
                         <div className="text-gray-500 text-xs">
-                            Current Price: ${item.CurrentPrice ? item.CurrentPrice.toFixed(2) : 'N/A'}
+                            Current Price: ${item.CurrentPrice !== null ? item.CurrentPrice.toFixed(2) : 'N/A'}
                         </div>
                     </Link>
                 ))}
