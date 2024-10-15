@@ -34,7 +34,7 @@ export const {
         {
           session.user.role = token.role;
         }
-        console.log("Session jwt", token);
+       // console.log("Session jwt", token);
       return session;
     },
 
