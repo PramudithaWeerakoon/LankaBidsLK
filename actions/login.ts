@@ -8,20 +8,24 @@ import { AuthError } from "next-auth";
 import { generateVerificationToken ,generateTwoFactorToken } from "@/lib/tokens";
 import { getUserByEmail } from "@/data/user";
 import { sendVerificationEmail , sendTwoFactorEmail } from "@/lib/mail";
+import { getTwoFactorTokenByEmail } from "@/data/two-factor-token";
+import getPrismaClientForRole from '@/lib/db';
+import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 
 
 export const login = async (values: z.infer<typeof SignInSchema>) => {
 
   const validatedFields = SignInSchema.safeParse(values);
+  const prisma = getPrismaClientForRole(3);
 
   if (!validatedFields.success) {
     return { error: "Invalid Email or Password" };
   }
 
-  const { email, password } = validatedFields.data;
+  const { email, password , code } = validatedFields.data;
 
   const existingUser = await getUserByEmail(email);
- 
+
 
   if(!existingUser || !existingUser.Email || !existingUser.PasswordHash) 
   {
@@ -35,14 +39,50 @@ export const login = async (values: z.infer<typeof SignInSchema>) => {
     return { info: "Email is not verified , Comfirmation Email Sent"}
   }
 
-  if(existingUser.TwoFactorEnabled && existingUser.Email)
+  if(existingUser.IsTwoFactorEnabled && existingUser.Email)
+  {
+    if(code)
     {
-      const twoFactorToken = await generateTwoFactorToken(existingUser.Email);
-      console.log("2FA Token",twoFactorToken);
-      await sendTwoFactorEmail(existingUser.Username,twoFactorToken.Email,twoFactorToken.token);
-      
-      return {twofactor : true}
+      const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.Email);
+      //console.log("2FA Token After",twoFactorToken);
+
+      if(!twoFactorToken)
+      {
+        return { error: "No Code" }
+      }
+
+      console.log("2FA Token",twoFactorToken.token);
+
+      if (twoFactorToken.token !== code) {
+        return { error: "Invalid code!" };
+      }
+
+      const hasExpired = new Date(twoFactorToken.Expires) < new Date();
+
+      if(hasExpired)
+      {
+        return { error: "Code Expired" }
+      }
+
+      await prisma.$queryRaw`DELETE FROM TwoFactorToken WHERE id = ${twoFactorToken.id}`;
+
+      const exsistingConfirmation = await getTwoFactorConfirmationByUserId(existingUser.UserID);
+
+      if(exsistingConfirmation)
+      {
+        await prisma.$queryRaw`DELETE FROM TwoFactorConfirmation WHERE userId = ${existingUser.UserID}`;
+      }
+
+      await prisma.$queryRaw`INSERT INTO TwoFactorConfirmation (userId) VALUES (${existingUser.UserID})`;
     }
+    else
+    {
+    const twoFactorToken = await generateTwoFactorToken(existingUser.Email);
+    //console.log("2FA Token",twoFactorToken);
+    await sendTwoFactorEmail(existingUser.Username,twoFactorToken.Email,twoFactorToken.token);
+    return { twoFactor: true };
+    }
+  }
 
   try 
   {
