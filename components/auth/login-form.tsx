@@ -26,6 +26,7 @@ export const LoginForm = () => {
   const [success, setSuccess] = useState<string | undefined>(""); 
   const [info, setInfo] = useState<string | undefined>("");// Success state
   const [isPending, startTransition] = useTransition(); // Transition for async actions
+  const [show2FA , setShow2FA] = useState(false);
 
 
   const form = useForm<z.infer<typeof SignInSchema>>({
@@ -46,17 +47,23 @@ export const LoginForm = () => {
         {
         if (data?.error) 
         {
-          setError(data.error); // Handle error if login fails
+          form.reset(); 
+          setError(data.error);
         } 
-        else if  (data?.success)
+        if  (data?.success)
         {
-          setSuccess(data?.success); // Display success message           
+          form.reset();
+          setSuccess(data.success); 
         }
-        else 
+        if(data?.twoFactor)
+        {
+          setShow2FA(true);
+        }
+        if (data?.info)
         {
           setInfo(data?.info); // Display info message
         }
-      });
+      }).catch (() => setError("An error occurred. Please try again."))
     });
   };
 
@@ -69,51 +76,74 @@ export const LoginForm = () => {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
-            {/* Email Field */}
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="abc@example.com"
-                      type="email"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {/* Password Field */}
-            <FormField
-              control={form.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isPending}
-                      placeholder="**********"
-                      type="password"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+          {show2FA && (
+              <FormField
+                control={form.control}
+                name="code"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Enter 2FA Code , Check Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="123456"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {!show2FA && (
+              <>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="abc@example.com"
+                        type="email"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder="**********"
+                        type="password"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </>
+            )}
           </div>
           <FormError message={error} /> {/* Display error */}
           <FormSuccess message={success} /> {/* Display success */}
           <FormInformation message={info} /> {/* Display info */}
           {/* Submit Button */}
           <Button type="submit" className="w-full" disabled={isPending}>
-            Sign In
+          {show2FA ? "Verify" : "Sign In"}
           </Button>
         </form>
       </Form>

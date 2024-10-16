@@ -59,6 +59,10 @@ export const bidSchema = z.object({
   MinIncrement: z.number()
     .min(0, "Minimum increment must be positive.")
 });
+
+
+
+
 /*import * as z from "zod";
 
 // Helper function to sanitize strings
