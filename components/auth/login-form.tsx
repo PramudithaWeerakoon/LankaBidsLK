@@ -26,7 +26,7 @@ export const LoginForm = () => {
   const [success, setSuccess] = useState<string | undefined>(""); 
   const [info, setInfo] = useState<string | undefined>("");// Success state
   const [isPending, startTransition] = useTransition(); // Transition for async actions
-  const router = useRouter(); // Initialize useRouter for navigation
+
 
   const form = useForm<z.infer<typeof SignInSchema>>({
     resolver: zodResolver(SignInSchema),
@@ -44,17 +44,17 @@ export const LoginForm = () => {
     startTransition(() => {
       login(values).then((data) => 
         {
-        if (data.error) 
+        if (data?.error) 
         {
           setError(data.error); // Handle error if login fails
         } 
-        else if  (data.success)
+        else if  (data?.success)
         {
-          setSuccess(data.success); // Display success message           
+          setSuccess(data?.success); // Display success message           
         }
         else 
         {
-          setInfo(data.info); // Display info message
+          setInfo(data?.info); // Display info message
         }
       });
     });

@@ -5,9 +5,10 @@ import { SignInSchema } from "@/schemas";
 import { signIn } from "@/auth";
 import { DEFAULT_LOGIN_REDIRECT } from "@/routes";
 import { AuthError } from "next-auth";
-import { generateVerificationToken } from "@/lib/tokens";
+import { generateVerificationToken ,generateTwoFactorToken } from "@/lib/tokens";
 import { getUserByEmail } from "@/data/user";
-import { sendVerificationEmail } from "@/lib/mail";
+import { sendVerificationEmail , sendTwoFactorEmail } from "@/lib/mail";
+
 
 export const login = async (values: z.infer<typeof SignInSchema>) => {
 
@@ -20,6 +21,7 @@ export const login = async (values: z.infer<typeof SignInSchema>) => {
   const { email, password } = validatedFields.data;
 
   const existingUser = await getUserByEmail(email);
+ 
 
   if(!existingUser || !existingUser.Email || !existingUser.PasswordHash) 
   {
@@ -32,6 +34,15 @@ export const login = async (values: z.infer<typeof SignInSchema>) => {
     await sendVerificationEmail(existingUser.Username,verificationToken.Email,verificationToken.token);
     return { info: "Email is not verified , Comfirmation Email Sent"}
   }
+
+  if(existingUser.TwoFactorEnabled && existingUser.Email)
+    {
+      const twoFactorToken = await generateTwoFactorToken(existingUser.Email);
+      console.log("2FA Token",twoFactorToken);
+      await sendTwoFactorEmail(existingUser.Username,twoFactorToken.Email,twoFactorToken.token);
+      
+      return {twofactor : true}
+    }
 
   try 
   {
@@ -52,4 +63,6 @@ export const login = async (values: z.infer<typeof SignInSchema>) => {
     }
     throw error;
   }
+
+  return null;
 };

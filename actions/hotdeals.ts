@@ -42,7 +42,7 @@ export async function getHotDealsForCustomer() {
             LIMIT 8`
         );
 
-        console.log('Hot deals result:', result);
+        //console.log('Hot deals result:', result);
 
         if (!result || result.length === 0) {
             console.warn(`No hot deals found.`);
