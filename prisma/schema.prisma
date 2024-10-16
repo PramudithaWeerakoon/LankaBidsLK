@@ -61,10 +61,14 @@ model payments {
   PaymentID     Int                     @id @default(autoincrement())
   UserID        Int?
   BidItemID     Int?
+  CardHolderName String                @db.VarChar(255)    
+  CardNo          String                @db.VarChar(255)   
+  cvv             String                @db.VarChar(255)   
   Amount        Decimal                 @db.Decimal(10, 2)
+  BillingAddress  String                @db.VarChar(255)
   PaymentDate   DateTime?               @default(now()) @db.Timestamp(0)
   PaymentStatus payments_PaymentStatus? @default(Pending)
-  PaymentMethod String                  @db.VarChar(50)
+  PaymentMethod String                  @db.VarChar(255)
 
   @@index([BidItemID], map: "BidItemID")
   @@index([UserID], map: "UserID")

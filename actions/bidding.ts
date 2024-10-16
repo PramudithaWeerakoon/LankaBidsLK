@@ -148,7 +148,7 @@ export async function getUserBidHistory(BidItemID: number) {
 }
 
 // Place a bid for the current user on the specific BidItemID
-export async function placeBid(BidItemID: number, BidAmount: number) {
+/*export async function placeBid(BidItemID: number, BidAmount: number) {
     const user = await getCurrentUser();
     if (!user) {
         return { success: false, message: "User not authenticated" };
@@ -191,7 +191,7 @@ export async function placeBid(BidItemID: number, BidAmount: number) {
     } finally {
         await prisma.$disconnect();
     }
-}
+}*/
 
 // Fetch additional bid items for the carousel
 export async function getAdditionalBidItems(currentBidItemId: number) {
@@ -226,3 +226,163 @@ export async function getAdditionalBidItems(currentBidItemId: number) {
 }
 
 // Count unique users who have placed bids on a specific BidItemID
+// Submit payment details and place a bid
+export async function submitNewPaymentAndPlaceBid(
+    BidItemID: number,
+    BidAmount: number,
+    CardHolderName: string,
+    CardNo: string,
+    cvv: string,
+    BillingAddress: string
+) {
+    const user = await getCurrentUser();
+    if (!user) {
+        return { success: false, message: "User not authenticated" };
+    }
+
+    const prisma = getPrismaClientForRole(3);
+    try {
+        const userId = Number(user.id);
+        const paymentDate = new Date();
+        const paymentMethod = 'Credit Card';
+        const paymentStatus = 'Pending';
+
+        // Insert new payment entry
+        await prisma.payments.create({
+            data: {
+                UserID: userId,
+                BidItemID,
+                CardHolderName,
+                CardNo,
+                cvv,
+                Amount: BidAmount,
+                BillingAddress,
+                PaymentDate: paymentDate,
+                PaymentStatus: paymentStatus,
+                PaymentMethod: paymentMethod,
+            },
+        });
+
+        // Perform bid insertion and current price update as a transaction
+        await prisma.$transaction(async (tx) => {
+            // Insert new bid entry
+            await tx.bids.create({
+                data: {
+                    BidItemID,
+                    UserID: userId,
+                    BidAmount,
+                },
+            });
+
+            // Update the current bid price on bid item
+            await tx.biditems.update({
+                where: { BidItemID },
+                data: { CurrentPrice: BidAmount },
+            });
+        });
+
+        return { success: true, message: 'Payment and bid processed successfully' };
+
+    } catch (error) {
+        console.error("Error processing payment and bid:", error);
+        return { success: false, message: 'Failed to process payment and bid', error };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+export async function updatePaymentAndPlaceBid(
+    BidItemID: number,
+    BidAmount: number
+) {
+    const user = await getCurrentUser();
+    if (!user) {
+        return { success: false, message: "User not authenticated" };
+    }
+
+    const prisma = getPrismaClientForRole(3);
+    try {
+        const userId = Number(user.id);
+        const paymentDate = new Date();
+
+        await prisma.$transaction(async (tx) => {
+            // Update only Amount and PaymentDate fields in the payments table
+            const updatedPayment = await tx.payments.updateMany({
+                where: {
+                    UserID: userId,
+                    BidItemID,
+                },
+                data: {
+                    Amount: BidAmount,
+                    PaymentDate: paymentDate,
+                },
+            });
+
+            if (updatedPayment.count === 0) {
+                throw new Error('No existing payment record found for update');
+            }
+
+            // Insert a new bid entry in the bids table
+            await tx.bids.create({
+                data: {
+                    BidItemID,
+                    UserID: userId,
+                    BidAmount,
+                },
+            });
+
+            // Update the CurrentPrice field in the biditems table
+            await tx.biditems.update({
+                where: { BidItemID },
+                data: { CurrentPrice: BidAmount },
+            });
+        });
+
+        return { success: true, message: 'Payment, bid, and bid item updated successfully' };
+
+    } catch (error) {
+        console.error("Error updating payment and placing bid:", error);
+        return { success: false, message: 'Failed to update payment and place bid', error };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+
+
+export async function checkExistingPaymentAndBid(
+    BidItemID: number,
+    UserID: number,
+) {
+    const prisma = getPrismaClientForRole(3); // Adjust role if necessary
+
+    try {
+        // Check for an existing payment for this user and bid item
+        const existingPayment = await prisma.payments.findFirst({
+            where: {
+                UserID,
+                BidItemID,
+            },
+        });
+
+        // If a payment entry exists, return it to determine user action (update or continue)
+        if (existingPayment) {
+            return {
+                exists: true,
+                paymentData: {
+                    PaymentID: existingPayment.PaymentID,
+                    paymentDate: existingPayment.PaymentDate,
+                },
+            };
+        }
+
+        // If no payment entry exists, return flag to prompt new payment entry
+        return { exists: false };
+    } catch (error) {
+        console.error("Error checking existing payment:", error);
+        return { error: "Error checking payment status" };
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+

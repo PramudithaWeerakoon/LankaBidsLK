@@ -1,12 +1,19 @@
-// src/pages/products/[id].tsx
-
 "use client";
 import { useEffect, useState } from 'react';
-import { getSingleBidItem, placeBid, getUserBidHistory, countUniqueBidders } from '@/actions/bidding';
+import {
+    getSingleBidItem,
+    submitNewPaymentAndPlaceBid,
+    updatePaymentAndPlaceBid,
+    checkExistingPaymentAndBid,
+    getUserBidHistory,
+    countUniqueBidders
+} from '@/actions/bidding';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import BidHistory from "@/components/customer/card/bidHistory";
 import AdditionalBidItemsCarousel from "@/components/customer/card/additionalBidItemsCarousel";
+import PaymentFormModal from "@/components/customer/payment/form";
+import Confirm from "@/components/customer/payment/confirm";
 
 interface ProductPageProps {
     readonly params: { readonly id: string };
@@ -21,6 +28,8 @@ export default function ProductPage({ params }: ProductPageProps) {
     const [bidHistory, setBidHistory] = useState<Array<{ BidAmount: number; createdAt: string }>>([]);
     const [timeLeft, setTimeLeft] = useState<string>('');
     const [uniqueBiddersCount, setUniqueBiddersCount] = useState<number>(0);
+    const [isPaymentModalOpen, setPaymentModalOpen] = useState<boolean>(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState<boolean>(false); // Confirm modal state
 
     useEffect(() => {
         const fetchData = async () => {
@@ -87,12 +96,57 @@ export default function ProductPage({ params }: ProductPageProps) {
         if (bidAmount < minimumBid) {
             setError(`Bid must be at least $${minimumBid.toFixed(2)}`);
             return;
-        } else {
-            setError('');
         }
+        setError('');
 
         try {
-            const result = await placeBid(product.BidItemID, bidAmount);
+            const existingPaymentResult = await checkExistingPaymentAndBid(productID, 8);
+
+            if (existingPaymentResult.exists) {
+                setIsConfirmOpen(true); // Open Confirm modal
+            } else {
+                setPaymentModalOpen(true); // Open Payment form
+            }
+        } catch (error) {
+            console.error("Error checking existing payment:", error);
+            setError("An error occurred while checking payment status.");
+        }
+    };
+
+    const handleConfirmContinue = async () => {
+        setIsConfirmOpen(false); // Close Confirm modal
+
+        const updateResult = await updatePaymentAndPlaceBid(productID, bidAmount);
+        if (updateResult?.success) {
+            setMessage(updateResult.message);
+            setBidAmount(0);
+            setProduct((prevProduct: any) => ({
+                ...prevProduct,
+                CurrentPrice: bidAmount,
+            }));
+            const userBidHistory = await getUserBidHistory(productID);
+            setBidHistory(Array.isArray(userBidHistory) ? userBidHistory : []);
+        } else {
+            setError(updateResult?.message || 'Failed to update payment and place bid');
+        }
+    };
+
+    const handlePaymentSubmit = async (cardDetails: {
+        cardHolderName: string;
+        cardNo: string;
+        cvv: string;
+        billingAddress: string;
+    }) => {
+        try {
+            const result = await submitNewPaymentAndPlaceBid(
+                product.BidItemID,
+                bidAmount,
+                cardDetails.cardHolderName,
+                cardDetails.cardNo,
+                cardDetails.cvv,
+                cardDetails.billingAddress
+            );
+
             if (result?.success) {
                 setMessage(result.message);
                 setBidAmount(0);
@@ -103,11 +157,13 @@ export default function ProductPage({ params }: ProductPageProps) {
                 const userBidHistory = await getUserBidHistory(productID);
                 setBidHistory(Array.isArray(userBidHistory) ? userBidHistory : []);
             } else {
-                setError(result?.message || 'Failed to place bid');
+                setError(result?.message || 'Failed to process payment');
             }
         } catch (error) {
-            console.error("Error placing bid:", error);
-            setError("An error occurred while placing the bid.");
+            console.error("Error processing payment:", error);
+            setError("An error occurred while processing the payment.");
+        } finally {
+            setPaymentModalOpen(false);
         }
     };
 
@@ -123,26 +179,12 @@ export default function ProductPage({ params }: ProductPageProps) {
                             alt={product.ItemName}
                             className="object-cover rounded-md"
                             width={300}
-                            height={300} />
+                            height={300}
+                        />
                         <h1 className="text-3xl font-bold mt-4 mb-2 text-center">{product.ItemName}</h1>
                     </div>
                     <div className="text-sm text-gray-500 mb-4 text-center">
                         Closes: <span className="font-semibold">{timeLeft}</span>
-                    </div>
-                    <div className="text-sm text-gray-700 text-center mb-4">
-                        Unique Bidders: <span className="font-bold">{uniqueBiddersCount}</span>
-                    </div>
-                    <div className="flex flex-col gap-4 mb-6">
-                        <div className="text-2xl font-bold text-black text-center">
-                            ${product.CurrentPrice} <span className="text-sm font-normal text-gray-500">(Current Bid)</span>
-                        </div>
-                        <div className="text-sm text-gray-700 text-center">
-                            Minimum Bid: ${calculateMinimumBid()}
-                        </div>
-                    </div>
-                    <div className="text-gray-700 border-t pt-4 mb-6">
-                        <h2 className="text-xl font-bold mb-2">Description</h2>
-                        <p className="text-center">{product.ItemDescription}</p>
                     </div>
                     <div className="flex flex-col items-center mb-4">
                         <input
@@ -150,7 +192,8 @@ export default function ProductPage({ params }: ProductPageProps) {
                             className="border p-2 rounded w-40 mb-4"
                             placeholder={`Bid ${calculateMinimumBid()} or more`}
                             value={bidAmount}
-                            onChange={(e) => setBidAmount(Number(e.target.value))} />
+                            onChange={(e) => setBidAmount(Number(e.target.value))}
+                        />
                         <button
                             className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600"
                             onClick={handleBidSubmit}
@@ -160,14 +203,33 @@ export default function ProductPage({ params }: ProductPageProps) {
                         {error && <div className="text-red-500 mt-2">{error}</div>}
                         {message && <div className="text-green-500 mt-2">{message}</div>}
                     </div>
+
+                    {/* Display Current Price and Minimum Increment */}
+                    <div className="text-lg font-semibold text-center">
+                        <p>Current Price: <span className="text-red-500">${parseFloat(product.CurrentPrice).toFixed(2)}</span></p>
+                        <p>Minimum Increment: <span className="text-red-500">${parseFloat(product.MinIncrement).toFixed(2)}</span></p>
+                    </div>
                 </div>
 
                 <BidHistory bidHistory={bidHistory} />
             </div>
 
-            <div className="w-full max-w-5xl mx-auto mt-6">
-                <AdditionalBidItemsCarousel currentBidItemId={productID} />
-            </div>
+            <AdditionalBidItemsCarousel currentBidItemId={productID} />
+
+            {isConfirmOpen && (
+                <Confirm
+                    onConfirm={handleConfirmContinue}
+                    onCancel={() => setPaymentModalOpen(true)}
+                    onClose={() => setIsConfirmOpen(false)}
+                />
+            )}
+
+            {isPaymentModalOpen && (
+                <PaymentFormModal
+                    onSubmit={handlePaymentSubmit}
+                    onClose={() => setPaymentModalOpen(false)}
+                />
+            )}
         </section>
     );
 }
