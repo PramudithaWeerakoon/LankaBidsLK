@@ -1,20 +1,41 @@
+// app/(customer)/mybids/page.tsx
+'use client';
+import React, { useState, useEffect } from 'react';
+import { getBidDetailsForCustomer } from '@/actions/mybids';
+import Card from '@/components/customer/mybids_card/mybidcard';
 
-import React from 'react';
-import { getBidDetailsForCustomer } from '@/actions/mybids'; // Import the server action to fetch bids
-import Card from '@/components/customer/mybids_card/mybidcard'; // Adjust this path if needed
+const MyBids = () => {
+    interface Bid {
+        BidID: number;
+        BidItemID: number;
+        UserID: number;
+        ItemName: string;
+        ItemDescription: string;
+        Image: string | null;
+        category: string;
+        CurrentPrice: number;
+        BidEndTime: string;
+        BidAmount: number;
+        BidTime: string;
+        Status: string;
+    }
 
-const MyBids = async () => {
-    // Fetch user's bids from server action
-    const userBids = await getBidDetailsForCustomer();
-    console.log('Fetched user bids:', userBids); // Log fetched bids for debugging
+    const [activeBids, setActiveBids] = useState<Bid[]>([]);
 
-    // Filter for active bids only
-    const activeBids = (userBids || []).filter(bid => {
-        const currentTime = new Date().getTime();
-        const bidEndTime = new Date(bid.BidEndTime).getTime();
-        return bidEndTime > currentTime;
-    });
-    console.log('Active user bids:', activeBids); // Log active bids for debugging
+    useEffect(() => {
+        const fetchBids = async () => {
+            const userBids = await getBidDetailsForCustomer();
+            const currentTime = new Date().getTime();
+            const activeBids = (userBids || []).filter(bid => new Date(bid.BidEndTime).getTime() > currentTime);
+            setActiveBids(activeBids);
+        };
+
+        fetchBids();
+    }, []);
+
+    const handleDelete = (bidID: string) => {
+        setActiveBids((prevBids) => prevBids.filter((bid) => bid.BidID !== Number(bidID)));
+    };
 
     return (
         <div className="flex justify-center py-5">
@@ -22,10 +43,10 @@ const MyBids = async () => {
                 {activeBids.map((bid) => (
                     <Card
                         key={bid.BidID}
-                        bidID={bid.BidID}
-                        bidItemID={bid.BidItemID}
-                        userID={bid.UserID}
-                        image={`data:image/jpeg;base64,${bid.Image}`} // Convert image to base64 format
+                        bidID={bid.BidID.toString()}
+                        bidItemID={bid.BidItemID.toString()}
+                        userID={bid.UserID.toString()}
+                        image={`data:image/jpeg;base64,${bid.Image}`}
                         itemName={bid.ItemName}
                         itemDescription={bid.ItemDescription}
                         category={bid.category}
@@ -34,6 +55,7 @@ const MyBids = async () => {
                         bidAmount={bid.BidAmount}
                         bidTime={bid.BidTime}
                         status={bid.Status}
+                        onDelete={handleDelete}
                     />
                 ))}
             </div>

@@ -1,6 +1,6 @@
-projectKey=LankaBidsLK
-serverUrl=http://localhost:9099
+projectKey=Lanakabidslk
+serverUrl=http://localhost:9000
 serverVersion=10.6.0.92116
-dashboardUrl=http://localhost:9099/dashboard?id=LankaBidsLK
-ceTaskId=988e4224-056d-4710-b1d9-ba6cbafb983e
-ceTaskUrl=http://localhost:9099/api/ce/task?id=988e4224-056d-4710-b1d9-ba6cbafb983e
+dashboardUrl=http://localhost:9000/dashboard?id=Lanakabidslk
+ceTaskId=bd37c808-72f5-4299-a5ac-007fd8fd8bce
+ceTaskUrl=http://localhost:9000/api/ce/task?id=bd37c808-72f5-4299-a5ac-007fd8fd8bce
