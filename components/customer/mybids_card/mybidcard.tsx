@@ -1,15 +1,14 @@
+// components/customer/mybids_card/mybidcard.tsx
 "use client";
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
-import { deleteBid } from '@/actions/mybids'; // Import the deleteBid function
+import { deleteBid } from '@/actions/mybids';
 
-interface CardProps {
-    // Remove onDelete from here
-    bidID: number;
-    bidItemID: number;
-    userID: number;
-    image: string | null;
+interface MyBidCardProps {
+    bidID: string;
+    bidItemID: string;
+    userID: string;
+    image: string;
     itemName: string;
     itemDescription: string;
     category: string;
@@ -18,9 +17,10 @@ interface CardProps {
     bidAmount: number;
     bidTime: string;
     status: string;
+    onDelete: (bidID: string) => void;
 }
 
-const Card: React.FC<CardProps> = ({
+const MyBidCard: React.FC<MyBidCardProps> = ({
     bidID,
     bidItemID,
     userID,
@@ -34,80 +34,58 @@ const Card: React.FC<CardProps> = ({
     bidTime,
     status,
 }) => {
-    const router = useRouter();
-
-    const calculateTimeLeft = () => {
-        const endTime = new Date(bidEndTime).getTime();
-        const now = new Date().getTime();
-        return endTime - now;
-    };
-
-    const timeLeft = calculateTimeLeft();
-    if (timeLeft < 0) return null; // Hide expired products
-
-    const daysLeft = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
-    const hoursLeft = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutesLeft = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
-
-    const handleDelete = async (e: React.FormEvent) => {
-        e.stopPropagation();
+    const handleDelete = async () => {
         try {
-            const response = await deleteBid(bidID);
-            if (response && response.success) {
-                console.log('Bid deleted successfully.');
-                // Optionally, you can implement state management to update the UI accordingly
-            }
+            await deleteBid(Number(bidID));
+            window.location.reload(); // Reload to reflect updated list
         } catch (error) {
-            console.error('Failed to delete bid:', error);
+            console.error('Error deleting bid:', error);
         }
     };
 
     return (
-        <div
-            
-            
-        >
-            <form className='flex p-4 shadow-lg rounded-md w-full cursor-pointer transition-transform transform hover:scale-105'
-                onSubmit={handleDelete}
-            >
-                {/* Left side: Image */}
-            <div className="flex-shrink-0 w-1/3">
-                <img
-                    src={image || '/fallback-image.jpg'}
-                    alt={itemName}
-                    className="w-full h-full object-cover rounded-md"
-                />
-            </div>
-            {/* Right side: Details */}
-            <div className="flex-grow ml-4">
-                <div className="text-lg font-semibold">Item: {itemName}</div>
-                <div className="text-sm text-gray-500">Category: {category}</div>
-                <div className="text-sm text-gray-700">Description: {itemDescription}</div>
-                <div className="text-sm text-gray-500">Bid ID: {bidID}</div>
-                <div className="text-sm text-gray-500">User ID: {userID}</div>
-                <div className="text-lg font-bold mt-2 text-red-500">Current Price: ${currentPrice}</div>
-                <div className="text-sm text-gray-500">Your Bid: ${bidAmount}</div>
-                <div className="text-xs text-gray-400">Bid Time: {new Date(bidTime).toLocaleString()}</div>
-                <div className={`mt-1 text-sm ${status === 'Accepted' ? 'text-green-600' : 'text-red-600'}`}>
+        <div className="bg-white shadow-md border border-gray-200 rounded-lg overflow-hidden transition-transform hover:scale-105 transform duration-200">
+            <img
+                src={image}
+                alt={itemName}
+                className="w-full h-48 object-cover"
+            />
+            <div className="p-6">
+                <h2 className="text-xl font-semibold text-gray-800 mb-1">
+                    {itemName}
+                </h2>
+                <p className="text-gray-600 text-sm mb-4">{itemDescription}</p>
+                
+                <div className="mb-4">
+                    <p className="text-sm text-gray-500">
+                        <span className="font-semibold">Category:</span> {category}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                        <span className="font-semibold">Current Price:</span> ${currentPrice}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                        <span className="font-semibold">Bid End Time:</span> {new Date(bidEndTime).toLocaleString()}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                        <span className="font-semibold">Your Bid:</span> ${bidAmount}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                        <span className="font-semibold">Bid Time:</span> {new Date(bidTime).toLocaleString()}
+                    </p>
+                    <p className={`text-sm font-semibold mb-2 ${status === 'Accepted' || status === 'Pending' ? 'text-green-600' : 'text-red-600'}`}>
                     Status: {status}
+                     </p>
                 </div>
-                <div className="mt-2 text-sm text-green-600">
-                    {daysLeft > 0 
-                        ? `${daysLeft}d ${hoursLeft}h ${minutesLeft}m left`
-                        : `${hoursLeft}h ${minutesLeft}m left`}
-                </div>
+
                 <button
-                    className='mt-2 bg-red-500 hover:bg-red-600 text-white font-semibold py-1 px-2 rounded-md'
                     onClick={handleDelete}
+                    className="w-full bg-red-500 text-white font-medium py-2 px-4 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75 transition-colors duration-200"
                 >
-                    Delete
+                    Delete Bid
                 </button>
             </div>
-            </form>
-            
         </div>
     );
 };
 
-export default Card;
-
+export default MyBidCard;
