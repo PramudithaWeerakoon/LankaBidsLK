@@ -124,26 +124,35 @@ export const RegisterForm = () => {
             )}
             />
 
-            <FormField control={form.control} name="role" render={({ field }) => (
-              <FormItem>
-                <FormLabel>Role</FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange} value={field.value}>
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Select a role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectItem value="bidder">Customer</SelectItem>
-                        <SelectItem value="seller">Seller</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )} />
-
+            <FormField
+                control={form.control}
+                name="role"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Role</FormLabel>
+                        <Select
+                            disabled={isPending}
+                            onValueChange={field.onChange}
+                            defaultValue={field.value?.toString()}
+                        >
+                            <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select a role" />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                <SelectItem value={'3'}>
+                                    Customer
+                                </SelectItem>
+                                <SelectItem value={'2'}>
+                                    Seller
+                                </SelectItem>
+                            </SelectContent>
+                        </Select>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />   
           </div>
           <FormError message={error}/>
           <FormSuccess message={success}/>
