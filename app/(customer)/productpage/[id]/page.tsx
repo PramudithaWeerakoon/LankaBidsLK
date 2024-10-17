@@ -100,7 +100,7 @@ export default function ProductPage({ params }: ProductPageProps) {
         setError('');
 
         try {
-            const existingPaymentResult = await checkExistingPaymentAndBid(productID);
+            const existingPaymentResult = await checkExistingPaymentAndBid(productID, );
 
             if (existingPaymentResult.exists) {
                 setIsConfirmOpen(true); // Open Confirm modal
@@ -207,6 +207,7 @@ export default function ProductPage({ params }: ProductPageProps) {
                     {/* Display Current Price and Minimum Increment */}
                     <div className="text-lg font-semibold text-center">
                         <p>Current Price: <span className="text-red-500">${parseFloat(product.CurrentPrice).toFixed(2)}</span></p>
+                        <p>Next Minimum Bid: <span className="text-red-500">${parseFloat((parseFloat(product.CurrentPrice) + parseFloat(product.MinIncrement)).toFixed(2))}</span></p>
                         <p>Minimum Increment: <span className="text-red-500">${parseFloat(product.MinIncrement).toFixed(2)}</span></p>
                     </div>
                 </div>

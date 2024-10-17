@@ -3,6 +3,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
+import startScheduler from '@/utils/scheduler';
 import { auth } from '@/auth';
 import './globals.css';
 import Header from '@/components/header/header'; // Adjust the path based on your file structure
@@ -14,6 +15,9 @@ export const metadata: Metadata = {
   title: 'LankaBidsLK',
   description: 'Concept ',
 };
+if (typeof window === 'undefined') {
+  startScheduler();
+}
 
 export default async function RootLayout({
   children,

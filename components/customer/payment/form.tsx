@@ -1,19 +1,14 @@
 import { useState } from 'react';
+import { z } from 'zod';
+import { PaymentSchema, PaymentFormInput } from '@/schemas/index';
 
 interface PaymentFormModalProps {
-    onSubmit: (cardDetails: CardDetails) => void;
+    onSubmit: (cardDetails: PaymentFormInput) => void;
     onClose: () => void;
 }
 
-interface CardDetails {
-    cardHolderName: string;
-    cardNo: string; // Keep as string
-    cvv: string;    // Keep as string
-    billingAddress: string;
-}
-
 const PaymentFormModal: React.FC<PaymentFormModalProps> = ({ onSubmit, onClose }) => {
-    const [cardDetails, setCardDetails] = useState<CardDetails>({
+    const [cardDetails, setCardDetails] = useState<PaymentFormInput>({
         cardHolderName: '',
         cardNo: '',
         cvv: '',
@@ -29,24 +24,13 @@ const PaymentFormModal: React.FC<PaymentFormModalProps> = ({ onSubmit, onClose }
         }));
     };
 
-    const validateCardDetails = () => {
-        const { cardNo, cvv } = cardDetails;
-        // Basic validation for card number and CVV
-        if (cardNo.length < 16 || cardNo.length > 19) {
-            setError('Card number must be between 16 and 19 digits.');
-            return false;
-        }
-        if (cvv.length < 3 || cvv.length > 4) {
-            setError('CVV must be 3 or 4 digits.');
-            return false;
-        }
-        return true;
-    };
-
     const handleSubmit = () => {
-        if (validateCardDetails()) {
-            onSubmit(cardDetails);
+        const result = PaymentSchema.safeParse(cardDetails);
+        if (result.success) {
+            onSubmit(result.data);
             setError(''); // Clear any previous error
+        } else {
+            setError(result.error.issues[0]?.message || 'Invalid data');
         }
     };
 

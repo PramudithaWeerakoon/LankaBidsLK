@@ -77,7 +77,34 @@ export const productSchema = z.object({
   Image: z.string().min(1, "An image must be selected").optional(),
 });
 
+export const PaymentSchema = z.object({
+  cardHolderName: z.string()
+    .min(1, { message: "Cardholder Name is required" })
+    .max(100, { message: "Cardholder Name must be at most 100 characters long" })
+    .transform((val) => sanitizeString(val)),
+
+  cardNo: z.string()
+    .min(16, { message: "Card number must be at least 16 digits long" })
+    .max(19, { message: "Card number must be at most 19 digits long" })
+    .refine((val) => /^[0-9]+$/.test(val), { message: "Card number must contain only digits" }),
+
+  cvv: z.string()
+    .min(3, { message: "CVV must be at least 3 digits long" })
+    .max(4, { message: "CVV must be at most 4 digits long" })
+    .refine((val) => /^[0-9]+$/.test(val), { message: "CVV must contain only digits" }),
+
+  billingAddress: z.string()
+    .min(1, { message: "Billing Address is required" })
+    .max(255, { message: "Billing Address must be at most 255 characters long" })
+    .transform((val) => sanitizeString(val)),
+});
+
+// Type for inferred payment form data
+export type PaymentFormInput = z.infer<typeof PaymentSchema>;
+
 export type ProductInput = z.infer<typeof productSchema>;
+
+
 /*import * as z from "zod";
 
 // Helper function to sanitize strings
