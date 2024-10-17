@@ -37,7 +37,7 @@ const Header = async () => {
                                                 <a href="/dashboard" className="hover:underline">Dashboard</a>
                                             </li>
                                             <li>
-                                                <a href="/add-products" className="hover:underline">Add Products</a>
+                                                <a href="/manageproducts" className="hover:underline">Manage Products</a>
                                             </li>
                                             <li>
                                                 <a href="/sales" className="hover:underline">Sales</a>

@@ -59,10 +59,25 @@ export const bidSchema = z.object({
   MinIncrement: z.number()
     .min(0, "Minimum increment must be positive.")
 });
+export const productSchema = z.object({
+  ItemName: z.string().min(1, "Item name is required"),
+  ItemDescription: z.string().min(1, "Description is required"),
+  category: z.string().min(1, "Category is required"),
+  StartingPrice: z.number().min(0, "Starting price must be at least 0").nullable().refine((val) => val !== null, {
+    message: "Starting price cannot be null",
+  }),
+  CurrentPrice: z.number().optional(),
+  MinIncrement: z.number().min(1, "Minimum increment must be at least 1").nullable().refine((val) => val !== null, {
+    message: "Minimum increment cannot be null or less than 1",
+  }),
+  BidEndTime: z.string().refine((date) => !isNaN(new Date(date).getTime()), {
+    message: "Bid end time must be a valid date",
+  }),
+  Status: z.enum(["Open", "Closed"]).default("Open"),
+  Image: z.string().min(1, "An image must be selected").optional(),
+});
 
-
-
-
+export type ProductInput = z.infer<typeof productSchema>;
 /*import * as z from "zod";
 
 // Helper function to sanitize strings
