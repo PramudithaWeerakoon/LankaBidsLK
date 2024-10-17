@@ -352,8 +352,14 @@ export async function updatePaymentAndPlaceBid(
 
 export async function checkExistingPaymentAndBid(
     BidItemID: number,
-    UserID: number,
+   
 ) {
+    const user = await getCurrentUser();
+    if (!user) {
+        return { error: "User not authenticated" };
+    }
+    const UserID = Number(user.id);
+
     const prisma = getPrismaClientForRole(3); // Adjust role if necessary
 
     try {

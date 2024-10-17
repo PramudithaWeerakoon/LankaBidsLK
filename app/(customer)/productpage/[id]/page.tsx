@@ -100,7 +100,7 @@ export default function ProductPage({ params }: ProductPageProps) {
         setError('');
 
         try {
-            const existingPaymentResult = await checkExistingPaymentAndBid(productID, 8);
+            const existingPaymentResult = await checkExistingPaymentAndBid(productID);
 
             if (existingPaymentResult.exists) {
                 setIsConfirmOpen(true); // Open Confirm modal
