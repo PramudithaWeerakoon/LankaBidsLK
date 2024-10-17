@@ -54,6 +54,10 @@ export const {
         {
           session.user.role = token.role;
         }
+        if(token.IsTwoFactorEnabled && session.user)
+        {
+          session.user.IsTwoFactorEnabled = token.IsTwoFactorEnabled; 
+        }
 
       // console.log("Session jwt", token);
       return session;
@@ -65,6 +69,7 @@ export const {
       const user = await getUserByEmail(token.email);
       if(!user) return token;
       token.role = user.RoleID;
+      token.IsTwoFactorEnabled = user.IsTwoFactorEnabled;
       return token;
     }},
   adapter: PrismaAdapter(getPrismaClientForRole(1)),
