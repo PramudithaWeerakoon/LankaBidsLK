@@ -14,22 +14,27 @@ export const LogoutForm = () => {
     const [success, setSuccess] = useState<string | undefined>();
     const [loading, setLoading] = useState<boolean>(false);
     const router = useRouter(); 
-
     const onSubmit = useCallback(async () => {
-        setLoading(true); 
-        setError(undefined); 
-        setSuccess(undefined); 
+        setLoading(true);
+        setError(undefined);
+        setSuccess(undefined);
 
         try {
-            await signOut({ redirectTo: DEFAULT_LOGIN_REDIRECT }); 
-            setSuccess("You have successfully logged out."); 
+            await signOut({ redirectTo: DEFAULT_LOGIN_REDIRECT });
+            // Clear token cache
+            localStorage.removeItem("token");
+            sessionStorage.removeItem("token");
+            localStorage.removeItem("authjs.callback-url");
+            localStorage.removeItem("authjs.csrf-token");
+            localStorage.removeItem("authjs.session-token");
+            setSuccess("You have successfully logged out.");
             setTimeout(() => {
-                router.push("/auth/login"); 
+                router.push("/auth/login");
             }, 2000);
         } catch (err) {
-            setError("An error occurred while logging out. Please try again."); 
+            setError("An error occurred while logging out. Please try again.");
         } finally {
-            setLoading(false); 
+            setLoading(false);
         }
     }, [router]);
 

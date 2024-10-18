@@ -1,14 +1,12 @@
 'use server';
 import getPrismaClientForRole from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth';
-import { writeGeneralLog } from '@/utils/logging'; // Import logging utility
 
 export async function getSalesDataForUser() {
     const prisma = getPrismaClientForRole(2);
     const user = await getCurrentUser();
 
     if (!user || !user.id) {
-        writeGeneralLog('general.log', 'Fetch', 'Sales Data', 'Guest', 'Fetch', 'Failure', 'User not authenticated');
         console.warn('User not authenticated');
         return null;
     }
@@ -45,11 +43,9 @@ export async function getSalesDataForUser() {
                 deliver_states = 0;
         `;
 
-        writeGeneralLog('general.log', 'Fetch', 'Sales Data', user.email!, 'Fetch', 'Success', `${items.length} items fetched successfully`);
         console.log(`Items fetched: ${JSON.stringify(items)}`);
         return items;
     } catch (error: any) {
-        writeGeneralLog('general.log', 'Fetch', 'Sales Data', user.email!, 'Fetch', 'Failure', `Error: ${error.message || error}`);
         console.error('Error fetching sales data:', error.message || error);
         throw new Error('Failed to fetch sales data. Please try again later.');
     } finally {
@@ -59,12 +55,6 @@ export async function getSalesDataForUser() {
 
 export const updateDeliveryState = async (id: string) => {
     const prisma = getPrismaClientForRole(2);
-    const user = await getCurrentUser();
-
-    if (!user || !user.id) {
-        writeGeneralLog('general.log', 'Update', 'Delivery State', 'Guest', 'Update', 'Failure', 'User not authenticated');
-        return { error: 'User not authenticated' };
-    }
 
     try {
         console.log(`Updating delivery state for BidItemID: ${id}`);
@@ -75,11 +65,9 @@ export const updateDeliveryState = async (id: string) => {
             WHERE BidItemID = ${id};
         `;
 
-        writeGeneralLog('general.log', 'Update', 'Delivery State', user.email!, 'Update', 'Success', `Delivery state updated for BidItemID: ${id}`);
         console.log(`Delivery state updated for BidItemID: ${id}`);
         return result;
     } catch (error: any) {
-        writeGeneralLog('general.log', 'Update', 'Delivery State', user.email!, 'Update', 'Failure', `Error: ${error.message || error}`);
         console.error('Error updating delivery state:', error.message || error);
         throw new Error('Failed to update delivery state. Please try again later.');
     } finally {

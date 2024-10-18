@@ -1,3 +1,7 @@
+// SalesCard.tsx
+'use client'; // Ensure this is a client-side component
+
+import { useRouter } from 'next/navigation'; // Use `next/navigation` for the App directory
 import React from 'react';
 
 type SalesCardProps = {
@@ -10,7 +14,6 @@ type SalesCardProps = {
     status: string;
     deliveryState: number;
     onUpdateDeliveryState: (id: string) => void;
-    onItemClick: (id: string) => void;
 };
 
 const SalesCard: React.FC<SalesCardProps> = ({
@@ -23,13 +26,14 @@ const SalesCard: React.FC<SalesCardProps> = ({
     status,
     deliveryState,
     onUpdateDeliveryState,
-    onItemClick,
 }) => {
+    const router = useRouter();
+
     return (
         <div className="border p-4 rounded shadow">
             <h2
                 className="text-lg font-semibold cursor-pointer"
-                onClick={() => onItemClick(bidItemID)}
+                onClick={() => router.push(`/bid/${bidItemID}`)} // Navigate to the bid details page
             >
                 {itemName}
             </h2>
@@ -39,11 +43,14 @@ const SalesCard: React.FC<SalesCardProps> = ({
             <p className="text-gray-500">Bid Ends: {new Date(bidEndTime).toLocaleString()}</p>
             <p className={`text-sm font-medium ${status === 'Completed' ? 'text-green-500' : 'text-red-500'}`}>
                 Status: {status}
-            </p>  
+            </p>
             {deliveryState === 0 && (
                 <button onClick={() => onUpdateDeliveryState(bidItemID)} className="bg-blue-500 text-white px-4 py-2 rounded">
                     Mark as Delivered
                 </button>
+            )}
+            {deliveryState === 1 && (
+                <p className="text-green-500 font-semibold">Item Delivered</p>
             )}
         </div>
     );
