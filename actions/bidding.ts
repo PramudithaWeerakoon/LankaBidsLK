@@ -5,6 +5,8 @@ import getPrismaClientForRole from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth';
 import { bidSchema } from '@/schemas';
 import { ALL } from 'dns';
+import { writeLog } from '@/utils/logging';
+
 
 // Fetch bid item details by BidItemID
 /*async function fetchBidItem(BidItemID: number) {
@@ -103,6 +105,7 @@ import { ALL } from 'dns';
 export async function countUniqueBidders(BidItemID: number) {
     const roleId = 3; // Customer Role ID
     const prisma = getPrismaClientForRole(roleId);
+    const user = await getCurrentUser();
 
     try {
         const result = await prisma.$queryRaw<
@@ -129,6 +132,14 @@ export async function countUniqueBidders(BidItemID: number) {
 export async function getSingleBidItem(bidItemId: number) {
     const roleId = 3; // Customer Role ID
     const prisma = getPrismaClientForRole(roleId);
+    const user = await getCurrentUser(); // Get the current user
+    const userId = user ? parseInt(user.id!) : 0; // Get the UserID
+
+    if (!user) {
+        writeLog('bidding.log', 'Guest', 0, bidItemId, 'Fetch', 'Failure', 'User not authenticated');
+        return null;
+    }
+
 
     try {
         const result = await prisma.$queryRaw<
@@ -158,12 +169,17 @@ export async function getSingleBidItem(bidItemId: number) {
                 BidItemID = ${bidItemId};
         `;
 
-        if (!result || result.length === 0) return null;
+        if (!result || result.length === 0){
+            writeLog('bidding.log', 'Customer', userId, bidItemId, 'Fetch', 'Failure', `No bid item found with ID: ${bidItemId}`);
+            return null;
+
+        }
 
         const bidItem = result[0];
 
         // Fetch unique bidder count from bids table
         const uniqueBiddersCount = await countUniqueBidders(bidItemId);
+        writeLog('bidding.log', 'Customer', userId, bidItemId, 'Fetch', 'Success', `Bid item fetched successfully`);
 
         return {
             BidItemID: bidItem.BidItemID,
@@ -177,6 +193,7 @@ export async function getSingleBidItem(bidItemId: number) {
             UniqueBiddersCount: uniqueBiddersCount, // Include unique bidder count
         };
     } catch (error: any) {
+        writeLog('bidding.log', userType, userId, bidItemId, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
         console.error('Error fetching bid item:', error.message || error);
         throw new Error('Failed to fetch bid item.');
     } finally {
@@ -189,6 +206,7 @@ export async function getSingleBidItem(bidItemId: number) {
 export async function getUserBidHistory(BidItemID: number) {
     const user = await getCurrentUser();
     if (!user) {
+        writeLog('bidding.log', 'Guest', 0, BidItemID, 'Fetch', 'Failure', 'User not authenticated');
         return { error: "User not authenticated" };
     }
 
@@ -213,12 +231,15 @@ export async function getUserBidHistory(BidItemID: number) {
                 BidTime DESC;
         `;
 
+        writeLog('bidding.log', 'Customer', parseInt(user.id!), BidItemID, 'Fetch', 'Success', 'Bid history fetched successfully');
+
         // Format bid history data for the client
         return result.map(bid => ({
             BidAmount: parseFloat(bid.BidAmount.toString()),
             createdAt: bid.BidTime ? new Date(bid.BidTime).toISOString() : '',
         }));
     } catch (error: any) {
+        writeLog('bidding.log', 'Customer', parseInt(user.id!), BidItemID, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
         console.error('Error fetching user bid history:', error.message || error);
         throw new Error('Failed to fetch bid history.');
     } finally {
@@ -231,6 +252,7 @@ export async function getUserBidHistory(BidItemID: number) {
 export async function getAdditionalBidItems(currentBidItemId: number) {
     const roleId = 3; // Customer Role ID
     const prisma = getPrismaClientForRole(roleId);
+    const user = await getCurrentUser(); // Get the current user
 
     try {
         const result = await prisma.$queryRaw<
@@ -252,7 +274,11 @@ export async function getAdditionalBidItems(currentBidItemId: number) {
                 BidItemID != ${currentBidItemId} 
             LIMIT 8; 
         `;
-
+        if (!result || result.length === 0) {
+            writeLog('bidding.log', 'Customer', parseInt(user?.id!), 0, 'Fetch', 'Failure', 'No additional bid items found');
+            return [];
+        }
+        writeLog('bidding.log', 'Customer', parseInt(user?.id!), 0, 'Fetch', 'Success', 'Additional bid items fetched successfully');
         // Convert images to base64 and CurrentPrice to number
         return result.map(item => ({
             BidItemID: item.BidItemID,
@@ -261,6 +287,7 @@ export async function getAdditionalBidItems(currentBidItemId: number) {
             Image: item.Image ? Buffer.from(item.Image).toString('base64') : '',
         }));
     } catch (error: any) {
+        writeLog('bidding.log', 'Customer', parseInt(user?.id!), 0, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
         console.error("Error fetching additional bid items:", error.message || error);
         return [];
     } finally {
@@ -281,6 +308,7 @@ export async function submitNewPaymentAndPlaceBid(
 ) {
     const user = await getCurrentUser();
     if (!user) {
+        writeLog('bidding.log', 'Guest', 0, BidItemID, 'Fetch', 'Failure', 'User not authenticated');
         return { success: false, message: "User not authenticated" };
     }
 
@@ -298,7 +326,7 @@ export async function submitNewPaymentAndPlaceBid(
             INSERT INTO payments (UserID, BidItemID, CardHolderName, CardNo, cvv, Amount, BillingAddress, PaymentDate, PaymentStatus, PaymentMethod)
             VALUES (${userId}, ${BidItemID}, ${CardHolderName}, ${CardNo}, ${cvv}, ${BidAmount}, ${BillingAddress}, ${paymentDate}, ${paymentStatus}, ${paymentMethod});
         `;
-
+        writeLog('bidding.log', 'Customer', userId, BidItemID, 'Create', 'Success', 'Payment processed successfully');
         // Perform bid insertion and current price update as a transaction
         await prisma.$transaction(async (tx) => {
             // Insert new bid entry using raw SQL
@@ -306,6 +334,7 @@ export async function submitNewPaymentAndPlaceBid(
                 INSERT INTO bids (BidItemID, UserID, BidAmount)
                 VALUES (${BidItemID}, ${userId}, ${BidAmount});
             `;
+            writeLog('bidding.log', 'Customer', userId, BidItemID, 'Create', 'Success', 'Bid placed successfully');
 
             // Update the current bid price on bid item using raw SQL
             await tx.$executeRaw`
@@ -313,11 +342,13 @@ export async function submitNewPaymentAndPlaceBid(
                 SET CurrentPrice = ${BidAmount}
                 WHERE BidItemID = ${BidItemID};
             `;
+            writeLog('bidding.log', 'Customer', userId, BidItemID, 'Update', 'Success', 'Bid price updated successfully');
         });
 
         return { success: true, message: 'Payment and bid processed successfully' };
 
     } catch (error: any) {
+        writeLog('bidding.log', 'Customer', parseInt(user.id!), BidItemID, 'Submit', 'Failure', `Error: ${(error as Error).message}`);
         console.error("Error processing payment and bid:", error.message || error);
         return { success: false, message: 'Failed to process payment and bid', error };
     } finally {
@@ -331,6 +362,7 @@ export async function updatePaymentAndPlaceBid(
 ) {
     const user = await getCurrentUser();
     if (!user) {
+        writeLog('bidding.log', 'Guest', 0, BidItemID, 'Fetch', 'Failure', 'User not authenticated');
         return { success: false, message: "User not authenticated" };
     }
 
@@ -348,9 +380,11 @@ export async function updatePaymentAndPlaceBid(
                 SET Amount = ${BidAmount}, PaymentDate = ${paymentDate}
                 WHERE UserID = ${userId} AND BidItemID = ${BidItemID};
             `;
+            writeLog('bidding.log', 'Customer', userId, BidItemID, 'Update', 'Success', 'Payment updated successfully');
 
             // Check if the update affected any rows
             if (updatedPayment === 0) {
+                writeLog('bidding.log', 'Customer', userId, BidItemID, 'Update', 'Failure', 'No payment record found for update');
                 throw new Error('No existing payment record found for update');
             }
 
@@ -359,6 +393,7 @@ export async function updatePaymentAndPlaceBid(
                 INSERT INTO bids (BidItemID, UserID, BidAmount)
                 VALUES (${BidItemID}, ${userId}, ${BidAmount});
             `;
+            writeLog('bidding.log', 'Customer', userId, BidItemID, 'Create', 'Success', 'Bid placed successfully');
 
             // Update the CurrentPrice field in the biditems table using raw SQL
             await tx.$executeRaw`
@@ -366,11 +401,13 @@ export async function updatePaymentAndPlaceBid(
                 SET CurrentPrice = ${BidAmount}
                 WHERE BidItemID = ${BidItemID};
             `;
+            writeLog('bidding.log', 'Customer', userId, BidItemID, 'Update', 'Success', 'Bid price updated successfully');
         });
 
         return { success: true, message: 'Payment, bid, and bid item updated successfully' };
 
     } catch (error: any) {
+        writeLog('bidding.log', 'Customer', parseInt(user.id!), BidItemID, 'Submit', 'Failure', `Error: ${(error as Error).message}`);
         console.error("Error updating payment and placing bid:", error.message || error);
         return { success: false, message: 'Failed to update payment and place bid', error };
     } finally {
@@ -385,6 +422,7 @@ export async function checkExistingPaymentAndBid(
 ) {
     const user = await getCurrentUser();
     if (!user) {
+        writeLog('bidding.log', 'Guest', 0, BidItemID, 'Fetch', 'Failure', 'User not authenticated');
         return { error: "User not authenticated" };
     }
 
@@ -412,6 +450,8 @@ export async function checkExistingPaymentAndBid(
 
         // If a payment entry exists, return it to determine user action (update or continue)
         if (existingPayment.length > 0) {
+            writeLog('bidding.log', 'Customer', UserID, BidItemID, 'Fetch', 'Success', 'Existing payment found');
+
             return {
                 exists: true,
                 paymentData: {
@@ -420,10 +460,12 @@ export async function checkExistingPaymentAndBid(
                 },
             };
         }
+        writeLog('bidding.log', 'Customer', UserID, BidItemID, 'Fetch', 'Success', 'No existing payment found');
 
         // If no payment entry exists, return flag to prompt new payment entry
         return { exists: false };
     } catch (error: any) {
+        writeLog('bidding.log', 'Customer', UserID, BidItemID, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
         console.error("Error checking existing payment:", error.message || error);
         return { error: "Error checking payment status" };
     } finally {
