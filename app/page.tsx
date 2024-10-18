@@ -1,14 +1,13 @@
 // app/page.tsx
 
 import Image from 'next/image';
-import vehicleImage from '@/components/Home/bg.jpg';
 import partnerLogo1 from '@/components/Home/samsung.png';
 import partnerLogo2 from '@/components/Home/apple.png';
 import partnerLogo3 from '@/components/Home/mi.png';
 import partnerLogo4 from '@/components/Home/asus.png';
 import Card from '@/components/customer/card/card';
 import { getHotDealsForCustomer } from '@/actions/hotdeals';
-import { searchProducts } from '@/actions/searchActions'; // Updated import
+import { searchProducts } from '@/actions/searchActions'; 
 
 interface HomePageProps {
     searchParams: { query?: string };
@@ -23,39 +22,45 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
 
     return (
         <div className="w-full">
-            <div className="relative w-full h-screen flex items-center justify-center bg-gray-900">
-                <Image
-                    src={vehicleImage}
-                    alt="Vehicle background"
-                    layout="fill"
-                    objectFit="cover"
-                    className="absolute inset-0 z-0"
+            <div className="relative w-full h-[80vh] flex items-center justify-center bg-gray-900"> {/* Reduced height */}
+        {/* Background video */}
+        <video 
+            autoPlay 
+            loop 
+            muted 
+            className="absolute top-0 left-0 w-full h-full object-cover z-0"
+            playsInline
+        >
+            <source src="/video1.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+        </video>
+
+        {/* Overlay and Content */}
+        <div className="absolute inset-0 bg-black bg-opacity-30 z-10"></div>
+        <div className="relative z-20 text-center">
+            <h1 className="text-4xl font-bold mb-4 text-white">
+                Find the Best Products to Buy and Sell Near You
+            </h1>
+            <p className="text-lg mb-8 text-white">
+                Search Products from trusted sellers near you.
+            </p>
+            <form action="/" method="GET" className="flex justify-center items-center">
+                <input
+                    type="text"
+                    name="query"
+                    placeholder="Search product by name..."
+                    defaultValue={searchQuery}
+                    className="w-[300px] p-2 text-gray-900 rounded-l-lg focus:outline-none text-sm"
                 />
-                <div className="absolute inset-0 bg-black opacity-10 z-10"></div>
-                <div className="relative z-20 text-center text-white">
-                    <h1 className="text-4xl font-bold mb-4">
-                        Find the Best Products to Buy and Sell Near You
-                    </h1>
-                    <p className="text-lg mb-8">
-                        Search Products from trusted sellers near you.
-                    </p>
-                    <form action="/" method="GET" className="flex justify-center items-center">
-                        <input
-                            type="text"
-                            name="query"
-                            placeholder="Search product by name..."
-                            defaultValue={searchQuery}
-                            className="w-[300px] p-2 text-gray-900 rounded-l-lg focus:outline-none text-sm"
-                        />
-                        <button
-                            type="submit"
-                            className="px-4 py-2 bg-gradient-to-r text-sm from-blue-800 to-blue-600 hover:from-blue-900 hover:to-blue-700 rounded-r-lg text-white transition duration-200"
-                        >
-                            Search
-                        </button>
-                    </form>
-                </div>
-            </div>
+                <button
+                    type="submit"
+                    className="px-4 py-2 bg-gradient-to-r text-sm from-blue-800 to-blue-600 hover:from-blue-900 hover:to-blue-700 rounded-r-lg text-white transition duration-200"
+                >
+                    Search
+                </button>
+            </form>
+        </div>
+    </div>
 
             <div className="py-12 bg-white">
                 {/* Display search results if there is a search query */}
