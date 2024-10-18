@@ -7,6 +7,7 @@ export const publicRoutes = [
     "/",
     "/auth/verify-email",
     "/products",
+    "/video1.mp4",
   ];
   
   /**
@@ -16,7 +17,6 @@ export const publicRoutes = [
    */
   export const authRoutes = [
     "/auth/login",
-    "public",
     "/auth/register",
     "/auth/error",
     "/auth/reset",

@@ -45,3 +45,85 @@
 [2024-10-18 17:22:20] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
 [2024-10-18 17:23:25] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
 [2024-10-18 17:26:15] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-18 18:24:31] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:24:34] [Operation: Login] [Resource: Authentication] [UserEmail: ryansilvaslyt@gmail.com]: Account Check - Failed - Account Doesn't Exist
+[2024-10-18 18:24:43] [Operation: Create] [Resource: User Registration] [UserEmail: guest]: Validate Input - Info - Validating input data
+[2024-10-18 18:24:43] [Operation: Create] [Resource: User Registration] [UserEmail: ryansilvaslyt@gmail.com]: Check Existing User - Info - Checking if user already exists
+[2024-10-18 18:24:43] [Operation: Create] [Resource: User Registration] [UserEmail: ryansilvaslyt@gmail.com]: Check Existing User - Failure - Error Details: User with this email or username already exists
+[2024-10-18 18:24:59] [Operation: Create] [Resource: User Registration] [UserEmail: guest]: Validate Input - Info - Validating input data
+[2024-10-18 18:24:59] [Operation: Create] [Resource: User Registration] [UserEmail: ryansilvaslyt@gmail.com]: Check Existing User - Info - Checking if user already exists
+[2024-10-18 18:24:59] [Operation: Create] [Resource: User Registration] [UserEmail: ryansilvaslyt@gmail.com]: Insert User - Success - User created successfully
+[2024-10-18 18:24:59] [Operation: Fetch] [Resource: VerificationToken] [UserEmail: ryansilvaslyt@gmail.com]: Fetch - Failure - Error Details: No verification token found with the provided email.
+[2024-10-18 18:25:01] [Operation: Create] [Resource: User Registration] [UserEmail: ryansilvaslyt@gmail.com]: Send Verification Email - Success - Verification email sent
+[2024-10-18 18:25:14] [Operation: Verification] [Resource: Token] [UserEmail: Guest]: Verify Token - Initiated - Token: 54b76f69-1b71-41db-a666-31fe52fc06e5
+[2024-10-18 18:25:14] [Operation: Fetch] [Resource: VerificationToken] [UserEmail: 54b76f69-1b71-41db-a666-31fe52fc06e5]: Fetch - Success - Verification token found successfully.
+[2024-10-18 18:25:14] [Operation: Verification] [Resource: User] [UserEmail: ryansilvaslyt@gmail.com]: Verify Email - Success - Email verified successfully
+[2024-10-18 18:25:14] [Operation: Verification] [Resource: Token] [UserEmail: Guest]: Verify Token - Initiated - Token: 54b76f69-1b71-41db-a666-31fe52fc06e5
+[2024-10-18 18:25:14] [Operation: Fetch] [Resource: VerificationToken] [UserEmail: 54b76f69-1b71-41db-a666-31fe52fc06e5]: Fetch - Failure - Error Details: No verification token found with the provided token.
+[2024-10-18 18:25:14] [Operation: Verification] [Resource: Token] [UserEmail: Guest]: Verify Token - Failed - Token doesn't exist
+[2024-10-18 18:25:17] [Operation: Fetch] [Resource: VerificationToken] [UserEmail: ryansilvaslyt@gmail.com]: Fetch - Failure - Error Details: No verification token found with the provided email.
+[2024-10-18 18:25:18] [Operation: Login] [Resource: Authentication] [UserEmail: ryansilvaslyt@gmail.com]: 2FA Code - Requested - Two-factor code sent
+[2024-10-18 18:25:28] [Operation: Fetch] [Resource: TwoFactorToken] [UserEmail: System]: Fetch - Success - 2FA token fetched successfully for email: ryansilvaslyt@gmail.com
+[2024-10-18 18:25:28] [Operation: Fetch] [Resource: TwoFactorConfirmation] [UserEmail: System]: Fetch - Failure - Error Details: No two-factor confirmation found for userId: 1
+[2024-10-18 18:26:08] [Operation: Fetch] [Resource: VerificationToken] [UserEmail: ryansilvaslyt@gmail.com]: Fetch - Failure - Error Details: No verification token found with the provided email.
+[2024-10-18 18:26:09] [Operation: Login] [Resource: Authentication] [UserEmail: ryansilvaslyt@gmail.com]: 2FA Code - Requested - Two-factor code sent
+[2024-10-18 18:26:20] [Operation: Fetch] [Resource: TwoFactorToken] [UserEmail: System]: Fetch - Success - 2FA token fetched successfully for email: ryansilvaslyt@gmail.com
+[2024-10-18 18:26:20] [Operation: Fetch] [Resource: TwoFactorConfirmation] [UserEmail: System]: Fetch - Failure - Error Details: No two-factor confirmation found for userId: 1
+[2024-10-18 18:26:20] [Operation: Login] [Resource: Authentication] [UserEmail: ryansilvaslyt@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-18 18:26:20] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:26:25] [Operation: Fetch] [Resource: Products] [UserEmail: ryansilvaslyt@gmail.com]: Fetch - Success - 11 products fetched successfully
+[2024-10-18 18:26:29] [Operation: Fetch] [Resource: Bid Item] [UserEmail: ryansilvaslyt@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-18 18:26:29] [Operation: Fetch] [Resource: Bid Item] [UserEmail: ryansilvaslyt@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-18 18:26:29] [Operation: Fetch] [Resource: Bid History] [UserEmail: ryansilvaslyt@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-18 18:26:29] [Operation: Fetch] [Resource: Bid History] [UserEmail: ryansilvaslyt@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-18 18:26:30] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: ryansilvaslyt@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-18 18:26:30] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: ryansilvaslyt@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-18 18:26:35] [Operation: Fetch] [Resource: Payment] [UserEmail: ryansilvaslyt@gmail.com]: checkExistingPaymentAndBid - Success - No existing payment found
+[2024-10-18 18:26:53] [Operation: Fetch] [Resource: My Bids] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Bids - Success - Fetched My Bids successfully
+[2024-10-18 18:26:53] [Operation: Fetch] [Resource: My Bids] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Bids - Success - Fetched My Bids successfully
+[2024-10-18 18:28:14] [Operation: Fetch] [Resource: My Bids] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Bids - Success - Fetched My Bids successfully
+[2024-10-18 18:28:14] [Operation: Fetch] [Resource: My Bids] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Bids - Success - Fetched My Bids successfully
+[2024-10-18 18:28:19] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:28:47] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:28:52] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:29:13] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:29:22] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:29:34] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:29:41] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:29:44] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:29:52] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:29:52] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:30:04] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:30:11] [Operation: Customer] [Resource: ryansilvaslyt@gmail.com] [UserEmail: Update]: Success - Settings updated successfully - 
+[2024-10-18 18:30:16] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:30:19] [Operation: Read] [Resource: Dashboard Data] [UserEmail: ryansilvaslyt@gmail.com]: Fetch - Success - Dashboard data fetched successfully
+[2024-10-18 18:30:20] [Operation: Read] [Resource: Dashboard Data] [UserEmail: ryansilvaslyt@gmail.com]: Fetch - Success - Dashboard data fetched successfully
+[2024-10-18 18:30:27] [Operation: Fetch] [Resource: Sales Data] [UserEmail: ryansilvaslyt@gmail.com]: Fetch - Failure - Error Details: Error: 
+Invalid `prisma.$queryRaw()` invocation:
+
+
+Raw query failed. Code: `1054`. Message: `Unknown column 'deliver_states' in 'field list'`
+[2024-10-18 18:30:27] [Operation: Fetch] [Resource: Sales Data] [UserEmail: ryansilvaslyt@gmail.com]: Fetch - Failure - Error Details: Error: 
+Invalid `prisma.$queryRaw()` invocation:
+
+
+Raw query failed. Code: `1054`. Message: `Unknown column 'deliver_states' in 'field list'`
+[2024-10-18 18:30:29] [Operation: Read] [Resource: Dashboard Data] [UserEmail: ryansilvaslyt@gmail.com]: Fetch - Success - Dashboard data fetched successfully
+[2024-10-18 18:30:29] [Operation: Read] [Resource: Dashboard Data] [UserEmail: ryansilvaslyt@gmail.com]: Fetch - Success - Dashboard data fetched successfully
+[2024-10-18 18:30:30] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:30:30] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:30:32] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:30:45] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:30:45] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:31:02] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:31:40] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:31:44] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: ryansilvaslyt@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:31:47] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:31:47] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:31:55] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:31:57] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:32:12] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:32:30] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:32:32] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:34:06] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 18:34:17] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
