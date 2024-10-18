@@ -159,3 +159,33 @@ Raw query failed. Code: `1054`. Message: `Unknown column 'deliver_states' in 'fi
 [2024-10-18 19:37:20] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: Dhanurikeshara@gmail.com]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
 [2024-10-18 19:37:29] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
 [2024-10-18 19:37:30] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-18 19:49:00] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 19:49:00] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 19:49:05] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 19:49:07] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 19:49:20] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 19:49:25] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 19:52:23] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 19:52:29] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 19:52:29] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 19:52:32] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 19:53:44] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 19:54:54] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 20:00:16] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 20:00:16] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 20:00:57] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 20:01:21] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 20:01:28] [Operation: Login] [Resource: Authentication] [UserEmail: testguy1@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-18 20:01:28] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: testguy1@gmail.com]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 20:01:31] [Operation: Fetch] [Resource: Products] [UserEmail: testguy1@gmail.com]: Fetch - Success - 8 products fetched successfully
+[2024-10-18 20:01:35] [Operation: Fetch] [Resource: My Bids] [UserEmail: testguy1@gmail.com]: Fetch Bids - Success - Fetched My Bids successfully
+[2024-10-18 20:01:35] [Operation: Fetch] [Resource: My Bids] [UserEmail: testguy1@gmail.com]: Fetch Bids - Success - Fetched My Bids successfully
+[2024-10-18 20:01:38] [Operation: Delete] [Resource: My Bids] [UserEmail: testguy1@gmail.com]: Bid ID: 50 - Success - Bid deleted successfully
+[2024-10-18 20:01:39] [Operation: Fetch] [Resource: My Bids] [UserEmail: testguy1@gmail.com]: Fetch Bids - Success - Fetched My Bids successfully
+[2024-10-18 20:01:39] [Operation: Fetch] [Resource: My Bids] [UserEmail: testguy1@gmail.com]: Fetch Bids - Success - Fetched My Bids successfully
+[2024-10-18 20:01:40] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: testguy1@gmail.com]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-18 20:01:45] [Operation: Fetch] [Resource: Products] [UserEmail: testguy1@gmail.com]: Fetch - Success - 8 products fetched successfully
+[2024-10-18 20:01:49] [Operation: Search] [Resource: Products] [UserEmail: testguy1@gmail.com]: Search - Success - Search term "Lap" validated successfully
+[2024-10-18 20:01:49] [Operation: Search] [Resource: Products] [UserEmail: testguy1@gmail.com]: Search - Info - Executing search query for term "Lap"
+[2024-10-18 20:01:49] [Operation: Search] [Resource: Products] [UserEmail: testguy1@gmail.com]: Search - Success - 2 search results fetched for term "Lap"
+[2024-10-18 20:01:53] [Operation: Fetch] [Resource: Products] [UserEmail: testguy1@gmail.com]: Fetch - Success - 8 products fetched successfully

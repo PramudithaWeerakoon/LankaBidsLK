@@ -17,8 +17,8 @@ export const getNavLinks = async () => {
 
         // Login/Register links for guests
         authLinks = [
-            { label: 'Login', href: '/auth/login' },
-            { label: 'Register', href: '/auth/register' }
+            { label: 'Login', href: '/recaptcha?mode=login' },
+            { label: 'Register', href: '/recaptcha?mode=register'}
         ];
     } else {
         // Links based on role

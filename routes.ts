@@ -8,6 +8,7 @@ export const publicRoutes = [
     "/auth/verify-email",
     "/products",
     "/video1.mp4",
+    "/recaptcha",
   ];
   
   /**
