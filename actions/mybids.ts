@@ -2,7 +2,7 @@
 'use server';
 import getPrismaClientForRole from '@/lib/db';
 import { mybids } from "@/data/mybids";
-import { writeLog,writeLogproduct } from '@/utils/logging';
+import { writeGeneralLog } from '@/utils/logging';
 import { getCurrentUser } from '@/lib/auth';
 
 export async function getBidDetailsForCustomer() {
@@ -11,7 +11,7 @@ export async function getBidDetailsForCustomer() {
 
     const userId = await mybids();
     if (!userId) {
-        writeLogproduct('mybids.log', 'Guest', `0`, 'Fetch', 'Failed', 'User not authenticated');
+        writeGeneralLog('general.log', 'Fetch', 'My Bids', 'Guest', 'Fetch Bids', 'Failed', 'User not authenticated');
         console.warn('User not authenticated');
         return null;
     }
@@ -51,7 +51,11 @@ export async function getBidDetailsForCustomer() {
             WHERE 
                 bids.UserID = ${userId};`;
 
-        writeLogproduct('mybids.log', 'Customer', user.email!, 'Fetch', 'Success', 'Fetched My Bids successfully');
+        if (user) {
+            writeGeneralLog('general.log', 'Fetch', 'My Bids', user.email!, 'Fetch Bids', 'Success', 'Fetched My Bids successfully');
+        } else {
+            writeGeneralLog('general.log', 'Fetch', 'My Bids', 'Unknown', 'Fetch Bids', 'Success', 'Fetched My Bids successfully');
+        }
 
         const processedBids = result.map((bid) => ({
             BidID: bid.BidID,
@@ -71,7 +75,11 @@ export async function getBidDetailsForCustomer() {
         console.log('Processed bids:', processedBids);
         return processedBids;
     } catch (error: any) {
-        writeLogproduct('mybids.log', 'Customer', user.email!, 'Fetch', 'Failed', `Error: ${error.message || error}`);
+        if (user) {
+            writeGeneralLog('general.log', 'Fetch', 'My Bids', user.email!, 'Fetch Bids', 'Failed', `Error: ${error.message || error}`);
+        } else {
+            writeGeneralLog('general.log', 'Fetch', 'My Bids', 'Unknown', 'Fetch Bids', 'Failed', `Error: ${error.message || error}`);
+        }
         console.error('Error fetching bid details:', error.message || error);
         throw new Error('Failed to fetch bid details. Please try again later.');
     } finally {
@@ -83,20 +91,23 @@ export async function deleteBid(bidID: number) {
     const prisma = getPrismaClientForRole(3);
     const user = await getCurrentUser();
 
+    if (!user) {
+        writeGeneralLog('general.log', 'Delete', 'My Bids', 'Guest', 'Delete Bid', 'Failed', 'User not authenticated');
+        throw new Error('User not authenticated');
+    }
 
     try {
         await prisma.$executeRaw`
             DELETE FROM bids
             WHERE BidID = ${bidID};
         `;
-        writeLog('mybids.log', 'Customer', user.email!, bidID,'Delete', 'Success', 'Bid deleted successfully');
+        writeGeneralLog('general.log', 'Delete', 'My Bids', user.email!, `Bid ID: ${bidID}`, 'Success', 'Bid deleted successfully');
         console.log(`Bid with ID ${bidID} has been deleted successfully.`);
     } catch (error: any) {
-        writeLog('mybids.log', 'Customer', user.email!, bidID,'Delete', 'Failed', `Error: ${error.message || error}`);
+        writeGeneralLog('general.log', 'Delete', 'My Bids', user.email!, `Bid ID: ${bidID}`, 'Failed', `Error: ${error.message || error}`);
         console.error('Error deleting bid:', error.message || error);
         throw new Error('Failed to delete bid. Please try again later.');
     } finally {
         await prisma.$disconnect();
     }
 }
-

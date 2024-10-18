@@ -1,0 +1,47 @@
+[2024-10-18 17:05:43] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:05:43] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:06:15] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: marsheledward@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 17:06:22] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: marsheledward@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 17:07:32] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: marsheledward@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 17:07:48] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:07:48] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:07:48] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:07:48] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:07:48] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:07:48] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:08:04] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:08:04] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:09:04] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:09:04] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:10:50] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:10:50] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:13:04] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: marsheledward@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 17:13:31] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: marsheledward@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 17:13:58] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:13:58] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:13:58] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:13:58] [Operation: Fetch] [Resource: User] [UserEmail: marsheledward@gmail.com]: Fetch - Success - User found successfully.
+[2024-10-18 17:14:14] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: marsheledward@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 17:14:36] [Operation: Search] [Resource: Products] [UserEmail: marsheledward@gmail.com]: Search - Success - Search term "car" validated successfully
+[2024-10-18 17:14:36] [Operation: Search] [Resource: Products] [UserEmail: marsheledward@gmail.com]: Search - Info - Executing search query for term "car"
+[2024-10-18 17:14:36] [Operation: Search] [Resource: Products] [UserEmail: marsheledward@gmail.com]: Search - Success - 2 search results fetched for term "car"
+[2024-10-18 17:14:37] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: marsheledward@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 17:14:51] [Operation: Search] [Resource: Products] [UserEmail: marsheledward@gmail.com]: Search - Success - Search term "car" validated successfully
+[2024-10-18 17:14:51] [Operation: Search] [Resource: Products] [UserEmail: marsheledward@gmail.com]: Search - Info - Executing search query for term "car"
+[2024-10-18 17:14:52] [Operation: Search] [Resource: Products] [UserEmail: marsheledward@gmail.com]: Search - Success - 2 search results fetched for term "car"
+[2024-10-18 17:14:52] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: marsheledward@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 17:15:04] [Operation: Search] [Resource: Products] [UserEmail: Guest]: Search - Success - Search term "car" validated successfully
+[2024-10-18 17:15:04] [Operation: Search] [Resource: Products] [UserEmail: Guest]: Search - Info - Executing search query for term "car"
+[2024-10-18 17:15:04] [Operation: Search] [Resource: Products] [UserEmail: Guest]: Search - Success - 2 search results fetched for term "car"
+[2024-10-18 17:15:04] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-18 17:15:35] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-18 17:17:47] [Operation: Fetch] [Resource: VerificationToken] [UserEmail: marsheledward@gmail.com]: Fetch - Failure - Error Details: No verification token found with the provided email.
+[2024-10-18 17:17:49] [Operation: Login] [Resource: Authentication] [UserEmail: marsheledward@gmail.com]: 2FA Code - Requested - Two-factor code sent
+[2024-10-18 17:18:01] [Operation: Fetch] [Resource: TwoFactorToken] [UserEmail: System]: Fetch - Success - 2FA token fetched successfully for email: marsheledward@gmail.com
+[2024-10-18 17:18:02] [Operation: Fetch] [Resource: TwoFactorConfirmation] [UserEmail: System]: Fetch - Success - Two-factor confirmation fetched successfully for userId: 10
+[2024-10-18 17:18:39] [Operation: Fetch] [Resource: TwoFactorToken] [UserEmail: System]: Fetch - Success - 2FA token fetched successfully for email: marsheledward@gmail.com
+[2024-10-18 17:18:39] [Operation: Login] [Resource: Authentication] [UserEmail: marsheledward@gmail.com]: 2FA Code - Failed - Invalid Code
+[2024-10-18 17:19:27] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-18 17:22:20] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-18 17:23:25] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-18 17:26:15] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found

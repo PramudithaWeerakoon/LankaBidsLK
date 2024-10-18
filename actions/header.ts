@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/lib/auth";
-import  handleLogout  from "@/actions/logout"; // Import the server action
+import handleLogout from "@/actions/logout"; // Import the server action
+import { writeGeneralLog } from "@/utils/logging"; // Import the logging utility
 
 export const getNavLinks = async () => {
     const user = await getCurrentUser();
@@ -51,6 +52,7 @@ export const getNavLinks = async () => {
                 label: 'Logout', href: '#', onClick: async () => {
                     console.log("Logging out...");
                     await handleLogout(); // Call the server action to logout
+                    writeGeneralLog('general.log', 'Logout', 'User', user.email!, 'Logout', 'Success', 'User logged out successfully');
                     window.location.href = "/"; // Redirect the user after logout
                 }
             }

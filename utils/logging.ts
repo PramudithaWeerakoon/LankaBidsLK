@@ -7,32 +7,24 @@ if (!fs.existsSync(logDirectory)) {
   fs.mkdirSync(logDirectory, { recursive: true });
 }
 
-// Utility function to write logs to a specific log file
-export function writeLog(logFile: string, role: string, userEmail: string, productId: number, action: string, result: string, details: string) {
+export function writeGeneralLog(
+  logFile: string, 
+  operation: string, 
+  resource: string, 
+  userEmail: string, 
+  action: string, 
+  result: string, 
+  details?: string
+) {
   const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
-  const logEntry = `[${timestamp}] [${role}] [UserEmail: ${userEmail}]: ${action} on ProductID: ${productId} - ${result} - ${details}\n`;
+  
+  // If the result is 'Failure', include the error details; otherwise, only log the result
+  const logDetails = result === 'Failure' && details ? ` - Error Details: ${details}` : ` - ${details || ''}`; 
+
+  const logEntry = `[${timestamp}] [Operation: ${operation}] [Resource: ${resource}] [UserEmail: ${userEmail}]: ${action} - ${result}${logDetails}`;
 
   const logFilePath = path.join(logDirectory, logFile);
 
   // Append the log entry to the specified log file
-  fs.appendFileSync(logFilePath, logEntry, 'utf8');
-}
-
-export function writeLogproduct(logFile: string, role: string, userEmail: string, action: string, result: string, details: string) {
-  const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
-  const logEntry = `[${timestamp}] [${role}] [UserEmail: ${userEmail}]: ${action} - ${result} - ${details}\n`;
-
-  const logFilePath = path.join(logDirectory, logFile);
-
-  // Append the log entry to the specified log file
-  fs.appendFileSync(logFilePath, logEntry, 'utf8');
-}
-export function writeLogregister(logFile: string, role: string, action: string, result: string, details: string) {
-  const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
-  const logEntry = `[${timestamp}] [${role}]: ${action} - ${result} - ${details}\n`;
-
-  const logFilePath = path.join(logDirectory, logFile);
-
-  // Append the log entry to the specified log file
-  fs.appendFileSync(logFilePath, logEntry, 'utf8');
+  fs.appendFileSync(logFilePath, logEntry + '\n', 'utf8');
 }

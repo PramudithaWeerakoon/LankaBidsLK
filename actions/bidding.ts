@@ -5,7 +5,7 @@ import getPrismaClientForRole from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth';
 import { bidSchema } from '@/schemas';
 import { ALL } from 'dns';
-import { writeLog } from '@/utils/logging';
+import { writeGeneralLog } from '@/utils/logging';
 
 
 // Fetch bid item details by BidItemID
@@ -102,22 +102,21 @@ import { writeLog } from '@/utils/logging';
 }*/
 
 // Count unique users who have placed bids on the specific BidItemID using groupBy
+// Count unique users who have placed bids on the specific BidItemID using groupBy
 export async function countUniqueBidders(BidItemID: number) {
     const roleId = 3; // Customer Role ID
     const prisma = getPrismaClientForRole(roleId);
     const user = await getCurrentUser();
 
     try {
-        const result = await prisma.$queryRaw<
-            Array<{ UserID: number }>
-        >`
+        const result = await prisma.$queryRaw<Array<{ UserID: number }>>`
             SELECT DISTINCT UserID 
             FROM bids 
             WHERE BidItemID = ${BidItemID};
         `;
-
         return result.length; // Count of unique users
     } catch (error: any) {
+        writeGeneralLog('general.log', 'Fetch', 'Bid Item', user?.email || 'Unknown', 'CountUniqueBidders', 'Failure', `Error: ${error.message || error}`);
         console.error('Error in countUniqueBidders:', error.message || error);
         return 0;
     } finally {
@@ -125,75 +124,48 @@ export async function countUniqueBidders(BidItemID: number) {
     }
 }
 
-
-// Main function to get bid item details and unique user bid count
-// Main function to get bid item details and unique bidder count
-// Main function to get bid item details and unique bidder count
+// Fetch bid item details
 export async function getSingleBidItem(bidItemId: number) {
     const roleId = 3; // Customer Role ID
     const prisma = getPrismaClientForRole(roleId);
-    const user = await getCurrentUser(); // Get the current user
-    const userId = user ? parseInt(user.id!) : 0; // Get the UserID
+    const user = await getCurrentUser();
 
     if (!user) {
-        writeLog('bidding.log', 'Guest', '0', bidItemId, 'Fetch', 'Failure', 'User not authenticated');
+        writeGeneralLog('general.log', 'Fetch', 'Bid Item', 'Guest', 'getSingleBidItem', 'Failure', 'User not authenticated');
         return null;
     }
 
-
     try {
-        const result = await prisma.$queryRaw<
-            Array<{
-                BidItemID: number;
-                ItemName: string;
-                ItemDescription: string;
-                category: string;
-                Image: Buffer | null;
-                CurrentPrice: number;
-                MinIncrement: number;
-                BidEndTime: string;
-            }>
-        >`
-            SELECT 
-                BidItemID, 
-                ItemName, 
-                ItemDescription, 
-                category, 
-                Image, 
-                CurrentPrice, 
-                MinIncrement, 
-                BidEndTime 
-            FROM 
-                biditems 
-            WHERE 
-                BidItemID = ${bidItemId};
+        const result = await prisma.$queryRaw<Array<{
+            BidItemID: number;
+            ItemName: string;
+            ItemDescription: string;
+            category: string;
+            Image: Buffer | null;
+            CurrentPrice: number;
+            MinIncrement: number;
+            BidEndTime: string;
+        }>>`
+            SELECT BidItemID, ItemName, ItemDescription, category, Image, CurrentPrice, MinIncrement, BidEndTime
+            FROM biditems WHERE BidItemID = ${bidItemId};
         `;
 
-        if (!result || result.length === 0){
-            writeLog('bidding.log', 'Customer', user.email!, bidItemId, 'Fetch', 'Failure', `No bid item found with ID: ${bidItemId}`);
+        if (!result || result.length === 0) {
+            writeGeneralLog('general.log', 'Fetch', 'Bid Item', user.email!, 'getSingleBidItem', 'Failure', `No bid item found with ID: ${bidItemId}`);
             return null;
-
         }
 
         const bidItem = result[0];
-
-        // Fetch unique bidder count from bids table
         const uniqueBiddersCount = await countUniqueBidders(bidItemId);
-        writeLog('bidding.log', 'Customer', user.email!, bidItemId, 'Fetch', 'Success', `Bid item fetched successfully`);
 
+        writeGeneralLog('general.log', 'Fetch', 'Bid Item', user.email!, 'getSingleBidItem', 'Success', 'Bid item fetched successfully');
         return {
-            BidItemID: bidItem.BidItemID,
-            ItemName: bidItem.ItemName,
-            ItemDescription: bidItem.ItemDescription,
-            category: bidItem.category,
+            ...bidItem,
+            UniqueBiddersCount: uniqueBiddersCount,
             Image: bidItem.Image ? Buffer.from(bidItem.Image).toString('base64') : '',
-            CurrentPrice: bidItem.CurrentPrice ? Number(bidItem.CurrentPrice) : 0,
-            MinIncrement: bidItem.MinIncrement ? Number(bidItem.MinIncrement) : 0,
-            BidEndTime: bidItem.BidEndTime ? new Date(bidItem.BidEndTime).toISOString() : '',
-            UniqueBiddersCount: uniqueBiddersCount, // Include unique bidder count
         };
     } catch (error: any) {
-        writeLog('bidding.log', userType, user.email!, bidItemId, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
+        writeGeneralLog('general.log', 'Fetch', 'Bid Item', user.email!, 'getSingleBidItem', 'Failure', `Error: ${error.message || error}`);
         console.error('Error fetching bid item:', error.message || error);
         throw new Error('Failed to fetch bid item.');
     } finally {
@@ -201,12 +173,11 @@ export async function getSingleBidItem(bidItemId: number) {
     }
 }
 
-
-// Get bid history for the current user on a specific bid item
+// Fetch bid history for the current user on a specific bid item
 export async function getUserBidHistory(BidItemID: number) {
     const user = await getCurrentUser();
     if (!user) {
-        writeLog('bidding.log', 'Guest', 0, BidItemID, 'Fetch', 'Failure', 'User not authenticated');
+        writeGeneralLog('general.log', 'Fetch', 'Bid History', 'Guest', 'getUserBidHistory', 'Failure', 'User not authenticated');
         return { error: "User not authenticated" };
     }
 
@@ -214,32 +185,19 @@ export async function getUserBidHistory(BidItemID: number) {
     const prisma = getPrismaClientForRole(roleId);
 
     try {
-        const result = await prisma.$queryRaw<
-            Array<{
-                BidAmount: number;
-                BidTime: Date;
-            }>
-        >`
-            SELECT 
-                BidAmount, 
-                BidTime 
-            FROM 
-                bids 
-            WHERE 
-                BidItemID = ${BidItemID} AND UserID = ${Number(user.id)} 
-            ORDER BY 
-                BidTime DESC;
+        const result = await prisma.$queryRaw<Array<{ BidAmount: number, BidTime: Date }>>`
+            SELECT BidAmount, BidTime
+            FROM bids WHERE BidItemID = ${BidItemID} AND UserID = ${Number(user.id)}
+            ORDER BY BidTime DESC;
         `;
 
-        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Fetch', 'Success', 'Bid history fetched successfully');
-
-        // Format bid history data for the client
+        writeGeneralLog('general.log', 'Fetch', 'Bid History', user.email!, 'getUserBidHistory', 'Success', 'Bid history fetched successfully');
         return result.map(bid => ({
             BidAmount: parseFloat(bid.BidAmount.toString()),
             createdAt: bid.BidTime ? new Date(bid.BidTime).toISOString() : '',
         }));
     } catch (error: any) {
-        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
+        writeGeneralLog('general.log', 'Fetch', 'Bid History', user.email!, 'getUserBidHistory', 'Failure', `Error: ${error.message || error}`);
         console.error('Error fetching user bid history:', error.message || error);
         throw new Error('Failed to fetch bid history.');
     } finally {
@@ -247,39 +205,29 @@ export async function getUserBidHistory(BidItemID: number) {
     }
 }
 
-
 // Fetch additional bid items for the carousel
 export async function getAdditionalBidItems(currentBidItemId: number) {
     const roleId = 3; // Customer Role ID
     const prisma = getPrismaClientForRole(roleId);
-    const user = await getCurrentUser(); // Get the current user
+    const user = await getCurrentUser();
 
     try {
-        const result = await prisma.$queryRaw<
-            Array<{
-                BidItemID: number;
-                ItemName: string;
-                CurrentPrice: number | null;
-                Image: Buffer | null;
-            }>
-        >`
-            SELECT 
-                BidItemID, 
-                ItemName, 
-                CurrentPrice, 
-                Image 
-            FROM 
-                biditems 
-            WHERE 
-                BidItemID != ${currentBidItemId} 
-            LIMIT 8; 
+        const result = await prisma.$queryRaw<Array<{
+            BidItemID: number;
+            ItemName: string;
+            CurrentPrice: number | null;
+            Image: Buffer | null;
+        }>>`
+            SELECT BidItemID, ItemName, CurrentPrice, Image
+            FROM biditems WHERE BidItemID != ${currentBidItemId} LIMIT 8;
         `;
+
         if (!result || result.length === 0) {
-            writeLog('bidding.log', 'Customer', user.email!, 0, 'Fetch', 'Failure', 'No additional bid items found');
+            writeGeneralLog('general.log', 'Fetch', 'Additional Bid Items', user?.email || 'Unknown', 'getAdditionalBidItems', 'Failure', 'No additional bid items found');
             return [];
         }
-        writeLog('bidding.log', 'Customer', user.email!, 0, 'Fetch', 'Success', 'Additional bid items fetched successfully');
-        // Convert images to base64 and CurrentPrice to number
+
+        writeGeneralLog('general.log', 'Fetch', 'Additional Bid Items', user?.email || 'Unknown', 'getAdditionalBidItems', 'Success', 'Additional bid items fetched successfully');
         return result.map(item => ({
             BidItemID: item.BidItemID,
             ItemName: item.ItemName,
@@ -287,7 +235,7 @@ export async function getAdditionalBidItems(currentBidItemId: number) {
             Image: item.Image ? Buffer.from(item.Image).toString('base64') : '',
         }));
     } catch (error: any) {
-        writeLog('bidding.log', 'Customer', user.email!, 0, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
+        writeGeneralLog('general.log', 'Fetch', 'Additional Bid Items', user?.email || 'Unknown', 'getAdditionalBidItems', 'Failure', `Error: ${error.message || error}`);
         console.error("Error fetching additional bid items:", error.message || error);
         return [];
     } finally {
@@ -295,9 +243,7 @@ export async function getAdditionalBidItems(currentBidItemId: number) {
     }
 }
 
-// Count unique users who have placed bids on a specific BidItemID
 // Submit payment details and place a bid
-
 export async function submitNewPaymentAndPlaceBid(
     BidItemID: number,
     BidAmount: number,
@@ -308,7 +254,7 @@ export async function submitNewPaymentAndPlaceBid(
 ) {
     const user = await getCurrentUser();
     if (!user) {
-        writeLog('bidding.log', 'Guest', 0, BidItemID, 'Fetch', 'Failure', 'User not authenticated');
+        writeGeneralLog('general.log', 'Submit', 'Payment', 'Guest', 'submitNewPaymentAndPlaceBid', 'Failure', 'User not authenticated');
         return { success: false, message: "User not authenticated" };
     }
 
@@ -326,7 +272,8 @@ export async function submitNewPaymentAndPlaceBid(
             INSERT INTO payments (UserID, BidItemID, CardHolderName, CardNo, cvv, Amount, BillingAddress, PaymentDate, PaymentStatus, PaymentMethod)
             VALUES (${userId}, ${BidItemID}, ${CardHolderName}, ${CardNo}, ${cvv}, ${BidAmount}, ${BillingAddress}, ${paymentDate}, ${paymentStatus}, ${paymentMethod});
         `;
-        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Create', 'Success', 'Payment processed successfully');
+        writeGeneralLog('general.log', 'Create', 'Payment', user.email!, 'submitNewPaymentAndPlaceBid', 'Success', 'Payment processed successfully');
+
         // Perform bid insertion and current price update as a transaction
         await prisma.$transaction(async (tx) => {
             // Insert new bid entry using raw SQL
@@ -334,7 +281,7 @@ export async function submitNewPaymentAndPlaceBid(
                 INSERT INTO bids (BidItemID, UserID, BidAmount)
                 VALUES (${BidItemID}, ${userId}, ${BidAmount});
             `;
-            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Create', 'Success', 'Bid placed successfully');
+            writeGeneralLog('general.log', 'Create', 'Bid', user.email!, 'submitNewPaymentAndPlaceBid', 'Success', 'Bid placed successfully');
 
             // Update the current bid price on bid item using raw SQL
             await tx.$executeRaw`
@@ -342,13 +289,13 @@ export async function submitNewPaymentAndPlaceBid(
                 SET CurrentPrice = ${BidAmount}
                 WHERE BidItemID = ${BidItemID};
             `;
-            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Update', 'Success', 'Bid price updated successfully');
+            writeGeneralLog('general.log', 'Update', 'Bid Item', user.email!, 'submitNewPaymentAndPlaceBid', 'Success', 'Bid price updated successfully');
         });
 
         return { success: true, message: 'Payment and bid processed successfully' };
 
     } catch (error: any) {
-        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Submit', 'Failure', `Error: ${(error as Error).message}`);
+        writeGeneralLog('general.log', 'Submit', 'Payment', user.email!, 'submitNewPaymentAndPlaceBid', 'Failure', `Error: ${error.message || error}`);
         console.error("Error processing payment and bid:", error.message || error);
         return { success: false, message: 'Failed to process payment and bid', error };
     } finally {
@@ -356,19 +303,17 @@ export async function submitNewPaymentAndPlaceBid(
     }
 }
 
-export async function updatePaymentAndPlaceBid(
-    BidItemID: number,
-    BidAmount: number
-) {
+// Update payment and place a new bid
+export async function updatePaymentAndPlaceBid(BidItemID: number, BidAmount: number) {
     const user = await getCurrentUser();
     if (!user) {
-        writeLog('bidding.log', 'Guest', 0, BidItemID, 'Fetch', 'Failure', 'User not authenticated');
+        writeGeneralLog('general.log', 'Update', 'Payment', 'Guest', 'updatePaymentAndPlaceBid', 'Failure', 'User not authenticated');
         return { success: false, message: "User not authenticated" };
     }
 
     const roleId = 3; // Customer Role ID
     const prisma = getPrismaClientForRole(roleId);
-    
+
     try {
         const userId = Number(user.id);
         const paymentDate = new Date();
@@ -380,11 +325,11 @@ export async function updatePaymentAndPlaceBid(
                 SET Amount = ${BidAmount}, PaymentDate = ${paymentDate}
                 WHERE UserID = ${userId} AND BidItemID = ${BidItemID};
             `;
-            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Update', 'Success', 'Payment updated successfully');
+            writeGeneralLog('general.log', 'Update', 'Payment', user.email!, 'updatePaymentAndPlaceBid', 'Success', 'Payment updated successfully');
 
             // Check if the update affected any rows
             if (updatedPayment === 0) {
-                writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Update', 'Failure', 'No payment record found for update');
+                writeGeneralLog('general.log', 'Update', 'Payment', user.email!, 'updatePaymentAndPlaceBid', 'Failure', 'No payment record found for update');
                 throw new Error('No existing payment record found for update');
             }
 
@@ -393,7 +338,7 @@ export async function updatePaymentAndPlaceBid(
                 INSERT INTO bids (BidItemID, UserID, BidAmount)
                 VALUES (${BidItemID}, ${userId}, ${BidAmount});
             `;
-            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Create', 'Success', 'Bid placed successfully');
+            writeGeneralLog('general.log', 'Create', 'Bid', user.email!, 'updatePaymentAndPlaceBid', 'Success', 'Bid placed successfully');
 
             // Update the CurrentPrice field in the biditems table using raw SQL
             await tx.$executeRaw`
@@ -401,13 +346,13 @@ export async function updatePaymentAndPlaceBid(
                 SET CurrentPrice = ${BidAmount}
                 WHERE BidItemID = ${BidItemID};
             `;
-            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Update', 'Success', 'Bid price updated successfully');
+            writeGeneralLog('general.log', 'Update', 'Bid Item', user.email!, 'updatePaymentAndPlaceBid', 'Success', 'Bid price updated successfully');
         });
 
         return { success: true, message: 'Payment, bid, and bid item updated successfully' };
 
     } catch (error: any) {
-        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Submit', 'Failure', `Error: ${(error as Error).message}`);
+        writeGeneralLog('general.log', 'Update', 'Payment', user.email!, 'updatePaymentAndPlaceBid', 'Failure', `Error: ${error.message || error}`);
         console.error("Error updating payment and placing bid:", error.message || error);
         return { success: false, message: 'Failed to update payment and place bid', error };
     } finally {
@@ -415,14 +360,11 @@ export async function updatePaymentAndPlaceBid(
     }
 }
 
-
-
-export async function checkExistingPaymentAndBid(
-    BidItemID: number,
-) {
+// Check existing payment and bid
+export async function checkExistingPaymentAndBid(BidItemID: number) {
     const user = await getCurrentUser();
     if (!user) {
-        writeLog('bidding.log', 'Guest', 0, BidItemID, 'Fetch', 'Failure', 'User not authenticated');
+        writeGeneralLog('general.log', 'Fetch', 'Payment', 'Guest', 'checkExistingPaymentAndBid', 'Failure', 'User not authenticated');
         return { error: "User not authenticated" };
     }
 
@@ -432,26 +374,14 @@ export async function checkExistingPaymentAndBid(
 
     try {
         // Check for an existing payment for this user and bid item using raw SQL
-        const existingPayment = await prisma.$queryRaw<
-            Array<{
-                PaymentID: number;
-                PaymentDate: Date;
-            }>
-        >`
-            SELECT 
-                PaymentID, 
-                PaymentDate 
-            FROM 
-                payments 
-            WHERE 
-                UserID = ${UserID} 
-                AND BidItemID = ${BidItemID} 
-            LIMIT 1;`;
+        const existingPayment = await prisma.$queryRaw<Array<{ PaymentID: number, PaymentDate: Date }>>`
+            SELECT PaymentID, PaymentDate
+            FROM payments
+            WHERE UserID = ${UserID} AND BidItemID = ${BidItemID} LIMIT 1;
+        `;
 
-        // If a payment entry exists, return it to determine user action (update or continue)
         if (existingPayment.length > 0) {
-            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Fetch', 'Success', 'Existing payment found');
-
+            writeGeneralLog('general.log', 'Fetch', 'Payment', user.email!, 'checkExistingPaymentAndBid', 'Success', 'Existing payment found');
             return {
                 exists: true,
                 paymentData: {
@@ -460,16 +390,14 @@ export async function checkExistingPaymentAndBid(
                 },
             };
         }
-        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Fetch', 'Success', 'No existing payment found');
 
-        // If no payment entry exists, return flag to prompt new payment entry
+        writeGeneralLog('general.log', 'Fetch', 'Payment', user.email!, 'checkExistingPaymentAndBid', 'Success', 'No existing payment found');
         return { exists: false };
     } catch (error: any) {
-        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
+        writeGeneralLog('general.log', 'Fetch', 'Payment', user.email!, 'checkExistingPaymentAndBid', 'Failure', `Error: ${error.message || error}`);
         console.error("Error checking existing payment:", error.message || error);
         return { error: "Error checking payment status" };
     } finally {
         await prisma.$disconnect();
     }
 }
-

@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { productSchema, ProductInput } from "@/schemas";
 import getPrismaClientForRole from "@/lib/db";
 import { convertToPlainObject } from "@/utils/convertToPlainObject";
-import { writeLog } from "@/utils/logging"; // Import the logging utility
+import { writeGeneralLog } from "@/utils/logging"; // Import the logging utility
 
 // Define the BidItem type
 type BidItem = {
@@ -29,7 +29,7 @@ export async function createProduct(data: ProductInput) {
   const parsedData = productSchema.safeParse(data);
   if (!parsedData.success) {
     const errorMessage = parsedData.error.errors.map((e) => e.message).join(", ");
-    writeLog('biditems.log', 'Seller', user.email!, 0, 'Create', 'Failure', `Validation Error: ${errorMessage}`);
+   writeGeneralLog('general.log', 'Create', 'Manage Bid Items', user.email!, 'Create', 'Failure', `Validation Error: ${errorMessage}`);
     return { success: false, message: `Validation failed: ${errorMessage}` };
   }
 
@@ -59,10 +59,11 @@ export async function createProduct(data: ProductInput) {
       SELECT * FROM biditems WHERE BidItemID = ${lastId};
     `;
 
-    writeLog('biditems.log', 'Seller', user.email!, lastId, 'Create', 'Success', 'Product created successfully');
+    writeGeneralLog('general.log', 'Create', 'Manage Bid Items', user.email!, 'Create', 'Success', 'Product created successfully');
     return { success: true, message: "Product created successfully", product: convertToPlainObject(product[0]) };
   } catch (error) {
-    writeLog('biditems.log', 'Seller', user.email!, 0, 'Create', 'Failure', `Error: ${(error as Error).message}`);
+    writeGeneralLog('general.log', 'Create', 'Manage Bid Items', user.email!, 'Create', 'Failure', `Error: ${(error as Error).message}`);
+    
     console.error("Error creating product:", error);
     return { success: false, message: "Failed to create product", error };
   } finally {
@@ -112,7 +113,7 @@ export async function getBidItemsByUser() {
 export async function updateProduct(productId: number, data: ProductInput) {
   const user = await getCurrentUser();
   if (!user) {
-    writeLog('biditems.log', 'Guest', "guest@example.com", productId, 'Update', 'Failure', 'User not authenticated');
+    writeGeneralLog('general.log', 'Update', 'Manage Bid Items', 'unknown', 'Update', 'Failure', 'User not authenticated');
     return { success: false, message: "User not authenticated" };
   }
 
@@ -120,7 +121,8 @@ export async function updateProduct(productId: number, data: ProductInput) {
   const parsedData = productSchema.safeParse(data);
   if (!parsedData.success) {
     const errorMessage = parsedData.error.errors.map((error) => error.message).join(", ");
-    writeLog('biditems.log', 'Seller', user.email!, productId, 'Update', 'Failure', `Validation Error: ${errorMessage}`);
+    writeGeneralLog('general.log', 'Update', 'Manage Bid Items', user.email!, 'Update', 'Failure', `Validation Error: ${errorMessage}`);
+    
     return { success: false, message: `Validation failed: ${errorMessage}` };
   }
 
@@ -155,10 +157,10 @@ export async function updateProduct(productId: number, data: ProductInput) {
       SELECT * FROM biditems WHERE BidItemID = ${productId} AND UserID = ${parseInt(user.id!)};
     `;
 
-    writeLog('biditems.log', 'Seller', user.email!, productId, 'Update', 'Success', 'Product updated successfully');
+    writeGeneralLog('general.log', 'Update', 'Manage Bid Items', user.email!, 'Update', 'Success', 'Product updated successfully');
     return { success: true, message: "Product updated successfully", product: convertToPlainObject(product[0]) };
   } catch (error) {
-    writeLog('biditems.log', 'Seller', user.email!, productId, 'Update', 'Failure', `Error: ${(error as Error).message}`);
+    writeGeneralLog('general.log', 'Update', 'Manage Bid Items', user.email!, 'Update', 'Failure', `Error: ${(error as Error).message}`);
     console.error("Error updating product:", error);
     return { success: false, message: "Failed to update product", error };
   } finally {
@@ -170,7 +172,7 @@ export async function updateProduct(productId: number, data: ProductInput) {
 export async function deleteProduct(productId: number) {
   const user = await getCurrentUser();
   if (!user) {
-    writeLog('biditems.log', 'Guest', "0", productId, 'Delete', 'Failure', 'User not authenticated');
+    writeGeneralLog
     return { success: false, message: "User not authenticated" };
   }
 
@@ -182,10 +184,10 @@ export async function deleteProduct(productId: number) {
       DELETE FROM biditems
       WHERE BidItemID = ${productId} AND UserID = ${parseInt(user.id!)};
     `;
-    writeLog('biditems.log', 'Seller', user.email!, productId, 'Delete', 'Success', 'Product deleted successfully');
+    writeGeneralLog('general.log', 'Delete', 'Manage Bid Items', user.email!, 'Delete', 'Success', 'Product deleted successfully');
     return { success: true, message: "Product deleted successfully" };
   } catch (error) {
-    writeLog('biditems.log', 'Seller', user.email!, productId, 'Delete', 'Failure', `Error: ${(error as Error).message}`);
+    writeGeneralLog('general.log', 'Delete', 'Manage Bid Items', user.email!, 'Delete', 'Failure', `Error: ${(error as Error).message}`);
     console.error("Error deleting product:", error);
     return { success: false, message: "Failed to delete product", error };
   } finally {

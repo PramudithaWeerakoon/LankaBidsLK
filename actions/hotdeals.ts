@@ -2,7 +2,7 @@
 
 import { Prisma } from '@prisma/client';
 import getPrismaClientForRole from '@/lib/db';
-import { writeLogproduct } from '@/utils/logging';
+import { writeGeneralLog } from '@/utils/logging'; // Use general logging
 import { getCurrentUser } from '@/lib/auth';
 
 // Function to fetch hot deals for the customer
@@ -46,14 +46,23 @@ export async function getHotDealsForCustomer() {
             LIMIT 8`
         );
 
-        //console.log('Hot deals result:', result);
-
         if (!result || result.length === 0) {
-            writeLogproduct('hotdeals.log', userType, user.email!, 'Fetch', 'Success', 'No hot deals found.');
+            // Log when no hot deals are found
+            if (user) {
+                writeGeneralLog('general.log', 'Fetch', 'Hot Deals', user.email!, 'Fetch Hot Deals', 'Success', 'No hot deals found.');
+            } else {
+                writeGeneralLog('general.log', 'Fetch', 'Hot Deals', 'unknown', 'Fetch Hot Deals', 'Success', 'No hot deals found.');
+            }
             console.warn(`No hot deals found.`);
             return [];
         }
-        writeLogproduct('hotdeals.log', userType, user.email!, 'Fetch', 'Success', `${result.length} hot deals fetched successfully.`);
+        
+        // Log successful fetching of hot deals
+        if (user) {
+            writeGeneralLog('general.log', 'Fetch', 'Hot Deals', user.email!, 'Fetch Hot Deals', 'Success', `${result.length} hot deals fetched successfully.`);
+        } else {
+            writeGeneralLog('general.log', 'Fetch', 'Hot Deals', 'unknown', 'Fetch Hot Deals', 'Success', `${result.length} hot deals fetched successfully.`);
+        }
 
         return result.map((product) => ({
             BidItemID: product.BidItemID,
@@ -65,13 +74,11 @@ export async function getHotDealsForCustomer() {
             BidCount: product.BidCount,
         }));
     } catch (error: any) {
-        writeLogproduct('hotdeals.log', userType, `dssffsf`, 'Fetch', 'Failure', `Failed to fetch hot deals: ${error.message || error}`);
+        // Log the failure in fetching hot deals
+        writeGeneralLog('general.log', 'Fetch', 'Hot Deals', user?.email || 'unknown', 'Fetch Hot Deals', 'Failure', `Failed to fetch hot deals: ${error.message || error}`);
         console.error('Error fetching hot deals:', error.message || error);
         throw new Error('Failed to fetch hot deals. Please try again later.');
     } finally {
         await prisma.$disconnect();
     }
 }
-
-// Function to search products by name or category
-
