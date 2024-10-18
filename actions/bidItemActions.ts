@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { productSchema, ProductInput } from "@/schemas";
 import getPrismaClientForRole from "@/lib/db";
 import { convertToPlainObject } from "@/utils/convertToPlainObject";
+import { writeLog } from "@/utils/logging"; // Import the logging utility
 
 // Define the BidItem type
 type BidItem = {
@@ -28,12 +29,11 @@ export async function createProduct(data: ProductInput) {
   const parsedData = productSchema.safeParse(data);
   if (!parsedData.success) {
     const errorMessage = parsedData.error.errors.map((e) => e.message).join(", ");
+    writeLog('biditems.log', 'Seller', parseInt(user.id!), 0, 'Create Product', 'Failure', errorMessage);
     return { success: false, message: `Validation failed: ${errorMessage}` };
   }
 
   const prisma = getPrismaClientForRole(2);
-
-  // Remove the data URL prefix if present and if Image exists
   const imageData = parsedData.data.Image
     ? parsedData.data.Image.replace(/^data:image\/\w+;base64,/, "")
     : null;
@@ -43,16 +43,17 @@ export async function createProduct(data: ProductInput) {
     await prisma.$executeRaw`
       INSERT INTO biditems (UserID, ItemName, ItemDescription, category, StartingPrice, CurrentPrice, MinIncrement, BidEndTime, Status, Image)
       VALUES (${parseInt(user.id!)}, ${parsedData.data.ItemName}, ${parsedData.data.ItemDescription}, ${parsedData.data.category}, 
-              ${parsedData.data.StartingPrice}, ${parsedData.data.CurrentPrice || parsedData.data.StartingPrice}, ${parsedData.data.MinIncrement}, 
-              ${new Date(parsedData.data.BidEndTime)}, ${parsedData.data.Status}, ${imageData ? Buffer.from(imageData, "base64") : null});
+              ${parsedData.data.StartingPrice}, ${parsedData.data.CurrentPrice || parsedData.data.StartingPrice}, 
+              ${parsedData.data.MinIncrement}, ${new Date(parsedData.data.BidEndTime)}, ${parsedData.data.Status}, 
+              ${imageData ? Buffer.from(imageData, "base64") : null});
     `;
 
-    // Get the last inserted ID
     const [{ lastId }] = await prisma.$queryRaw<{ lastId: number }[]>`
       SELECT LAST_INSERT_ID() as lastId;
     `;
+    
+    writeLog('biditems.log', 'Seller', parseInt(user.id!), lastId, 'Create Product', 'Success', 'Product created successfully');
 
-    // Fetch the inserted product
     const product = await prisma.$queryRaw<BidItem[]>`
       SELECT * FROM biditems WHERE BidItemID = ${lastId};
     `;
@@ -60,6 +61,7 @@ export async function createProduct(data: ProductInput) {
     return { success: true, message: "Product created successfully", product: convertToPlainObject(product[0]) };
   } catch (error) {
     console.error("Error creating product:", error);
+    writeLog('biditems.log', 'Seller', parseInt(user.id!), 0, 'Create Product', 'Failure', `Error: ${(error as any).message}`);
     return { success: false, message: "Failed to create product", error };
   } finally {
     await prisma.$disconnect();
@@ -74,28 +76,12 @@ export async function getBidItemsByUser() {
   }
 
   const prisma = getPrismaClientForRole(2);
-
   try {
-    // Use raw SQL to fetch bid items
     const items = await prisma.$queryRaw<BidItem[]>`
-      SELECT BidItemID, ItemName, ItemDescription, category, StartingPrice, CurrentPrice, MinIncrement, BidEndTime, Status, Image
-      FROM biditems
-      WHERE UserID = ${parseInt(user.id!)};
+      SELECT * FROM biditems WHERE UserID = ${parseInt(user.id!)};
     `;
 
-    const formattedItems: BidItem[] = items.map(item => ({
-      ...item,
-      ItemDescription: item.ItemDescription ?? "",
-      category: item.category ?? "",
-      StartingPrice: parseFloat(item.StartingPrice.toString()),
-      CurrentPrice: item.CurrentPrice ? parseFloat(item.CurrentPrice.toString()) : 0,
-      MinIncrement: parseFloat(item.MinIncrement.toString()),
-      BidEndTime: item.BidEndTime ? new Date(item.BidEndTime).toISOString() : null,
-      Status: item.Status ?? "Open",
-      Image: item.Image ? `data:image/jpeg;base64,${Buffer.from(item.Image).toString('base64')}` : null
-    }));
-
-    return { success: true, items: formattedItems };
+    return { success: true, items };
   } catch (error) {
     console.error("Error fetching bid items:", error);
     return { success: false, message: "Failed to fetch bid items", items: [] };
@@ -111,22 +97,19 @@ export async function updateProduct(productId: number, data: ProductInput) {
     return { success: false, message: "User not authenticated" };
   }
 
-  // Validate the input data using Zod schema
   const parsedData = productSchema.safeParse(data);
   if (!parsedData.success) {
     const errorMessage = parsedData.error.errors.map((error) => error.message).join(", ");
+    writeLog('biditems.log', 'Seller', parseInt(user.id!), productId, 'Update Product', 'Failure', errorMessage);
     return { success: false, message: `Validation failed: ${errorMessage}` };
   }
 
   const prisma = getPrismaClientForRole(2);
+  const imageData = parsedData.data.Image
+    ? parsedData.data.Image.replace(/^data:image\/\w+;base64,/, "")
+    : null;
 
   try {
-    // Prepare the image data
-    const imageData = parsedData.data.Image
-      ? parsedData.data.Image.replace(/^data:image\/\w+;base64,/, "")
-      : null;
-
-    // Use raw SQL to update the product
     await prisma.$executeRaw`
       UPDATE biditems
       SET 
@@ -144,21 +127,23 @@ export async function updateProduct(productId: number, data: ProductInput) {
         UserID = ${parseInt(user.id as string)};
     `;
 
-    // Fetch the updated product
+    writeLog('biditems.log', 'Seller', parseInt(user.id!), productId, 'Update Product', 'Success', 'Product updated successfully');
+
     const product = await prisma.$queryRaw<BidItem[]>`
-      SELECT * FROM biditems WHERE BidItemID = ${productId} AND UserID = ${parseInt(user.id!)};
+      SELECT * FROM biditems WHERE BidItemID = ${productId};
     `;
 
     return { success: true, message: "Product updated successfully", product: convertToPlainObject(product[0]) };
   } catch (error) {
     console.error("Error updating product:", error);
+    writeLog('biditems.log', 'Seller', parseInt(user.id!), productId, 'Update Product', 'Failure', `Error: ${(error as any).message}`);
     return { success: false, message: "Failed to update product", error };
   } finally {
     await prisma.$disconnect();
   }
 }
 
-// Delete a product (bid item) by ID
+// Delete a product by ID
 export async function deleteProduct(productId: number) {
   const user = await getCurrentUser();
   if (!user) {
@@ -166,17 +151,18 @@ export async function deleteProduct(productId: number) {
   }
 
   const prisma = getPrismaClientForRole(2);
-
   try {
-    // Use raw SQL to delete the product
     await prisma.$executeRaw`
       DELETE FROM biditems
       WHERE BidItemID = ${productId} AND UserID = ${parseInt(user.id!)};
     `;
 
+    writeLog('biditems.log', 'Seller', parseInt(user.id!), productId, 'Delete Product', 'Success', 'Product deleted successfully');
+    
     return { success: true, message: "Product deleted successfully" };
   } catch (error) {
     console.error("Error deleting product:", error);
+    writeLog('biditems.log', 'Seller', parseInt(user.id!), productId, 'Delete Product', 'Failure', `Error: ${(error as any).message}`);
     return { success: false, message: "Failed to delete product", error };
   } finally {
     await prisma.$disconnect();

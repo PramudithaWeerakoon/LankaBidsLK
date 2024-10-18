@@ -350,7 +350,7 @@ export async function updatePaymentAndPlaceBid(
             `;
 
             // Check if the update affected any rows
-            if (updatedPayment.count === 0) {
+            if (updatedPayment === 0) {
                 throw new Error('No existing payment record found for update');
             }
 
