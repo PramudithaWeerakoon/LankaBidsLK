@@ -1,5 +1,5 @@
-// header.ts (server action)
 import { getCurrentUser } from "@/lib/auth";
+import  handleLogout  from "@/actions/logout"; // Import the server action
 
 export const getNavLinks = async () => {
     const user = await getCurrentUser();
@@ -47,7 +47,13 @@ export const getNavLinks = async () => {
         // Settings/Logout links for logged-in users
         authLinks = [
             { label: 'Settings', href: '/settings' },
-            { label: 'Logout', href: '/logout' }
+            {
+                label: 'Logout', href: '#', onClick: async () => {
+                    console.log("Logging out...");
+                    await handleLogout(); // Call the server action to logout
+                    window.location.href = "/"; // Redirect the user after logout
+                }
+            }
         ];
     }
 

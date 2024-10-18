@@ -9,3 +9,14 @@
 [2024-10-18 09:57:27] [Customer] [UserID: 8]: Fetch on ProductID: 0 - Success - Fetched My Bids successfully
 [2024-10-18 09:57:38] [Customer] [UserID: 8]: Fetch on ProductID: 0 - Success - Fetched My Bids successfully
 [2024-10-18 09:57:38] [Customer] [UserID: 8]: Fetch on ProductID: 0 - Success - Fetched My Bids successfully
+[2024-10-18 11:05:47] [Customer] [UserEmail: testguy1@gmail.com]: Fetch on ProductID: 0 - Success - Fetched My Bids successfully
+[2024-10-18 11:05:47] [Customer] [UserEmail: testguy1@gmail.com]: Fetch on ProductID: 0 - Success - Fetched My Bids successfully
+[2024-10-18 11:05:52] [Customer] [UserEmail: testguy1@gmail.com]: Delete on ProductID: 39 - Success - Bid deleted successfully
+[2024-10-18 11:05:53] [Customer] [UserEmail: testguy1@gmail.com]: Fetch on ProductID: 0 - Success - Fetched My Bids successfully
+[2024-10-18 11:05:53] [Customer] [UserEmail: testguy1@gmail.com]: Fetch on ProductID: 0 - Success - Fetched My Bids successfully
+[2024-10-18 12:29:25] [Customer] [UserEmail: testguy1@gmail.com]: 0 - Fetch - Success
+[2024-10-18 12:29:25] [Customer] [UserEmail: testguy1@gmail.com]: 0 - Fetch - Success
+[2024-10-18 12:30:04] [Customer] [UserEmail: testguy1@gmail.com]: Fetch - Success - Fetched My Bids successfully
+[2024-10-18 12:30:04] [Customer] [UserEmail: testguy1@gmail.com]: Fetch - Success - Fetched My Bids successfully
+[2024-10-18 12:41:08] [Customer] [UserEmail: testguy1@gmail.com]: Fetch - Success - Fetched My Bids successfully
+[2024-10-18 12:41:09] [Customer] [UserEmail: testguy1@gmail.com]: Fetch - Success - Fetched My Bids successfully

@@ -136,7 +136,7 @@ export async function getSingleBidItem(bidItemId: number) {
     const userId = user ? parseInt(user.id!) : 0; // Get the UserID
 
     if (!user) {
-        writeLog('bidding.log', 'Guest', 0, bidItemId, 'Fetch', 'Failure', 'User not authenticated');
+        writeLog('bidding.log', 'Guest', '0', bidItemId, 'Fetch', 'Failure', 'User not authenticated');
         return null;
     }
 
@@ -170,7 +170,7 @@ export async function getSingleBidItem(bidItemId: number) {
         `;
 
         if (!result || result.length === 0){
-            writeLog('bidding.log', 'Customer', userId, bidItemId, 'Fetch', 'Failure', `No bid item found with ID: ${bidItemId}`);
+            writeLog('bidding.log', 'Customer', user.email!, bidItemId, 'Fetch', 'Failure', `No bid item found with ID: ${bidItemId}`);
             return null;
 
         }
@@ -179,7 +179,7 @@ export async function getSingleBidItem(bidItemId: number) {
 
         // Fetch unique bidder count from bids table
         const uniqueBiddersCount = await countUniqueBidders(bidItemId);
-        writeLog('bidding.log', 'Customer', userId, bidItemId, 'Fetch', 'Success', `Bid item fetched successfully`);
+        writeLog('bidding.log', 'Customer', user.email!, bidItemId, 'Fetch', 'Success', `Bid item fetched successfully`);
 
         return {
             BidItemID: bidItem.BidItemID,
@@ -193,7 +193,7 @@ export async function getSingleBidItem(bidItemId: number) {
             UniqueBiddersCount: uniqueBiddersCount, // Include unique bidder count
         };
     } catch (error: any) {
-        writeLog('bidding.log', userType, userId, bidItemId, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
+        writeLog('bidding.log', userType, user.email!, bidItemId, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
         console.error('Error fetching bid item:', error.message || error);
         throw new Error('Failed to fetch bid item.');
     } finally {
@@ -231,7 +231,7 @@ export async function getUserBidHistory(BidItemID: number) {
                 BidTime DESC;
         `;
 
-        writeLog('bidding.log', 'Customer', parseInt(user.id!), BidItemID, 'Fetch', 'Success', 'Bid history fetched successfully');
+        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Fetch', 'Success', 'Bid history fetched successfully');
 
         // Format bid history data for the client
         return result.map(bid => ({
@@ -239,7 +239,7 @@ export async function getUserBidHistory(BidItemID: number) {
             createdAt: bid.BidTime ? new Date(bid.BidTime).toISOString() : '',
         }));
     } catch (error: any) {
-        writeLog('bidding.log', 'Customer', parseInt(user.id!), BidItemID, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
+        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
         console.error('Error fetching user bid history:', error.message || error);
         throw new Error('Failed to fetch bid history.');
     } finally {
@@ -275,10 +275,10 @@ export async function getAdditionalBidItems(currentBidItemId: number) {
             LIMIT 8; 
         `;
         if (!result || result.length === 0) {
-            writeLog('bidding.log', 'Customer', parseInt(user?.id!), 0, 'Fetch', 'Failure', 'No additional bid items found');
+            writeLog('bidding.log', 'Customer', user.email!, 0, 'Fetch', 'Failure', 'No additional bid items found');
             return [];
         }
-        writeLog('bidding.log', 'Customer', parseInt(user?.id!), 0, 'Fetch', 'Success', 'Additional bid items fetched successfully');
+        writeLog('bidding.log', 'Customer', user.email!, 0, 'Fetch', 'Success', 'Additional bid items fetched successfully');
         // Convert images to base64 and CurrentPrice to number
         return result.map(item => ({
             BidItemID: item.BidItemID,
@@ -287,7 +287,7 @@ export async function getAdditionalBidItems(currentBidItemId: number) {
             Image: item.Image ? Buffer.from(item.Image).toString('base64') : '',
         }));
     } catch (error: any) {
-        writeLog('bidding.log', 'Customer', parseInt(user?.id!), 0, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
+        writeLog('bidding.log', 'Customer', user.email!, 0, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
         console.error("Error fetching additional bid items:", error.message || error);
         return [];
     } finally {
@@ -326,7 +326,7 @@ export async function submitNewPaymentAndPlaceBid(
             INSERT INTO payments (UserID, BidItemID, CardHolderName, CardNo, cvv, Amount, BillingAddress, PaymentDate, PaymentStatus, PaymentMethod)
             VALUES (${userId}, ${BidItemID}, ${CardHolderName}, ${CardNo}, ${cvv}, ${BidAmount}, ${BillingAddress}, ${paymentDate}, ${paymentStatus}, ${paymentMethod});
         `;
-        writeLog('bidding.log', 'Customer', userId, BidItemID, 'Create', 'Success', 'Payment processed successfully');
+        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Create', 'Success', 'Payment processed successfully');
         // Perform bid insertion and current price update as a transaction
         await prisma.$transaction(async (tx) => {
             // Insert new bid entry using raw SQL
@@ -334,7 +334,7 @@ export async function submitNewPaymentAndPlaceBid(
                 INSERT INTO bids (BidItemID, UserID, BidAmount)
                 VALUES (${BidItemID}, ${userId}, ${BidAmount});
             `;
-            writeLog('bidding.log', 'Customer', userId, BidItemID, 'Create', 'Success', 'Bid placed successfully');
+            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Create', 'Success', 'Bid placed successfully');
 
             // Update the current bid price on bid item using raw SQL
             await tx.$executeRaw`
@@ -342,13 +342,13 @@ export async function submitNewPaymentAndPlaceBid(
                 SET CurrentPrice = ${BidAmount}
                 WHERE BidItemID = ${BidItemID};
             `;
-            writeLog('bidding.log', 'Customer', userId, BidItemID, 'Update', 'Success', 'Bid price updated successfully');
+            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Update', 'Success', 'Bid price updated successfully');
         });
 
         return { success: true, message: 'Payment and bid processed successfully' };
 
     } catch (error: any) {
-        writeLog('bidding.log', 'Customer', parseInt(user.id!), BidItemID, 'Submit', 'Failure', `Error: ${(error as Error).message}`);
+        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Submit', 'Failure', `Error: ${(error as Error).message}`);
         console.error("Error processing payment and bid:", error.message || error);
         return { success: false, message: 'Failed to process payment and bid', error };
     } finally {
@@ -380,11 +380,11 @@ export async function updatePaymentAndPlaceBid(
                 SET Amount = ${BidAmount}, PaymentDate = ${paymentDate}
                 WHERE UserID = ${userId} AND BidItemID = ${BidItemID};
             `;
-            writeLog('bidding.log', 'Customer', userId, BidItemID, 'Update', 'Success', 'Payment updated successfully');
+            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Update', 'Success', 'Payment updated successfully');
 
             // Check if the update affected any rows
             if (updatedPayment === 0) {
-                writeLog('bidding.log', 'Customer', userId, BidItemID, 'Update', 'Failure', 'No payment record found for update');
+                writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Update', 'Failure', 'No payment record found for update');
                 throw new Error('No existing payment record found for update');
             }
 
@@ -393,7 +393,7 @@ export async function updatePaymentAndPlaceBid(
                 INSERT INTO bids (BidItemID, UserID, BidAmount)
                 VALUES (${BidItemID}, ${userId}, ${BidAmount});
             `;
-            writeLog('bidding.log', 'Customer', userId, BidItemID, 'Create', 'Success', 'Bid placed successfully');
+            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Create', 'Success', 'Bid placed successfully');
 
             // Update the CurrentPrice field in the biditems table using raw SQL
             await tx.$executeRaw`
@@ -401,13 +401,13 @@ export async function updatePaymentAndPlaceBid(
                 SET CurrentPrice = ${BidAmount}
                 WHERE BidItemID = ${BidItemID};
             `;
-            writeLog('bidding.log', 'Customer', userId, BidItemID, 'Update', 'Success', 'Bid price updated successfully');
+            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Update', 'Success', 'Bid price updated successfully');
         });
 
         return { success: true, message: 'Payment, bid, and bid item updated successfully' };
 
     } catch (error: any) {
-        writeLog('bidding.log', 'Customer', parseInt(user.id!), BidItemID, 'Submit', 'Failure', `Error: ${(error as Error).message}`);
+        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Submit', 'Failure', `Error: ${(error as Error).message}`);
         console.error("Error updating payment and placing bid:", error.message || error);
         return { success: false, message: 'Failed to update payment and place bid', error };
     } finally {
@@ -450,7 +450,7 @@ export async function checkExistingPaymentAndBid(
 
         // If a payment entry exists, return it to determine user action (update or continue)
         if (existingPayment.length > 0) {
-            writeLog('bidding.log', 'Customer', UserID, BidItemID, 'Fetch', 'Success', 'Existing payment found');
+            writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Fetch', 'Success', 'Existing payment found');
 
             return {
                 exists: true,
@@ -460,12 +460,12 @@ export async function checkExistingPaymentAndBid(
                 },
             };
         }
-        writeLog('bidding.log', 'Customer', UserID, BidItemID, 'Fetch', 'Success', 'No existing payment found');
+        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Fetch', 'Success', 'No existing payment found');
 
         // If no payment entry exists, return flag to prompt new payment entry
         return { exists: false };
     } catch (error: any) {
-        writeLog('bidding.log', 'Customer', UserID, BidItemID, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
+        writeLog('bidding.log', 'Customer', user.email!, BidItemID, 'Fetch', 'Failure', `Error: ${(error as Error).message}`);
         console.error("Error checking existing payment:", error.message || error);
         return { error: "Error checking payment status" };
     } finally {

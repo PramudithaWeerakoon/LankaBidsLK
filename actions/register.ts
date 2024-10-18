@@ -6,12 +6,14 @@ import getPrismaClientForRole from "@/lib/db";
 import bcrypt from "bcrypt";
 import { generateVerificationToken } from "@/lib/tokens";
 import {sendVerificationEmail} from "@/lib/mail";   
+import { writeLogregister } from "@/utils/logging";
 
 
 export const register = async (values: z.infer<typeof RegisterSchema>) => {
     const validateFields = RegisterSchema.safeParse(values);
 
     if (!validateFields.success) {
+        writeLogregister(`register.log`, "Guest", "Create", "Failed", "Invalid input data");
         return { error: "Invalid input data" };
     }
 
@@ -25,7 +27,8 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     `;
 
     if (existingUser.length > 0) 
-    {
+    {   
+        writeLogregister(`register.log`, "Guest", "Create", "Failed", "User with this email or username already exists");
         return { error: "User with this email or username already exists" };
     }
     
@@ -33,6 +36,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         INSERT INTO users (Username, Email,PasswordHash,RoleID,IsTwoFactorEnabled) 
         VALUES (${username}, ${email}, ${PasswordHash}, ${role}, ${isTwoFactorEnabled})
     `;
+    writeLogregister(`register.log`, "Guest", "Create", "Success", "User created successfully");
 
     const verificationToken = await generateVerificationToken(email);
 

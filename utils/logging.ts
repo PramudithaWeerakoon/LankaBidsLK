@@ -17,3 +17,22 @@ export function writeLog(logFile: string, role: string, userEmail: string, produ
   // Append the log entry to the specified log file
   fs.appendFileSync(logFilePath, logEntry, 'utf8');
 }
+
+export function writeLogproduct(logFile: string, role: string, userEmail: string, action: string, result: string, details: string) {
+  const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
+  const logEntry = `[${timestamp}] [${role}] [UserEmail: ${userEmail}]: ${action} - ${result} - ${details}\n`;
+
+  const logFilePath = path.join(logDirectory, logFile);
+
+  // Append the log entry to the specified log file
+  fs.appendFileSync(logFilePath, logEntry, 'utf8');
+}
+export function writeLogregister(logFile: string, role: string, action: string, result: string, details: string) {
+  const timestamp = new Date().toISOString().replace('T', ' ').slice(0, 19);
+  const logEntry = `[${timestamp}] [${role}]: ${action} - ${result} - ${details}\n`;
+
+  const logFilePath = path.join(logDirectory, logFile);
+
+  // Append the log entry to the specified log file
+  fs.appendFileSync(logFilePath, logEntry, 'utf8');
+}

@@ -57,3 +57,30 @@
 [2024-10-18 09:42:11] [Customer] [UserID: 8]: Fetch on ProductID: 8 - Success - Bid history fetched successfully
 [2024-10-18 09:42:11] [Customer] [UserID: 8]: Fetch on ProductID: 0 - Success - Additional bid items fetched successfully
 [2024-10-18 09:42:11] [Customer] [UserID: 8]: Fetch on ProductID: 0 - Success - Additional bid items fetched successfully
+[2024-10-18 10:22:30] [Customer] [UserEmail: 8]: Fetch on ProductID: 14 - Success - Bid item fetched successfully
+[2024-10-18 10:22:31] [Customer] [UserEmail: 8]: Fetch on ProductID: 14 - Success - Bid item fetched successfully
+[2024-10-18 10:22:31] [Customer] [UserEmail: 8]: Fetch on ProductID: 14 - Success - Bid history fetched successfully
+[2024-10-18 10:22:31] [Customer] [UserEmail: 8]: Fetch on ProductID: 14 - Success - Bid history fetched successfully
+[2024-10-18 10:22:31] [Customer] [UserEmail: 8]: Fetch on ProductID: 0 - Success - Additional bid items fetched successfully
+[2024-10-18 10:22:31] [Customer] [UserEmail: 8]: Fetch on ProductID: 0 - Success - Additional bid items fetched successfully
+[2024-10-18 10:22:35] [Customer] [UserEmail: 8]: Fetch on ProductID: 14 - Success - No existing payment found
+[2024-10-18 10:22:48] [Customer] [UserEmail: 8]: Create on ProductID: 14 - Success - Payment processed successfully
+[2024-10-18 10:22:48] [Customer] [UserEmail: 8]: Create on ProductID: 14 - Success - Bid placed successfully
+[2024-10-18 10:22:48] [Customer] [UserEmail: 8]: Update on ProductID: 14 - Success - Bid price updated successfully
+[2024-10-18 10:22:48] [Customer] [UserEmail: 8]: Fetch on ProductID: 14 - Success - Bid history fetched successfully
+[2024-10-18 10:22:53] [Customer] [UserEmail: 8]: Fetch on ProductID: 14 - Success - Existing payment found
+[2024-10-18 10:22:54] [Customer] [UserEmail: 8]: Update on ProductID: 14 - Success - Payment updated successfully
+[2024-10-18 10:22:54] [Customer] [UserEmail: 8]: Create on ProductID: 14 - Success - Bid placed successfully
+[2024-10-18 10:22:54] [Customer] [UserEmail: 8]: Update on ProductID: 14 - Success - Bid price updated successfully
+[2024-10-18 10:22:54] [Customer] [UserEmail: 8]: Fetch on ProductID: 14 - Success - Bid history fetched successfully
+[2024-10-18 11:00:45] [Customer] [UserEmail: testguy1@gmail.com]: Fetch on ProductID: 8 - Success - Bid item fetched successfully
+[2024-10-18 11:00:45] [Customer] [UserEmail: testguy1@gmail.com]: Fetch on ProductID: 8 - Success - Bid item fetched successfully
+[2024-10-18 11:00:45] [Customer] [UserEmail: 8]: Fetch on ProductID: 8 - Success - Bid history fetched successfully
+[2024-10-18 11:00:45] [Customer] [UserEmail: 8]: Fetch on ProductID: 8 - Success - Bid history fetched successfully
+[2024-10-18 11:00:46] [Customer] [UserEmail: 8]: Fetch on ProductID: 0 - Success - Additional bid items fetched successfully
+[2024-10-18 11:00:46] [Customer] [UserEmail: 8]: Fetch on ProductID: 0 - Success - Additional bid items fetched successfully
+[2024-10-18 11:03:04] [Customer] [UserEmail: testguy1@gmail.com]: Fetch on ProductID: 8 - Success - Existing payment found
+[2024-10-18 11:03:09] [Customer] [UserEmail: testguy1@gmail.com]: Update on ProductID: 8 - Success - Payment updated successfully
+[2024-10-18 11:03:09] [Customer] [UserEmail: testguy1@gmail.com]: Create on ProductID: 8 - Success - Bid placed successfully
+[2024-10-18 11:03:09] [Customer] [UserEmail: testguy1@gmail.com]: Update on ProductID: 8 - Success - Bid price updated successfully
+[2024-10-18 11:03:09] [Customer] [UserEmail: testguy1@gmail.com]: Fetch on ProductID: 8 - Success - Bid history fetched successfully

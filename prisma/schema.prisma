@@ -31,6 +31,7 @@ model biditems {
   BidEndTime      DateTime?        @db.Timestamp(0)
   Status          biditems_Status? @default(Open)
   Image           Bytes?           @db.Blob
+  deliver_states Int
 
   @@index([UserID], map: "fk_biditems_userid")
 }

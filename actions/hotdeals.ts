@@ -2,7 +2,7 @@
 
 import { Prisma } from '@prisma/client';
 import getPrismaClientForRole from '@/lib/db';
-import { writeLog } from '@/utils/logging';
+import { writeLogproduct } from '@/utils/logging';
 import { getCurrentUser } from '@/lib/auth';
 
 // Function to fetch hot deals for the customer
@@ -49,11 +49,11 @@ export async function getHotDealsForCustomer() {
         //console.log('Hot deals result:', result);
 
         if (!result || result.length === 0) {
-            writeLog('hotdeals.log', userType, parseInt(user?.id!), 0, 'Fetch', 'Success', 'No hot deals found.');
+            writeLogproduct('hotdeals.log', userType, user.email!, 'Fetch', 'Success', 'No hot deals found.');
             console.warn(`No hot deals found.`);
             return [];
         }
-        writeLog('hotdeals.log', userType, parseInt(user?.id!), 0, 'Fetch', 'Success', `${result.length} hot deals fetched successfully.`);
+        writeLogproduct('hotdeals.log', userType, user.email!, 'Fetch', 'Success', `${result.length} hot deals fetched successfully.`);
 
         return result.map((product) => ({
             BidItemID: product.BidItemID,
@@ -65,7 +65,7 @@ export async function getHotDealsForCustomer() {
             BidCount: product.BidCount,
         }));
     } catch (error: any) {
-        writeLog('hotdeals.log', userType, userid, 0, 'Fetch', 'Failure', `Failed to fetch hot deals: ${error.message || error}`);
+        writeLogproduct('hotdeals.log', userType, `dssffsf`, 'Fetch', 'Failure', `Failed to fetch hot deals: ${error.message || error}`);
         console.error('Error fetching hot deals:', error.message || error);
         throw new Error('Failed to fetch hot deals. Please try again later.');
     } finally {

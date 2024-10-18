@@ -91,7 +91,7 @@ const Dashboard = () => {
                 />
 
                 {/* Charts Section */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12">
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-12 mb-20">
                     {/* Bid Placement Dates Bar Chart */}
                     <div className="w-full h-64">
                         <h2 className="text-lg font-bold mb-4">Bid Placement Dates</h2>
