@@ -5,3 +5,8 @@
 [2024-10-18 05:39:39] [Seller] [UserID: 10]: Create Product on ProductID: 0 - Failure - Item name is required, Description is required, Category is required, Bid end time must be a valid date
 [2024-10-18 05:39:46] [Seller] [UserID: 10]: Delete Product on ProductID: 25 - Success - Product deleted successfully
 [2024-10-18 05:40:30] [Seller] [UserID: 10]: Create Product on ProductID: 36 - Success - Product created successfully
+[2024-10-18 05:50:21] [Seller] [UserID: 10]: Create on ProductID: 0 - Failure - Validation Error: Item name is required, Description is required, Category is required, Bid end time must be a valid date
+[2024-10-18 05:50:22] [Seller] [UserID: 10]: Create on ProductID: 0 - Failure - Validation Error: Item name is required, Description is required, Category is required, Bid end time must be a valid date
+[2024-10-18 05:56:09] [Seller] [UserID: 10]: Create on ProductID: 0 - Failure - Validation Error: Item name is required, Description is required, Category is required, Bid end time must be a valid date, An image must be selected
+[2024-10-18 05:56:21] [Seller] [UserID: 10]: Delete on ProductID: 35 - Success - Product deleted successfully
+[2024-10-18 05:56:29] [Seller] [UserID: 10]: Update on ProductID: 36 - Success - Product updated successfully
