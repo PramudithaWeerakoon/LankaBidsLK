@@ -28,6 +28,7 @@ export const RegisterSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters long" })
     .transform(sanitizeString),
   role: z.nativeEnum(UserRole).default(UserRole.BIDDER),
+  isTwoFactorEnabled: z.boolean().optional(),
   isActive: z.optional(z.boolean()).default(true),
 });
 

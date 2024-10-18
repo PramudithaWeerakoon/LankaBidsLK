@@ -11,6 +11,7 @@ import { useRouter } from "next/navigation";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,6 +31,7 @@ import { Button } from "@/components/ui/button";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { register } from "@/actions/register";
+import { Switch } from "../ui/switch";
 
 export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>("");
@@ -42,7 +44,8 @@ export const RegisterForm = () => {
       username: "",
       email: "",
       password: "",
-      role:""
+      role:"",
+      isTwoFactorEnabled: false,
     }
   });
 
@@ -152,7 +155,25 @@ export const RegisterForm = () => {
                         <FormMessage />
                     </FormItem>
                 )}
-            />   
+            /> 
+            <FormField
+                                control={form.control}
+                                name="isTwoFactorEnabled"
+                                render={({ field }) => (
+                                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                        <div className="space-y-0.5">
+                                            <FormLabel>Two Factor Authentication</FormLabel>                                           
+                                        </div>
+                                        <FormControl>
+                                            <Switch
+                                                disabled={isPending}
+                                                checked={field.value}
+                                                onCheckedChange={field.onChange}
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />  
           </div>
           <FormError message={error}/>
           <FormSuccess message={success}/>

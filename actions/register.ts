@@ -15,7 +15,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
         return { error: "Invalid input data" };
     }
 
-    const { username, email, password, role } = validateFields.data;
+    const { username, email, password, role ,isTwoFactorEnabled} = validateFields.data;
     const PasswordHash = await bcrypt.hash(password, 10);
 
     const prisma = getPrismaClientForRole(3);
@@ -30,8 +30,8 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
     }
     
     await prisma.$executeRaw`
-        INSERT INTO users (Username, Email,PasswordHash,RoleID) 
-        VALUES (${username}, ${email}, ${PasswordHash}, ${role})
+        INSERT INTO users (Username, Email,PasswordHash,RoleID,IsTwoFactorEnabled) 
+        VALUES (${username}, ${email}, ${PasswordHash}, ${role}, ${isTwoFactorEnabled})
     `;
 
     const verificationToken = await generateVerificationToken(email);
