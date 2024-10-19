@@ -1,13 +1,15 @@
 'use server';
 import getPrismaClientForRole from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth';
-
+import { writeGeneralLog } from '@/utils/logging';
+import {auth} from "@/auth";
 export async function getSalesDataForUser() {
     const prisma = getPrismaClientForRole(2);
     const user = await getCurrentUser();
 
     if (!user || !user.id) {
         console.warn('User not authenticated');
+        writeGeneralLog('general.log', 'Read', 'Sales Data', 'guest', 'Get Sales Data', 'Failure', 'User not authenticated');
         return null;
     }
 
@@ -44,6 +46,8 @@ export async function getSalesDataForUser() {
         `;
 
         console.log(`Items fetched: ${JSON.stringify(items)}`);
+        writeGeneralLog('general.log', 'Read', 'Sales Data', user.email!, 'Get Sales Data', 'Success', 'Sales data fetched successfully');
+    
         return items;
     } catch (error: any) {
         console.error('Error fetching sales data:', error.message || error);
@@ -54,6 +58,14 @@ export async function getSalesDataForUser() {
 }
 
 export const updateDeliveryState = async (id: string) => {
+    const userID = await getCurrentUser();
+    
+    if (!userID || !userID.email) {
+        console.warn('User not authenticated');
+        writeGeneralLog('general.log', 'Update', 'Delivery State', 'guest', 'Update Delivery State', 'Failure', 'User not authenticated');
+        throw new Error('User not authenticated');
+    }
+
     const prisma = getPrismaClientForRole(2);
 
     try {
@@ -66,6 +78,7 @@ export const updateDeliveryState = async (id: string) => {
         `;
 
         console.log(`Delivery state updated for BidItemID: ${id}`);
+        writeGeneralLog('general.log', 'Update', 'Delivery State', userID.email!, 'Update Delivery State', 'Success', `Delivery state updated for BidItemID: ${id}`);
         return result;
     } catch (error: any) {
         console.error('Error updating delivery state:', error.message || error);
