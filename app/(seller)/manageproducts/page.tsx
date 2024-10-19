@@ -287,6 +287,8 @@ export default function ManageProductsPage() {
       >
         <option value="Open">Open</option>
         <option value="Closed">Closed</option>
+        <option value="Completed">Completed</option>
+        <option value="Cancelled">Cancelled</option>
       </select>
     ) : item.Status,
     "Image": editingItemId === item.BidItemID ? (
