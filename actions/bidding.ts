@@ -3,105 +3,8 @@
 "use server";
 import getPrismaClientForRole from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth';
-import { bidSchema } from '@/schemas';
-import { ALL } from 'dns';
 import { writeGeneralLog } from '@/utils/logging';
 
-
-// Fetch bid item details by BidItemID
-/*async function fetchBidItem(BidItemID: number) {
-    const prisma = getPrismaClientForRole(3); // Customer role ID
-    try {
-        const bidItem = await prisma.biditems.findUnique({
-            where: { BidItemID },
-            select: {
-                BidItemID: true,
-                ItemName: true,
-                ItemDescription: true,
-                category: true,
-                Image: true,
-                CurrentPrice: true,
-                MinIncrement: true,
-                BidEndTime: true,
-            },
-        });
-        return bidItem;
-    } catch (error) {
-        console.error("Error in fetchBidItem:", error);
-        return null;
-    } finally {
-        await prisma.$disconnect();
-    }
-}*/
-
-// Count the number of bids placed by the current user on a specific item
-/*async function countUserBidsOnItem(BidItemID: number) {
-    const user = await getCurrentUser();
-    if (!user) {
-        return { error: "User not authenticated" };
-    }
-
-    const prisma = getPrismaClientForRole(3);
-    try {
-        const userBidCount = await prisma.bids.count({
-            where: { BidItemID, UserID: Number(user.id) },
-        });
-        return userBidCount;
-    } catch (error) {
-        console.error("Error in countUserBidsOnItem:", error);
-        return 0;
-    } finally {
-        await prisma.$disconnect();
-    }
-}*/
-
-// Place a bid for the current user on the specific BidItemID
-/*export async function placeBid(BidItemID: number, BidAmount: number) {
-    const user = await getCurrentUser();
-    if (!user) {
-        return { success: false, message: "User not authenticated" };
-    }
-
-    const prisma = getPrismaClientForRole(3);
-    try {
-        const validatedFields = bidSchema.safeParse({ BidItemID, BidAmount, MinIncrement: 1.0 });
-        if (!validatedFields.success) {
-            const errorMessage = validatedFields.error.errors.map(err => err.message).join(", ");
-            return { success: false, message: errorMessage };
-        }
-
-        const userId = Number(user.id);
-        if (isNaN(userId) || userId <= 0) {
-            return { success: false, message: "Invalid User ID" };
-        }
-
-        // Perform the bid insertion and current price update as a transaction
-        const transactionResult = await prisma.$transaction(async (tx) => {
-            await tx.bids.create({
-                data: {
-                    BidItemID,
-                    UserID: userId,
-                    BidAmount,
-                },
-            });
-
-            return await tx.biditems.update({
-                where: { BidItemID },
-                data: { CurrentPrice: BidAmount },
-            });
-        });
-
-        return { success: true, message: 'Bid placed and current price updated successfully' };
-        
-    } catch (error) {
-        console.error("Error placing bid:", error);
-        return { success: false, message: 'Failed to place bid', error };
-    } finally {
-        await prisma.$disconnect();
-    }
-}*/
-
-// Count unique users who have placed bids on the specific BidItemID using groupBy
 // Count unique users who have placed bids on the specific BidItemID using groupBy
 export async function countUniqueBidders(BidItemID: number) {
     const roleId = 3; // Customer Role ID
@@ -116,7 +19,7 @@ export async function countUniqueBidders(BidItemID: number) {
         `;
         return result.length; // Count of unique users
     } catch (error: any) {
-        writeGeneralLog('general.log', 'Fetch', 'Bid Item', user?.email || 'Unknown', 'CountUniqueBidders', 'Failure', `Error: ${error.message || error}`);
+        writeGeneralLog('general.log', 'Fetch', 'Bid Item', user?.email ?? 'Unknown', 'CountUniqueBidders', 'Failure', `Error: ${error.message || error}`);
         console.error('Error in countUniqueBidders:', error.message || error);
         return 0;
     } finally {
@@ -223,11 +126,11 @@ export async function getAdditionalBidItems(currentBidItemId: number) {
         `;
 
         if (!result || result.length === 0) {
-            writeGeneralLog('general.log', 'Fetch', 'Additional Bid Items', user?.email || 'Unknown', 'getAdditionalBidItems', 'Failure', 'No additional bid items found');
+            writeGeneralLog('general.log', 'Fetch', 'Additional Bid Items', user?.email ?? 'Unknown', 'getAdditionalBidItems', 'Failure', 'No additional bid items found');
             return [];
         }
 
-        writeGeneralLog('general.log', 'Fetch', 'Additional Bid Items', user?.email || 'Unknown', 'getAdditionalBidItems', 'Success', 'Additional bid items fetched successfully');
+        writeGeneralLog('general.log', 'Fetch', 'Additional Bid Items', user?.email ?? 'Unknown', 'getAdditionalBidItems', 'Success', 'Additional bid items fetched successfully');
         return result.map(item => ({
             BidItemID: item.BidItemID,
             ItemName: item.ItemName,
@@ -235,7 +138,7 @@ export async function getAdditionalBidItems(currentBidItemId: number) {
             Image: item.Image ? Buffer.from(item.Image).toString('base64') : '',
         }));
     } catch (error: any) {
-        writeGeneralLog('general.log', 'Fetch', 'Additional Bid Items', user?.email || 'Unknown', 'getAdditionalBidItems', 'Failure', `Error: ${error.message || error}`);
+        writeGeneralLog('general.log', 'Fetch', 'Additional Bid Items', user?.email ?? 'Unknown', 'getAdditionalBidItems', 'Failure', `Error: ${error.message || error}`);
         console.error("Error fetching additional bid items:", error.message || error);
         return [];
     } finally {

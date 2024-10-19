@@ -75,7 +75,7 @@ export async function getHotDealsForCustomer() {
         }));
     } catch (error: any) {
         // Log the failure in fetching hot deals
-        writeGeneralLog('general.log', 'Fetch', 'Hot Deals', user?.email || 'unknown', 'Fetch Hot Deals', 'Failure', `Failed to fetch hot deals: ${error.message || error}`);
+        writeGeneralLog('general.log', 'Fetch', 'Hot Deals', user?.email ?? 'unknown', 'Fetch Hot Deals', 'Failure', `Failed to fetch hot deals: ${error.message || error}`);
         console.error('Error fetching hot deals:', error.message || error);
         throw new Error('Failed to fetch hot deals. Please try again later.');
     } finally {

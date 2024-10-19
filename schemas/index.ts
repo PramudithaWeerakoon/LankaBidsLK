@@ -92,7 +92,8 @@ export const PaymentSchema = z.object({
   cardNo: z.string()
     .min(16, { message: "Card number must be at least 16 digits long" })
     .max(19, { message: "Card number must be at most 19 digits long" })
-    .refine((val) => /^[0-9]+$/.test(val), { message: "Card number must contain only digits" }),
+    .refine((val) => /^[0-9]+$/.test(val), { message: "Card number must contain only digits" })
+    .refine((val) => /^(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|3(?:0[0-5]|[68][0-9])[0-9]{11}|6(?:011|5[0-9]{2})[0-9]{12}|(?:2131|1800|35\d{3})\d{11})$/.test(val), { message: "Invalid card number" }),
 
   cvv: z.string()
     .min(3, { message: "CVV must be at least 3 digits long" })

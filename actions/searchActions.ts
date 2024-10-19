@@ -11,7 +11,6 @@ export async function searchProducts(searchTerm: string) {
     const roleId = 3;
     const prisma = getPrismaClientForRole(roleId);
     const user = await getCurrentUser(); // Fetch the current user
-    const userType = user?.role === 3 ? 'Customer' : 'Guest'; // Determine if user is customer or guest
 
     // Validate the search term
     try {
@@ -21,16 +20,16 @@ export async function searchProducts(searchTerm: string) {
         };
 
         SearchProductsSchema.parse(validationInput);
-        writeGeneralLog('general.log', 'Search', 'Products', user?.email || 'Guest', 'Search', 'Success', `Search term "${searchTerm}" validated successfully`);
+        writeGeneralLog('general.log', 'Search', 'Products', user?.email ?? 'Guest', 'Search', 'Success', `Search term "${searchTerm}" validated successfully`);
     } catch (error) {
-        writeGeneralLog('general.log', 'Search', 'Products', user?.email || 'Guest', 'Search', 'Failure', `Validation error: ${(error as any).message || error}`);
+        writeGeneralLog('general.log', 'Search', 'Products', user?.email ?? 'Guest', 'Search', 'Failure', `Validation error: ${(error as any).message || error}`);
         console.error("Validation error:", error);
         throw new Error("Invalid search term. Please provide a valid name or category.");
     }
 
     try {
         console.log('Executing search query for term:', searchTerm);
-        writeGeneralLog('general.log', 'Search', 'Products', user?.email || 'Guest', 'Search', 'Info', `Executing search query for term "${searchTerm}"`);
+        writeGeneralLog('general.log', 'Search', 'Products', user?.email ?? 'Guest', 'Search', 'Info', `Executing search query for term "${searchTerm}"`);
 
         const result = await prisma.$queryRaw<
             Array<{
@@ -60,12 +59,12 @@ export async function searchProducts(searchTerm: string) {
         console.log('Search query result:', result);
 
         if (!result || result.length === 0) {
-            writeGeneralLog('general.log', 'Search', 'Products', user?.email || 'Guest', 'Search', 'Success', `No search results found for term "${searchTerm}"`);
+            writeGeneralLog('general.log', 'Search', 'Products', user?.email ?? 'Guest', 'Search', 'Success', `No search results found for term "${searchTerm}"`);
             console.warn(`No search results found for term: ${searchTerm}`);
             return [];
         }
 
-        writeGeneralLog('general.log', 'Search', 'Products', user?.email || 'Guest', 'Search', 'Success', `${result.length} search results fetched for term "${searchTerm}"`);
+        writeGeneralLog('general.log', 'Search', 'Products', user?.email ?? 'Guest', 'Search', 'Success', `${result.length} search results fetched for term "${searchTerm}"`);
 
         return result.map((product) => ({
             BidItemID: product.BidItemID,
@@ -76,7 +75,7 @@ export async function searchProducts(searchTerm: string) {
             BidEndTime: product.BidEndTime,
         }));
     } catch (error) {
-        writeGeneralLog('general.log', 'Search', 'Products', user?.email || 'Guest', 'Search', 'Failure', `Error fetching search results: ${(error as any).message || error}`);
+        writeGeneralLog('general.log', 'Search', 'Products', user?.email ?? 'Guest', 'Search', 'Failure', `Error fetching search results: ${(error as any).message || error}`);
         console.error('Error fetching search results:', error);
         throw new Error('Failed to fetch search results.');
     } finally {

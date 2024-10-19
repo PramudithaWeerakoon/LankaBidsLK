@@ -200,3 +200,37 @@ Raw query failed. Code: `1054`. Message: `Unknown column 'deliver_states' in 'fi
 [2024-10-19 05:00:08] [Operation: Read] [Resource: Sales Data] [UserEmail: marsheledward@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
 [2024-10-19 05:00:08] [Operation: Read] [Resource: Sales Data] [UserEmail: marsheledward@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
 [2024-10-19 05:00:28] [Operation: Update] [Resource: Delivery State] [UserEmail: marsheledward@gmail.com]: Update Delivery State - Success - Delivery state updated for BidItemID: 29
+[2024-10-19 06:10:21] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-19 06:12:23] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-19 06:15:24] [Operation: Login] [Resource: Authentication] [UserEmail: testguy1@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:15:25] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: testguy1@gmail.com]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-19 06:15:30] [Operation: Fetch] [Resource: Products] [UserEmail: testguy1@gmail.com]: Fetch - Success - 8 products fetched successfully
+[2024-10-19 06:15:40] [Operation: Fetch] [Resource: Bid Item] [UserEmail: testguy1@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:15:40] [Operation: Fetch] [Resource: Bid Item] [UserEmail: testguy1@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:15:40] [Operation: Fetch] [Resource: Bid History] [UserEmail: testguy1@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:15:40] [Operation: Fetch] [Resource: Bid History] [UserEmail: testguy1@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:15:41] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: testguy1@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:15:41] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: testguy1@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:16:53] [Operation: Fetch] [Resource: Bid Item] [UserEmail: testguy1@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:16:54] [Operation: Fetch] [Resource: Bid Item] [UserEmail: testguy1@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:16:54] [Operation: Fetch] [Resource: Bid History] [UserEmail: testguy1@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:16:54] [Operation: Fetch] [Resource: Bid History] [UserEmail: testguy1@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:16:55] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: testguy1@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:16:55] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: testguy1@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:17:10] [Operation: Fetch] [Resource: Products] [UserEmail: testguy1@gmail.com]: Fetch - Success - 8 products fetched successfully
+[2024-10-19 06:17:11] [Operation: Fetch] [Resource: Bid Item] [UserEmail: testguy1@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:17:12] [Operation: Fetch] [Resource: Bid Item] [UserEmail: testguy1@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:17:12] [Operation: Fetch] [Resource: Bid History] [UserEmail: testguy1@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:17:12] [Operation: Fetch] [Resource: Bid History] [UserEmail: testguy1@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:17:12] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: testguy1@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:17:12] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: testguy1@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:22:41] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-19 06:23:48] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-19 06:24:12] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-19 06:24:51] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-19 06:30:37] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-19 06:30:37] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-19 06:31:13] [Operation: Login] [Resource: Authentication] [UserEmail: testguy1@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:31:14] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: testguy1@gmail.com]: Fetch Hot Deals - Success - 4 hot deals fetched successfully.
+[2024-10-19 06:31:25] [Operation: Customer] [Resource: testguy1@gmail.com] [UserEmail: Update]: Success - Settings updated successfully - 
+[2024-10-19 06:33:31] [Operation: Create] [Resource: Manage Bid Items] [UserEmail: testguy1@gmail.com]: Create - Success - Product created successfully

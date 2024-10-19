@@ -16,7 +16,7 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     const userType = user?.role === 3 ? 'Customer' : 'Seller'; // Determine user type based on role
 
     if (!validatedFields.success) {
-        writeGeneralLog('general.log', userType, user?.email || 'Guest', 'Update', 'Failure', `Validation Error: ${validatedFields.error.message}`); // Log validation error
+        writeGeneralLog('general.log', userType, user?.email ?? 'Guest', 'Update', 'Failure', `Validation Error: ${validatedFields.error.message}`); // Log validation error
         return { error: "Invalid input data" };
     }
 
