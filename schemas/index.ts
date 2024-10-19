@@ -79,7 +79,7 @@ export const productSchema = z.object({
   BidEndTime: z.string().refine((date) => !isNaN(new Date(date).getTime()), {
     message: "Bid end time must be a valid date",
   }),
-  Status: z.enum(["Open", "Closed"]).default("Open"),
+  Status: z.enum(["Open", "Closed","Completed","Cancelled"]).default("Open"),
   Image: z.string().min(1, "An image must be selected").optional(),
 });
 

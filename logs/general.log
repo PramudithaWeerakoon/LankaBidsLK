@@ -200,3 +200,268 @@ Raw query failed. Code: `1054`. Message: `Unknown column 'deliver_states' in 'fi
 [2024-10-19 05:00:08] [Operation: Read] [Resource: Sales Data] [UserEmail: marsheledward@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
 [2024-10-19 05:00:08] [Operation: Read] [Resource: Sales Data] [UserEmail: marsheledward@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
 [2024-10-19 05:00:28] [Operation: Update] [Resource: Delivery State] [UserEmail: marsheledward@gmail.com]: Update Delivery State - Success - Delivery state updated for BidItemID: 29
+[2024-10-19 05:37:44] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close BidItem 30 - Success - Bid item closed successfully
+[2024-10-19 05:37:44] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close BidItem 30 - Success - Bid item closed successfully
+[2024-10-19 05:38:28] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 05:38:45] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 05:38:58] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 05:39:04] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 05:40:32] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 05:41:13] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 05:43:27] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 05:44:01] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 05:44:54] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 05:44:54] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 05:46:42] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: marsheledward@gmail.com]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 05:47:03] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 05:47:03] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 05:47:45] [Operation: Login] [Resource: Authentication] [UserEmail: marsheledward@gmail.com]: Account Check - Failed - Account Doesn't Exist
+[2024-10-19 05:49:47] [Operation: Create] [Resource: User Registration] [UserEmail: guest]: Validate Input - Info - Validating input data
+[2024-10-19 05:49:47] [Operation: Create] [Resource: User Registration] [UserEmail: Ryan@gmail.com]: Check Existing User - Info - Checking if user already exists
+[2024-10-19 05:49:47] [Operation: Create] [Resource: User Registration] [UserEmail: Ryan@gmail.com]: Insert User - Success - User created successfully
+[2024-10-19 05:49:47] [Operation: Fetch] [Resource: VerificationToken] [UserEmail: Ryan@gmail.com]: Fetch - Failure - Error Details: No verification token found with the provided email.
+[2024-10-19 05:49:48] [Operation: Create] [Resource: User Registration] [UserEmail: Ryan@gmail.com]: Send Verification Email - Success - Verification email sent
+[2024-10-19 05:50:25] [Operation: Login] [Resource: Authentication] [UserEmail: Ryan@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 05:50:25] [Operation: Login] [Resource: Authentication] [UserEmail: Ryan@gmail.com]: SignIn - Failed - Invalid credentials!
+[2024-10-19 05:50:44] [Operation: Login] [Resource: Authentication] [UserEmail: Ryan@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 05:50:45] [Operation: Login] [Resource: Authentication] [UserEmail: Ryan@gmail.com]: SignIn - Failed - Invalid credentials!
+[2024-10-19 05:51:21] [Operation: Create] [Resource: User Registration] [UserEmail: guest]: Validate Input - Info - Validating input data
+[2024-10-19 05:51:21] [Operation: Create] [Resource: User Registration] [UserEmail: Ryan@gmail.com]: Check Existing User - Info - Checking if user already exists
+[2024-10-19 05:51:21] [Operation: Create] [Resource: User Registration] [UserEmail: Ryan@gmail.com]: Insert User - Success - User created successfully
+[2024-10-19 05:51:21] [Operation: Fetch] [Resource: VerificationToken] [UserEmail: Ryan@gmail.com]: Fetch - Success - Verification token found successfully.
+[2024-10-19 05:51:22] [Operation: Create] [Resource: User Registration] [UserEmail: Ryan@gmail.com]: Send Verification Email - Success - Verification email sent
+[2024-10-19 05:52:04] [Operation: Login] [Resource: Authentication] [UserEmail: Ryan@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 05:52:04] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: Ryan@gmail.com]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 05:54:23] [Operation: Create] [Resource: Manage Bid Items] [UserEmail: Ryan@gmail.com]: Create - Success - Product created successfully
+[2024-10-19 05:57:49] [Operation: Create] [Resource: Manage Bid Items] [UserEmail: Ryan@gmail.com]: Create - Success - Product created successfully
+[2024-10-19 05:58:04] [Operation: Update] [Resource: Manage Bid Items] [UserEmail: Ryan@gmail.com]: Update - Success - Product updated successfully
+[2024-10-19 05:58:06] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: Ryan@gmail.com]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:00:02] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:01:12] [Operation: Create] [Resource: Manage Bid Items] [UserEmail: Ryan@gmail.com]: Create - Success - Product created successfully
+[2024-10-19 06:02:14] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:02:14] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:03:21] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:03:22] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:03:46] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:03:46] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:03:56] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: Ryan@gmail.com]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:04:39] [Operation: Login] [Resource: Authentication] [UserEmail: Ryan@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:04:40] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: Ryan@gmail.com]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:04:44] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:04:44] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:06:08] [Operation: Login] [Resource: Authentication] [UserEmail: Ryan@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:06:09] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: Ryan@gmail.com]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:06:25] [Operation: Update] [Resource: Manage Bid Items] [UserEmail: Ryan@gmail.com]: Update - Success - Product updated successfully
+[2024-10-19 06:06:33] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:06:33] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:07:39] [Operation: Create] [Resource: User Registration] [UserEmail: guest]: Validate Input - Info - Validating input data
+[2024-10-19 06:07:39] [Operation: Create] [Resource: User Registration] [UserEmail: irunda@gmail.com]: Check Existing User - Info - Checking if user already exists
+[2024-10-19 06:07:39] [Operation: Create] [Resource: User Registration] [UserEmail: irunda@gmail.com]: Insert User - Success - User created successfully
+[2024-10-19 06:07:39] [Operation: Fetch] [Resource: VerificationToken] [UserEmail: irunda@gmail.com]: Fetch - Failure - Error Details: No verification token found with the provided email.
+[2024-10-19 06:07:39] [Operation: Create] [Resource: User Registration] [UserEmail: irunda@gmail.com]: Send Verification Email - Success - Verification email sent
+[2024-10-19 06:08:39] [Operation: Login] [Resource: Authentication] [UserEmail: irunda@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:08:39] [Operation: Login] [Resource: Authentication] [UserEmail: irunda@gmail.com]: SignIn - Failed - Invalid credentials!
+[2024-10-19 06:09:01] [Operation: Login] [Resource: Authentication] [UserEmail: irunda@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:09:02] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: irunda@gmail.com]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:10:09] [Operation: Create] [Resource: Manage Bid Items] [UserEmail: irunda@gmail.com]: Create - Success - Product created successfully
+[2024-10-19 06:11:09] [Operation: Create] [Resource: Manage Bid Items] [UserEmail: irunda@gmail.com]: Create - Failure - Error Details: Validation Error: Category is required
+[2024-10-19 06:11:15] [Operation: Create] [Resource: Manage Bid Items] [UserEmail: irunda@gmail.com]: Create - Failure - Error Details: Validation Error: Category is required
+[2024-10-19 06:11:29] [Operation: Create] [Resource: Manage Bid Items] [UserEmail: irunda@gmail.com]: Create - Success - Product created successfully
+[2024-10-19 06:11:41] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:11:41] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:12:27] [Operation: Create] [Resource: User Registration] [UserEmail: guest]: Validate Input - Info - Validating input data
+[2024-10-19 06:12:27] [Operation: Create] [Resource: User Registration] [UserEmail: perera@gmail.com]: Check Existing User - Info - Checking if user already exists
+[2024-10-19 06:12:27] [Operation: Create] [Resource: User Registration] [UserEmail: perera@gmail.com]: Insert User - Success - User created successfully
+[2024-10-19 06:12:27] [Operation: Fetch] [Resource: VerificationToken] [UserEmail: perera@gmail.com]: Fetch - Failure - Error Details: No verification token found with the provided email.
+[2024-10-19 06:12:27] [Operation: Create] [Resource: User Registration] [UserEmail: perera@gmail.com]: Send Verification Email - Success - Verification email sent
+[2024-10-19 06:13:24] [Operation: Login] [Resource: Authentication] [UserEmail: perera@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:13:25] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: perera@gmail.com]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:13:38] [Operation: Fetch] [Resource: Products] [UserEmail: perera@gmail.com]: Fetch - Success - 5 products fetched successfully
+[2024-10-19 06:13:38] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: perera@gmail.com]: Fetch Hot Deals - Success - No hot deals found.
+[2024-10-19 06:13:44] [Operation: Fetch] [Resource: Bid Item] [UserEmail: perera@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:13:44] [Operation: Fetch] [Resource: Bid Item] [UserEmail: perera@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:13:44] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:13:44] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:13:45] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: perera@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:13:45] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: perera@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:13:53] [Operation: Fetch] [Resource: Payment] [UserEmail: perera@gmail.com]: checkExistingPaymentAndBid - Success - No existing payment found
+[2024-10-19 06:14:15] [Operation: Create] [Resource: Payment] [UserEmail: perera@gmail.com]: submitNewPaymentAndPlaceBid - Success - Payment processed successfully
+[2024-10-19 06:14:15] [Operation: Create] [Resource: Bid] [UserEmail: perera@gmail.com]: submitNewPaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:14:15] [Operation: Update] [Resource: Bid Item] [UserEmail: perera@gmail.com]: submitNewPaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:14:16] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:14:37] [Operation: Fetch] [Resource: Payment] [UserEmail: perera@gmail.com]: checkExistingPaymentAndBid - Success - Existing payment found
+[2024-10-19 06:14:38] [Operation: Update] [Resource: Payment] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Payment updated successfully
+[2024-10-19 06:14:38] [Operation: Create] [Resource: Bid] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:14:38] [Operation: Update] [Resource: Bid Item] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:14:38] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:14:43] [Operation: Fetch] [Resource: Payment] [UserEmail: perera@gmail.com]: checkExistingPaymentAndBid - Success - Existing payment found
+[2024-10-19 06:14:44] [Operation: Update] [Resource: Payment] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Payment updated successfully
+[2024-10-19 06:14:44] [Operation: Create] [Resource: Bid] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:14:44] [Operation: Update] [Resource: Bid Item] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:14:44] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:14:50] [Operation: Fetch] [Resource: Payment] [UserEmail: perera@gmail.com]: checkExistingPaymentAndBid - Success - Existing payment found
+[2024-10-19 06:14:52] [Operation: Update] [Resource: Payment] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Payment updated successfully
+[2024-10-19 06:14:52] [Operation: Create] [Resource: Bid] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:14:52] [Operation: Update] [Resource: Bid Item] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:14:52] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:14:57] [Operation: Fetch] [Resource: Bid Item] [UserEmail: perera@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:14:57] [Operation: Fetch] [Resource: Bid Item] [UserEmail: perera@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:14:57] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:14:57] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:14:57] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: perera@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:14:58] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: perera@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:15:04] [Operation: Fetch] [Resource: Payment] [UserEmail: perera@gmail.com]: checkExistingPaymentAndBid - Success - No existing payment found
+[2024-10-19 06:15:36] [Operation: Create] [Resource: Payment] [UserEmail: perera@gmail.com]: submitNewPaymentAndPlaceBid - Success - Payment processed successfully
+[2024-10-19 06:15:36] [Operation: Create] [Resource: Bid] [UserEmail: perera@gmail.com]: submitNewPaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:15:36] [Operation: Update] [Resource: Bid Item] [UserEmail: perera@gmail.com]: submitNewPaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:15:36] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:15:42] [Operation: Fetch] [Resource: Payment] [UserEmail: perera@gmail.com]: checkExistingPaymentAndBid - Success - Existing payment found
+[2024-10-19 06:15:44] [Operation: Update] [Resource: Payment] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Payment updated successfully
+[2024-10-19 06:15:44] [Operation: Create] [Resource: Bid] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:15:44] [Operation: Update] [Resource: Bid Item] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:15:44] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:15:48] [Operation: Fetch] [Resource: Payment] [UserEmail: perera@gmail.com]: checkExistingPaymentAndBid - Success - Existing payment found
+[2024-10-19 06:15:50] [Operation: Update] [Resource: Payment] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Payment updated successfully
+[2024-10-19 06:15:50] [Operation: Create] [Resource: Bid] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:15:50] [Operation: Update] [Resource: Bid Item] [UserEmail: perera@gmail.com]: updatePaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:15:50] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:20:35] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-19 06:20:35] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-19 06:20:51] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: perera@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-19 06:21:13] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-19 06:21:13] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-19 06:22:02] [Operation: Create] [Resource: User Registration] [UserEmail: guest]: Validate Input - Info - Validating input data
+[2024-10-19 06:22:02] [Operation: Create] [Resource: User Registration] [UserEmail: disal@gmail.com]: Check Existing User - Info - Checking if user already exists
+[2024-10-19 06:22:02] [Operation: Create] [Resource: User Registration] [UserEmail: disal@gmail.com]: Insert User - Success - User created successfully
+[2024-10-19 06:22:02] [Operation: Fetch] [Resource: VerificationToken] [UserEmail: disal@gmail.com]: Fetch - Failure - Error Details: No verification token found with the provided email.
+[2024-10-19 06:22:03] [Operation: Create] [Resource: User Registration] [UserEmail: disal@gmail.com]: Send Verification Email - Success - Verification email sent
+[2024-10-19 06:22:25] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-19 06:23:58] [Operation: Login] [Resource: Authentication] [UserEmail: disal@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:23:58] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: disal@gmail.com]: Fetch Hot Deals - Success - 1 hot deals fetched successfully.
+[2024-10-19 06:24:04] [Operation: Fetch] [Resource: Products] [UserEmail: disal@gmail.com]: Fetch - Success - 5 products fetched successfully
+[2024-10-19 06:24:06] [Operation: Fetch] [Resource: Bid Item] [UserEmail: disal@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:24:06] [Operation: Fetch] [Resource: Bid Item] [UserEmail: disal@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:24:06] [Operation: Fetch] [Resource: Bid History] [UserEmail: disal@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:24:06] [Operation: Fetch] [Resource: Bid History] [UserEmail: disal@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:24:07] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: disal@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:24:07] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: disal@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:24:14] [Operation: Fetch] [Resource: Payment] [UserEmail: disal@gmail.com]: checkExistingPaymentAndBid - Success - No existing payment found
+[2024-10-19 06:24:47] [Operation: Create] [Resource: Payment] [UserEmail: disal@gmail.com]: submitNewPaymentAndPlaceBid - Success - Payment processed successfully
+[2024-10-19 06:24:47] [Operation: Create] [Resource: Bid] [UserEmail: disal@gmail.com]: submitNewPaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:24:47] [Operation: Update] [Resource: Bid Item] [UserEmail: disal@gmail.com]: submitNewPaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:24:47] [Operation: Fetch] [Resource: Bid History] [UserEmail: disal@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:24:54] [Operation: Fetch] [Resource: Payment] [UserEmail: disal@gmail.com]: checkExistingPaymentAndBid - Success - Existing payment found
+[2024-10-19 06:24:55] [Operation: Update] [Resource: Payment] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Payment updated successfully
+[2024-10-19 06:24:55] [Operation: Create] [Resource: Bid] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:24:55] [Operation: Update] [Resource: Bid Item] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:24:55] [Operation: Fetch] [Resource: Bid History] [UserEmail: disal@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:26:23] [Operation: Fetch] [Resource: Bid Item] [UserEmail: disal@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:26:23] [Operation: Fetch] [Resource: Bid Item] [UserEmail: disal@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:26:23] [Operation: Fetch] [Resource: Bid History] [UserEmail: disal@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:26:23] [Operation: Fetch] [Resource: Bid History] [UserEmail: disal@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:26:24] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: disal@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:26:24] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: disal@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:26:28] [Operation: Fetch] [Resource: Payment] [UserEmail: disal@gmail.com]: checkExistingPaymentAndBid - Success - No existing payment found
+[2024-10-19 06:26:48] [Operation: Create] [Resource: Payment] [UserEmail: disal@gmail.com]: submitNewPaymentAndPlaceBid - Success - Payment processed successfully
+[2024-10-19 06:26:48] [Operation: Create] [Resource: Bid] [UserEmail: disal@gmail.com]: submitNewPaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:26:48] [Operation: Update] [Resource: Bid Item] [UserEmail: disal@gmail.com]: submitNewPaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:26:48] [Operation: Fetch] [Resource: Bid History] [UserEmail: disal@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:26:53] [Operation: Fetch] [Resource: Payment] [UserEmail: disal@gmail.com]: checkExistingPaymentAndBid - Success - Existing payment found
+[2024-10-19 06:26:54] [Operation: Update] [Resource: Payment] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Payment updated successfully
+[2024-10-19 06:26:54] [Operation: Create] [Resource: Bid] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:26:54] [Operation: Update] [Resource: Bid Item] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:26:54] [Operation: Fetch] [Resource: Bid History] [UserEmail: disal@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:27:03] [Operation: Fetch] [Resource: Payment] [UserEmail: disal@gmail.com]: checkExistingPaymentAndBid - Success - Existing payment found
+[2024-10-19 06:27:05] [Operation: Update] [Resource: Payment] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Payment updated successfully
+[2024-10-19 06:27:05] [Operation: Create] [Resource: Bid] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:27:05] [Operation: Update] [Resource: Bid Item] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:27:05] [Operation: Fetch] [Resource: Bid History] [UserEmail: disal@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:27:10] [Operation: Fetch] [Resource: Payment] [UserEmail: disal@gmail.com]: checkExistingPaymentAndBid - Success - Existing payment found
+[2024-10-19 06:27:11] [Operation: Update] [Resource: Payment] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Payment updated successfully
+[2024-10-19 06:27:11] [Operation: Create] [Resource: Bid] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:27:11] [Operation: Update] [Resource: Bid Item] [UserEmail: disal@gmail.com]: updatePaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:27:11] [Operation: Fetch] [Resource: Bid History] [UserEmail: disal@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:27:14] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: disal@gmail.com]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:27:23] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Success - Search term "car" validated successfully
+[2024-10-19 06:27:23] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Info - Executing search query for term "car"
+[2024-10-19 06:27:23] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Success - No search results found for term "car"
+[2024-10-19 06:27:23] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: disal@gmail.com]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:27:35] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Success - Search term "bmw" validated successfully
+[2024-10-19 06:27:35] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Info - Executing search query for term "bmw"
+[2024-10-19 06:27:35] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Success - 1 search results fetched for term "bmw"
+[2024-10-19 06:27:35] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: disal@gmail.com]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:27:46] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Success - Search term "vehicle" validated successfully
+[2024-10-19 06:27:46] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Info - Executing search query for term "vehicle"
+[2024-10-19 06:27:46] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Success - 2 search results fetched for term "vehicle"
+[2024-10-19 06:27:46] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: disal@gmail.com]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:27:56] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Success - Search term "vehicle" validated successfully
+[2024-10-19 06:27:56] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Info - Executing search query for term "vehicle"
+[2024-10-19 06:27:56] [Operation: Search] [Resource: Products] [UserEmail: disal@gmail.com]: Search - Success - 2 search results fetched for term "vehicle"
+[2024-10-19 06:27:56] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: disal@gmail.com]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:27:57] [Operation: Fetch] [Resource: My Bids] [UserEmail: disal@gmail.com]: Fetch Bids - Success - Fetched My Bids successfully
+[2024-10-19 06:27:58] [Operation: Fetch] [Resource: My Bids] [UserEmail: disal@gmail.com]: Fetch Bids - Success - Fetched My Bids successfully
+[2024-10-19 06:28:04] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:28:04] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:28:45] [Operation: Login] [Resource: Authentication] [UserEmail: Ryan@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:28:45] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: Ryan@gmail.com]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:29:16] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:29:16] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:32:39] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:32:39] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:33:20] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:33:21] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:33:23] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:33:23] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:33:51] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:33:51] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:35:17] [Operation: Create] [Resource: Manage Bid Items] [UserEmail: Ryan@gmail.com]: Create - Success - Product created successfully
+[2024-10-19 06:36:36] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:36:36] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:37:10] [Operation: Login] [Resource: Authentication] [UserEmail: irunda@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:37:10] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: irunda@gmail.com]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:37:15] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:37:15] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:37:20] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:37:42] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:37:42] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:37:53] [Operation: Login] [Resource: Authentication] [UserEmail: perera@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:37:54] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: perera@gmail.com]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:38:02] [Operation: Fetch] [Resource: Products] [UserEmail: perera@gmail.com]: Fetch - Success - 6 products fetched successfully
+[2024-10-19 06:38:07] [Operation: Fetch] [Resource: Bid Item] [UserEmail: perera@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:38:07] [Operation: Fetch] [Resource: Bid Item] [UserEmail: perera@gmail.com]: getSingleBidItem - Success - Bid item fetched successfully
+[2024-10-19 06:38:07] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:38:07] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:38:07] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: perera@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:38:07] [Operation: Fetch] [Resource: Additional Bid Items] [UserEmail: perera@gmail.com]: getAdditionalBidItems - Success - Additional bid items fetched successfully
+[2024-10-19 06:38:12] [Operation: Fetch] [Resource: Payment] [UserEmail: perera@gmail.com]: checkExistingPaymentAndBid - Success - No existing payment found
+[2024-10-19 06:38:28] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:38:33] [Operation: Create] [Resource: Payment] [UserEmail: perera@gmail.com]: submitNewPaymentAndPlaceBid - Success - Payment processed successfully
+[2024-10-19 06:38:33] [Operation: Create] [Resource: Bid] [UserEmail: perera@gmail.com]: submitNewPaymentAndPlaceBid - Success - Bid placed successfully
+[2024-10-19 06:38:33] [Operation: Update] [Resource: Bid Item] [UserEmail: perera@gmail.com]: submitNewPaymentAndPlaceBid - Success - Bid price updated successfully
+[2024-10-19 06:38:33] [Operation: Fetch] [Resource: Bid History] [UserEmail: perera@gmail.com]: getUserBidHistory - Success - Bid history fetched successfully
+[2024-10-19 06:38:45] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:38:58] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:39:04] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:39:43] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:39:43] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: unknown]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:39:49] [Operation: Fetch] [Resource: Products] [UserEmail: Guest]: Fetch - Success - 6 products fetched successfully
+[2024-10-19 06:40:20] [Operation: Login] [Resource: Authentication] [UserEmail: Ryan@gmail.com]: SignIn - Success - User signed in successfully
+[2024-10-19 06:40:20] [Operation: Fetch] [Resource: Hot Deals] [UserEmail: Ryan@gmail.com]: Fetch Hot Deals - Success - 2 hot deals fetched successfully.
+[2024-10-19 06:40:31] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:40:59] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:40:59] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:41:13] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:43:27] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:44:01] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:44:50] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:44:54] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:45:32] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:45:33] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:45:44] [Operation: Update] [Resource: Manage Bid Items] [UserEmail: Ryan@gmail.com]: Update - Failure - Error Details: Validation Error: Invalid enum value. Expected 'Open' | 'Closed', received 'Completed'
+[2024-10-19 06:48:09] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
+[2024-10-19 06:48:29] [Operation: Update] [Resource: Manage Bid Items] [UserEmail: Ryan@gmail.com]: Update - Success - Product updated successfully
+[2024-10-19 06:48:44] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:48:44] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:49:40] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:49:41] [Operation: Read] [Resource: Sales Data] [UserEmail: Ryan@gmail.com]: Get Sales Data - Success - Sales data fetched successfully
+[2024-10-19 06:52:14] [Operation: Update] [Resource: Bids] [UserEmail: System]: Close Expired Bids - Info - No expired bids found
