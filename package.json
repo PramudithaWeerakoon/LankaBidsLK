@@ -61,7 +61,7 @@
     "@types/date-fns": "^2.6.0",
     "@types/express": "^5.0.0",
     "@types/node": "^20",
-    "@types/nookies": "^2.0.3",
+    "@types/nookies": "^1.1.0",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/uuid": "^10.0.0",

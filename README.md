@@ -7,28 +7,35 @@
 </head>
 <body>
   <h1 align="center">LankaBidsLK</h1>
-  <p align="center">An innovative concept bidding platform designed for Sri Lanka, offering a secure and reliable marketplace.</p>
+  <p align="center">An innovative, secure bidding platform designed for Sri Lanka, offering a reliable marketplace.</p>
 
   <h2>🚀 Features</h2>
   <ul>
-    <li><strong>Bidding System:</strong> Users can bid on various products securely.</li>
-    <li><strong>Real-Time Updates:</strong> Live updates on bidding status.</li>
-    <li><strong>User Profiles:</strong> Securely manage personal details and bidding history.</li>
-    <li><strong>Secure Transactions:</strong> Integrated security protocols to prevent fraud and ensure safe transactions.</li>
+    <li><strong>Bidding System:</strong> Users can securely bid on various products.</li>
+    <li><strong>Real-Time Updates:</strong> Get live updates on bidding status.</li>
+    <li><strong>User Profiles:</strong> Manage personal details and bidding history securely.</li>
+    <li><strong>Secure Transactions:</strong> Integrated security protocols to prevent fraud and ensure safe payments.</li>
+    <li><strong>Email Verification:</strong> Users must verify their email addresses during registration.</li>
+    <li><strong>Two-Factor Authentication:</strong> Optional two-factor authentication for additional security.</li>
   </ul>
 
   <h2>🔐 Security Features</h2>
   <ul>
-    <li><strong>SQL Injection Protection:</strong> Using parameterized queries to safeguard against SQL injection attacks.</li>
-    <li><strong>Data Sanitization:</strong> User inputs are cleaned to avoid XSS and buffer overflows.</li>
-    <li><strong>Encryption:</strong> Sensitive data such as passwords are encrypted, ensuring privacy.</li>
+    <li><strong>SQL Injection Protection:</strong> Parameterized queries prevent SQL injection attacks.</li>
+    <li><strong>Data Sanitization:</strong> Inputs are sanitized to prevent XSS and other vulnerabilities.</li>
+    <li><strong>Password Encryption:</strong> All passwords are securely hashed and salted using bcrypt.</li>
+    <li><strong>Secure Cookies:</strong> HTTP-only and Secure cookies protect session data in production.</li>
+    <li><strong>Role-Based Access Control (RBAC):</strong> Users have different roles (Admin, Seller, Customer) with specific permissions.</li>
   </ul>
 
   <h2>🛠️ Technologies</h2>
   <ul>
-    <li><strong>Next.js</strong> for the front end.</li>
+    <li><strong>Next.js</strong> for the frontend.</li>
     <li><strong>Node.js</strong> and <strong>MySQL</strong> for backend and database management.</li>
-    <li><strong>Tailwind CSS</strong> for responsive design.</li>
+    <li><strong>Prisma ORM</strong> for role-based access and database interaction.</li>
+    <li><strong>Next-Auth</strong> for secure authentication and session management.</li>
+    <li><strong>Tailwind CSS</strong> for responsive UI design.</li>
+    <li><strong>Zod</strong> for input validation (front-end and back-end).</li>
   </ul>
 
   <h2>📦 How to Run</h2>
@@ -39,6 +46,7 @@
     <li>Install dependencies:
       <pre><code>npm install</code></pre>
     </li>
+    <li>Configure environment variables (e.g., database, Next-Auth secrets).</li>
     <li>Start the server:
       <pre><code>npm run dev</code></pre>
     </li>
@@ -52,6 +60,7 @@
     <li>Advanced Search Filters: Sort and filter bids by categories.</li>
     <li>Multi-Language Support: Sinhala, Tamil, and English interfaces.</li>
     <li>Mobile App: Future release of an Android/iOS version.</li>
+    <li>Enhanced Payment Integrations: Support for multiple payment gateways.</li>
   </ul>
 
   <h2>👨‍💻 Contributing</h2>
