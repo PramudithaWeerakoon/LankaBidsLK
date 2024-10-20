@@ -9,6 +9,10 @@
   <h1 align="center">LankaBidsLK</h1>
   <p align="center">An innovative, secure bidding platform designed for Sri Lanka, offering a reliable marketplace.</p>
 
+
+https://github.com/user-attachments/assets/7f2adf23-2830-4155-b0d0-e2361e7f5453
+
+
   <h2>🚀 Features</h2>
   <ul>
     <li><strong>Bidding System:</strong> Users can securely bid on various products.</li>
